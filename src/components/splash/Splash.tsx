@@ -54,13 +54,13 @@ export function Splash({ onDone }: { onDone: () => void }) {
         .to("[data-splash-scanline]", { scaleX: 1, duration: 1.9, ease: "power1.inOut" }, 0.6)
         .to(
           root.current,
-          { opacity: 0, scale: 1.06, filter: "blur(6px)", duration: 0.7, ease: "power2.inOut" },
-          2.5,
+          { opacity: 0, scale: 1.06, filter: "blur(6px)", duration: 0.6, ease: "power2.inOut" },
+          2.2,
         );
     }, root);
 
     // hard safety net: never trap the visitor behind the intro
-    const failsafe = window.setTimeout(finish, 4200);
+    const failsafe = window.setTimeout(finish, 3400);
 
     return () => {
       window.clearTimeout(failsafe);
