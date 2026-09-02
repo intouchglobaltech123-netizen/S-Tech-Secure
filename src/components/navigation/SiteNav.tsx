@@ -60,7 +60,7 @@ export function SiteNav({ revealed = true }: { revealed?: boolean }) {
         <div className="mx-auto max-w-7xl px-4 pt-4 sm:px-6">
           <nav
             className={cn(
-              "flex items-center justify-between gap-6 rounded-lg px-4 py-3 transition-all duration-500",
+              "flex items-center justify-between gap-4 rounded-lg px-4 py-3 transition-all duration-500",
               scrolled ? "surface-panel shadow-elevated" : "border border-transparent",
             )}
             aria-label="Primary"
@@ -72,7 +72,7 @@ export function SiteNav({ revealed = true }: { revealed?: boolean }) {
                 <li key={l.label}>
                   <a
                     href={l.href}
-                    className="relative rounded px-3 py-2 font-mono text-[0.72rem] uppercase tracking-[0.14em] text-muted-foreground transition-colors hover:text-foreground"
+                    className="relative whitespace-nowrap rounded px-3 py-2 font-mono text-[0.7rem] uppercase tracking-[0.12em] text-muted-foreground transition-colors hover:text-foreground"
                   >
                     {l.label}
                   </a>
@@ -83,14 +83,14 @@ export function SiteNav({ revealed = true }: { revealed?: boolean }) {
             <div className="flex items-center gap-2">
               <a
                 href={company.phoneHref}
-                className="hidden items-center gap-2 rounded border border-border px-3 py-2 font-mono text-[0.72rem] tracking-widest text-muted-foreground transition-colors hover:border-border-strong hover:text-foreground sm:flex"
+                className="hidden items-center gap-2 rounded border border-border px-3 py-2 font-mono text-[0.72rem] tracking-widest text-muted-foreground transition-colors hover:border-border-strong hover:text-foreground sm:flex whitespace-nowrap"
               >
                 <Phone className="h-3.5 w-3.5" aria-hidden="true" />
                 {company.phone}
               </a>
               <a
                 href="/#contact"
-                className="hidden rounded bg-primary px-4 py-2.5 font-mono text-[0.72rem] uppercase tracking-[0.16em] text-primary-foreground transition-all hover:shadow-glow lg:block"
+                className="hidden rounded bg-primary px-4 py-2.5 font-mono text-[0.72rem] uppercase tracking-[0.16em] text-primary-foreground transition-all hover:shadow-glow lg:block whitespace-nowrap"
               >
                 Get a Quote
               </a>
