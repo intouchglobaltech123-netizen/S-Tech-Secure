@@ -12,29 +12,29 @@ export function Splash({ onDone }: { onDone: () => void }) {
   const root = useRef<HTMLDivElement>(null);
   const reduced = useReducedMotion();
   const [gone, setGone] = useState(false);
+  const doneRef = useRef(onDone);
+  doneRef.current = onDone;
 
   useEffect(() => {
+    const finish = () => {
+      setGone(true);
+      doneRef.current();
+    };
+
     if (typeof window === "undefined") return;
     if (sessionStorage.getItem("stec-splash-seen") === "1") {
-      setGone(true);
-      onDone();
+      finish();
       return;
     }
     sessionStorage.setItem("stec-splash-seen", "1");
 
     if (reduced) {
-      setGone(true);
-      onDone();
+      finish();
       return;
     }
 
     const ctx = gsap.context(() => {
-      const tl = gsap.timeline({
-        onComplete: () => {
-          setGone(true);
-          onDone();
-        },
-      });
+      const tl = gsap.timeline({ onComplete: finish });
       tl.to("[data-splash-ambient]", { opacity: 1, duration: 0.9, ease: "power2.out" }, 0.2)
         .fromTo(
           "[data-splash-rig]",
@@ -59,13 +59,19 @@ export function Splash({ onDone }: { onDone: () => void }) {
         );
     }, root);
 
-    return () => ctx.revert();
-  }, [onDone, reduced]);
+    // hard safety net: never trap the visitor behind the intro
+    const failsafe = window.setTimeout(finish, 4200);
+
+    return () => {
+      window.clearTimeout(failsafe);
+      ctx.revert();
+    };
+  }, [reduced]);
 
   const skip = () => {
     gsap.killTweensOf("*");
     setGone(true);
-    onDone();
+    doneRef.current();
   };
 
   if (gone) return null;
