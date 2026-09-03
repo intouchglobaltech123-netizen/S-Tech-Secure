@@ -5,6 +5,7 @@ import { ServicesSection } from "@/components/sections/ServicesSection";
 import { WhyChooseUs } from "@/components/sections/WhyChooseUs";
 import { HowItWorks } from "@/components/sections/HowItWorks";
 import { TestimonialsSection } from "@/components/sections/TestimonialsSection";
+import { Faq } from "@/components/sections/Faq";
 import { SiteFooter } from "@/components/layout/SiteFooter";
 import { localBusinessJsonLd, faqJsonLd } from "@/lib/structured-data";
 
@@ -61,6 +62,8 @@ function Home() {
             <HowItWorks />
             {/* Client Testimonials */}
             <TestimonialsSection />
+            {/* Frequently Asked Questions */}
+            <Faq />
             <SiteFooter />
           </div>
         </div>

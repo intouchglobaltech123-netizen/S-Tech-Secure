@@ -452,7 +452,60 @@ function ServicesPage() {
             </div>
           </section>
 
+          {/* 4.5. Engineering Standards & Field Protocol */}
+          <section className="pb-16 px-4 sm:px-12 lg:px-[100px]">
+            <div className="max-w-7xl mx-auto">
+              <div className="p-8 sm:p-12 rounded-3xl bg-white border border-neutral-200/90 shadow-sm space-y-8">
+                <div className="max-w-3xl">
+                  <div className="inline-flex items-center gap-2 mb-2">
+                    <span className="font-mono text-xs font-bold tracking-[0.25em] text-[#FF7A00] uppercase">
+                      QUALITY &amp; COMPLIANCE
+                    </span>
+                  </div>
+                  <h2 className="text-2xl sm:text-3xl font-black text-[#111827] tracking-tight">
+                    Our Installation Engineering Standards
+                  </h2>
+                  <p className="text-sm text-neutral-600 mt-2 leading-relaxed">
+                    Surveillance and smart automation systems are only as reliable as their physical wiring and network topology. STEC Secure implements stringent industrial field protocols for residential, commercial, and industrial sites.
+                  </p>
+                </div>
 
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                  <div className="p-5 rounded-2xl bg-[#F8FAFC] border border-neutral-200/70 space-y-2">
+                    <span className="font-mono text-xs font-bold text-[#FF7A00] block">01 / OPTICS</span>
+                    <h3 className="text-sm font-extrabold text-[#111827]">Zero-Blindspot Mapping</h3>
+                    <p className="text-xs text-neutral-600 leading-relaxed">
+                      Strategic optical geometry, focal length matching (2.8mm, 4mm, 6mm), and wide dynamic range sensor positioning ensure complete coverage without exposed vulnerable dead angles.
+                    </p>
+                  </div>
+
+                  <div className="p-5 rounded-2xl bg-[#F8FAFC] border border-neutral-200/70 space-y-2">
+                    <span className="font-mono text-xs font-bold text-[#FF7A00] block">02 / CABLING</span>
+                    <h3 className="text-sm font-extrabold text-[#111827]">Concealed Conduit Routing</h3>
+                    <p className="text-xs text-neutral-600 leading-relaxed">
+                      Heavy-duty fire-retardant CAT6 and shielded copper wiring enclosed in UV-resistant PVC conduits with weatherproof IP66 junction boxes for maximum physical tamper resistance.
+                    </p>
+                  </div>
+
+                  <div className="p-5 rounded-2xl bg-[#F8FAFC] border border-neutral-200/70 space-y-2">
+                    <span className="font-mono text-xs font-bold text-[#FF7A00] block">03 / POWER</span>
+                    <h3 className="text-sm font-extrabold text-[#111827]">Power Surge Redundancy</h3>
+                    <p className="text-xs text-neutral-600 leading-relaxed">
+                      Regulated SMPS power supply units with dedicated earthing and surge suppression protect high-resolution sensors and DVR/NVR hard drives against erratic voltage fluctuations.
+                    </p>
+                  </div>
+
+                  <div className="p-5 rounded-2xl bg-[#F8FAFC] border border-neutral-200/70 space-y-2">
+                    <span className="font-mono text-xs font-bold text-[#FF7A00] block">04 / AUDIT</span>
+                    <h3 className="text-sm font-extrabold text-[#111827]">Network &amp; Storage Tuning</h3>
+                    <p className="text-xs text-neutral-600 leading-relaxed">
+                      H.265+ smart video compression configuration, cloud P2P mobile setup with biometric access authorization, and multi-day local redundant recording stress tests.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
 
           {/* 5. Our Company Brochure */}
           <section className="pb-20 px-4 sm:px-12 lg:px-[100px]">
