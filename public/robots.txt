@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://stecsecure.example/sitemap.xml
+Sitemap: https://stecsecure.com/sitemap.xml

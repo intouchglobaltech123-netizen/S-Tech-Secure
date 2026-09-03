@@ -1,22 +1,10 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useState } from "react";
-import { Splash } from "@/components/splash/Splash";
 import { SiteNav } from "@/components/navigation/SiteNav";
 import { Hero } from "@/components/hero/Hero";
-import { SecurityIntro } from "@/components/sections/SecurityIntro";
-import { Solutions } from "@/components/sections/Solutions";
-import { Products } from "@/components/sections/Products";
-import { AiIntelligence } from "@/components/sections/AiIntelligence";
-import { Coverage } from "@/components/sections/Coverage";
-import { Industries } from "@/components/sections/Industries";
-import { WhyUs } from "@/components/sections/WhyUs";
-import { Process } from "@/components/sections/Process";
-import { Brands } from "@/components/sections/Brands";
-import { Projects } from "@/components/sections/Projects";
-import { Testimonials } from "@/components/sections/Testimonials";
-import { ServiceAreas } from "@/components/sections/ServiceAreas";
-import { Faq } from "@/components/sections/Faq";
-import { ContactCta } from "@/components/sections/ContactCta";
+import { ServicesSection } from "@/components/sections/ServicesSection";
+import { WhyChooseUs } from "@/components/sections/WhyChooseUs";
+import { HowItWorks } from "@/components/sections/HowItWorks";
+import { TestimonialsSection } from "@/components/sections/TestimonialsSection";
 import { SiteFooter } from "@/components/layout/SiteFooter";
 import { localBusinessJsonLd, faqJsonLd } from "@/lib/structured-data";
 
@@ -32,14 +20,19 @@ export const Route = createFileRoute("/")({
       { property: "og:title", content: title },
       { property: "og:description", content: description },
       { property: "og:type", content: "website" },
+      { property: "og:url", content: "https://stecsecure.com/" },
+      { property: "og:image", content: "https://stecsecure.com/services/cctv.jpg" },
       { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:title", content: title },
+      { name: "twitter:description", content: description },
+      { name: "twitter:image", content: "https://stecsecure.com/services/cctv.jpg" },
       {
         name: "keywords",
         content:
           "CCTV camera installation, security camera installation, IP camera installation, CCTV dealers Erode, AI CCTV camera, PTZ camera installation, CCTV maintenance",
       },
     ],
-    links: [{ rel: "canonical", href: "https://stecsecure.example/" }],
+    links: [{ rel: "canonical", href: "https://stecsecure.com/" }],
     scripts: [
       { type: "application/ld+json", children: JSON.stringify(localBusinessJsonLd) },
       { type: "application/ld+json", children: JSON.stringify(faqJsonLd) },
@@ -48,31 +41,30 @@ export const Route = createFileRoute("/")({
   component: Home,
 });
 
-function Home() {
-  const [entered, setEntered] = useState(false);
+import { CyberMeshBackground } from "@/components/background/CyberMeshBackground";
 
+function Home() {
   return (
-    <>
-      <Splash onDone={() => setEntered(true)} />
-      <SiteNav revealed={entered} />
+    <div className="w-full bg-[#F8FAFC] text-[#111827]">
+      <SiteNav />
       <main>
-        <Hero active={entered} />
-        <SecurityIntro />
-        <Solutions />
-        <Products />
-        <AiIntelligence />
-        <Coverage />
-        <Industries />
-        <WhyUs />
-        <Process />
-        <Brands />
-        <Projects />
-        <Testimonials />
-        <ServiceAreas />
-        <Faq />
-        <ContactCta />
+        <Hero active={true} />
+        {/* Dynamic Animated Cyber Particle Mesh & IoT Neural Network Background */}
+        <div className="relative w-full overflow-hidden">
+          <CyberMeshBackground />
+          <div className="relative z-10">
+            {/* Services Showcase (Explore Our Services) */}
+            <ServicesSection />
+            {/* Why Choose Us */}
+            <WhyChooseUs />
+            {/* How It Works */}
+            <HowItWorks />
+            {/* Client Testimonials */}
+            <TestimonialsSection />
+            <SiteFooter />
+          </div>
+        </div>
       </main>
-      <SiteFooter />
-    </>
+    </div>
   );
 }

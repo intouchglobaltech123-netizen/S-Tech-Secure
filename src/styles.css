@@ -172,6 +172,310 @@
   color: transparent;
 }
 
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(200%);
+  }
+}
+
+@utility animate-shimmer {
+  animation: shimmer 2.5s infinite ease-in-out;
+}
+
+@keyframes radarSweep {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes scanline {
+  0% {
+    transform: translateY(-50px);
+    opacity: 0;
+  }
+  15% {
+    opacity: 0.7;
+  }
+  85% {
+    opacity: 0.7;
+  }
+  100% {
+    transform: translateY(100vh);
+    opacity: 0;
+  }
+}
+
+@keyframes floatPulse {
+  0%, 100% {
+    transform: translate(0, 0) scale(1);
+    opacity: 0.25;
+  }
+  50% {
+    transform: translate(30px, -25px) scale(1.18);
+    opacity: 0.45;
+  }
+}
+
+@keyframes gridDrift {
+  0% {
+    background-position: 0 0;
+  }
+  100% {
+    background-position: 72px 72px;
+  }
+}
+
+@utility animate-radar {
+  animation: radarSweep 8s linear infinite;
+}
+
+@utility animate-scanline {
+  animation: scanline 6s ease-in-out infinite;
+}
+
+@utility animate-float-pulse {
+  animation: floatPulse 9s ease-in-out infinite;
+}
+
+@utility animate-grid-drift {
+  animation: gridDrift 20s linear infinite;
+}
+
+@keyframes spinClockwise {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes spinCounterClockwise {
+  from {
+    transform: rotate(360deg);
+  }
+  to {
+    transform: rotate(0deg);
+  }
+}
+
+@keyframes radarWave {
+  0% {
+    transform: scale(0.35);
+    opacity: 0.9;
+  }
+  50% {
+    opacity: 0.45;
+  }
+  100% {
+    transform: scale(2.4);
+    opacity: 0;
+  }
+}
+
+@keyframes laserSweepVertical {
+  0% {
+    transform: translateY(-8vh);
+    opacity: 0;
+  }
+  15% {
+    opacity: 1;
+  }
+  85% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(105vh);
+    opacity: 0;
+  }
+}
+
+@utility animate-spin-slow {
+  animation: spinClockwise 26s linear infinite;
+}
+
+@utility animate-spin-reverse-slow {
+  animation: spinCounterClockwise 18s linear infinite;
+}
+
+@utility animate-radar-wave-1 {
+  animation: radarWave 4.5s cubic-bezier(0.1, 0.5, 0.3, 1) infinite;
+}
+
+@utility animate-radar-wave-2 {
+  animation: radarWave 4.5s cubic-bezier(0.1, 0.5, 0.3, 1) infinite 1.5s;
+}
+
+@utility animate-radar-wave-3 {
+  animation: radarWave 4.5s cubic-bezier(0.1, 0.5, 0.3, 1) infinite 3s;
+}
+
+@utility animate-laser-vertical {
+  animation: laserSweepVertical 4.5s ease-in-out infinite;
+}
+
+@keyframes cameraFloat {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg) scale(1);
+  }
+  35% {
+    transform: translateY(-14px) rotate(1.2deg) scale(1.015);
+  }
+  70% {
+    transform: translateY(-6px) rotate(-0.8deg) scale(0.995);
+  }
+}
+
+@keyframes opticalPulse {
+  0%, 100% {
+    opacity: 0.35;
+    transform: scale(0.95);
+  }
+  50% {
+    opacity: 0.85;
+    transform: scale(1.12);
+  }
+}
+
+@utility animate-camera-float {
+  animation: cameraFloat 5.5s ease-in-out infinite;
+}
+
+@utility animate-optical-pulse {
+  animation: opticalPulse 3.5s ease-in-out infinite;
+}
+
+@keyframes textGradientWave {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+@keyframes cameraLaserScan {
+  0% {
+    top: -5%;
+    opacity: 0;
+  }
+  20% {
+    opacity: 0.85;
+  }
+  80% {
+    opacity: 0.85;
+  }
+  100% {
+    top: 105%;
+    opacity: 0;
+  }
+}
+
+@keyframes countdownProgress {
+  0% {
+    width: 0%;
+  }
+  100% {
+    width: 100%;
+  }
+}
+
+@utility animate-text-gradient {
+  background-size: 200% 200%;
+  animation: textGradientWave 4s ease infinite;
+}
+
+@utility animate-laser-scan {
+  animation: cameraLaserScan 3.2s ease-in-out infinite;
+}
+
+@keyframes circleMotion {
+  0% {
+    transform: translate(0px, 0px) rotate(0deg);
+  }
+  25% {
+    transform: translate(8px, -12px) rotate(1.5deg);
+  }
+  50% {
+    transform: translate(0px, -20px) rotate(0deg);
+  }
+  75% {
+    transform: translate(-8px, -12px) rotate(-1.5deg);
+  }
+  100% {
+    transform: translate(0px, 0px) rotate(0deg);
+  }
+}
+
+@keyframes monoGradientFlow {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 50% 100%;
+  }
+}
+
+@keyframes orbDriftOne {
+  0% {
+    transform: translate(0px, 0px) scale(1);
+  }
+  33% {
+    transform: translate(90px, -80px) scale(1.18);
+  }
+  66% {
+    transform: translate(-70px, 60px) scale(0.92);
+  }
+  100% {
+    transform: translate(40px, 40px) scale(1.08);
+  }
+}
+
+@keyframes orbDriftTwo {
+  0% {
+    transform: translate(0px, 0px) scale(1.05);
+  }
+  33% {
+    transform: translate(-100px, 70px) scale(0.9);
+  }
+  66% {
+    transform: translate(80px, -50px) scale(1.15);
+  }
+  100% {
+    transform: translate(-40px, -30px) scale(1);
+  }
+}
+
+@keyframes scanline {
+  0% {
+    top: 0%;
+    opacity: 0;
+  }
+  15% {
+    opacity: 0.8;
+  }
+  85% {
+    opacity: 0.8;
+  }
+  100% {
+    top: 100%;
+    opacity: 0;
+  }
+}
+
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
