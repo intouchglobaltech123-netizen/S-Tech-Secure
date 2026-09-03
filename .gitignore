@@ -1,5 +1,3 @@
-
-
 # Logs
 logs
 *.log
@@ -33,3 +31,4 @@ dist-ssr
 *.sln
 *.sw?
 scratch/
+.vercel/
