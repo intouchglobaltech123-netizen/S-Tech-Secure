@@ -1,8 +1,21 @@
 {
+  "cleanUrls": true,
+  "trailingSlash": false,
   "redirects": [
     {
       "source": "/services/video-door-phones",
       "destination": "/services/video-door-phone",
+      "permanent": true
+    },
+    {
+      "source": "/:path*",
+      "has": [
+        {
+          "type": "host",
+          "value": "www.stec-secure.vercel.app"
+        }
+      ],
+      "destination": "https://stec-secure.vercel.app/:path*",
       "permanent": true
     }
   ]
