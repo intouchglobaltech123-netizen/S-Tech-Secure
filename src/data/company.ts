@@ -26,7 +26,7 @@ export const company = {
   },
   hours: "Mon – Sat, 9:30 AM – 7:00 PM",
   whatsapp: "https://wa.me/919600252605",
-  siteUrl: "https://stecsecure.com",
+  siteUrl: "https://stec-secure.vercel.app",
 } as const;
 
 export const addressLine = `${company.address.street}, ${company.address.locality}, ${company.address.region} ${company.address.postalCode}`;

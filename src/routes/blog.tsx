@@ -26,19 +26,19 @@ export const Route = createFileRoute("/blog")({
       { property: "og:title", content: blogTitle },
       { property: "og:description", content: blogDescription },
       { property: "og:type", content: "website" },
-      { property: "og:url", content: "https://stecsecure.com/blog" },
-      { property: "og:image", content: "https://stecsecure.com/blog/home-cctv.jpg" },
+      { property: "og:url", content: "https://stec-secure.vercel.app/blog" },
+      { property: "og:image", content: "https://stec-secure.vercel.app/blog/home-cctv.jpg" },
       { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:title", content: blogTitle },
       { name: "twitter:description", content: blogDescription },
-      { name: "twitter:image", content: "https://stecsecure.com/blog/home-cctv.jpg" },
+      { name: "twitter:image", content: "https://stec-secure.vercel.app/blog/home-cctv.jpg" },
       {
         name: "keywords",
         content:
           "CCTV camera blog, home security guide, Hikvision vs Dahua vs CP Plus, CCTV mobile viewing guide, CCTV maintenance checklist, burglar alarm vs CCTV",
       },
     ],
-    links: [{ rel: "canonical", href: "https://stecsecure.com/blog" }],
+    links: [{ rel: "canonical", href: "https://stec-secure.vercel.app/blog" }],
   }),
   component: BlogPage,
 });
@@ -563,7 +563,7 @@ function BlogPage() {
                   <a
                     href={`https://wa.me/${COMPANY_CONTACT.phoneRaw}?text=Hi%20S-Tec%20Secure%2C%20I%20have%20a%20question%20regarding%20security%20camera%20planning.`}
                     target="_blank"
-                    rel="noopener noreferrer"
+                    rel="noopener noreferrer nofollow"
                     className="px-6 py-3.5 rounded-xl bg-[#25D366] hover:bg-[#20bd5a] text-white font-extrabold text-xs uppercase tracking-wider shadow-md hover:scale-105 active:scale-95 transition-all flex items-center gap-2 flex-shrink-0 cursor-pointer"
                   >
                     <WhatsAppIcon className="w-4 h-4 fill-white" />

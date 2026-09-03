@@ -185,7 +185,7 @@ export function HowItWorks() {
             <a
               href="https://wa.me/919600252605?text=Hi%20STEC%20Secure%2C%20I%20would%20like%20to%20book%20a%20free%20site%20survey."
               target="_blank"
-              rel="noopener noreferrer"
+              rel="noopener noreferrer nofollow"
               className="w-full sm:w-auto inline-flex items-center justify-center gap-3 px-8 py-4 rounded-2xl bg-[#FF7A00] hover:bg-[#FF8F00] text-white font-extrabold text-sm uppercase tracking-wider shadow-[0_4px_25px_rgba(255,122,0,0.4)] hover:shadow-[0_8px_35px_rgba(255,122,0,0.6)] hover:scale-105 active:scale-95 transition-all duration-200"
             >
               <svg className="w-5 h-5 fill-white" viewBox="0 0 448 512">

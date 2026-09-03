@@ -165,7 +165,7 @@ Please share pricing and schedule a free on-site survey.`;
                 <a
                   href={`https://wa.me/${COMPANY_CONTACT.phoneRaw}?text=Hi%20STEC%20Secure%2C%20I%20would%20like%20to%20consult%20regarding%20security%20installation.`}
                   target="_blank"
-                  rel="noopener noreferrer"
+                  rel="noopener noreferrer nofollow"
                   className="p-3.5 rounded-2xl bg-neutral-50 hover:bg-emerald-50/80 border border-neutral-200/80 hover:border-emerald-200 transition-all flex items-center justify-between group cursor-pointer"
                 >
                   <div className="flex items-center gap-3 min-w-0">

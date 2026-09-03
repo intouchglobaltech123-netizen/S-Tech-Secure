@@ -26,8 +26,9 @@ const SERVICE_IMAGES: Record<string, string> = {
 
 export const Route = createFileRoute("/services/$serviceId")({
   head: ({ params }) => {
+    const normalizedId = params.serviceId === "video-door-phones" ? "video-door-phone" : params.serviceId;
     const service = SERVICES_DATA.find(
-      (s) => s.id === params.serviceId || s.slug === params.serviceId
+      (s) => s.id === normalizedId || s.slug === normalizedId
     );
     const title = service
       ? `${service.title} Installation in Erode & Tamil Nadu | STEC Secure`
@@ -36,8 +37,8 @@ export const Route = createFileRoute("/services/$serviceId")({
       ? `${service.tagline || service.shortDescription}. Certified equipment, prompt site surveys and professional installation across Erode, Salem and Tamil Nadu.`
       : "Professional security and automation system installation by STEC Secure.";
     const imagePath = service ? SERVICE_IMAGES[service.id] || "/services/cctv.jpg" : "/services/cctv.jpg";
-    const image = `https://stecsecure.com${imagePath}`;
-    const canonical = `https://stecsecure.com/services/${params.serviceId}`;
+    const image = `https://stec-secure.vercel.app${imagePath}`;
+    const canonical = `https://stec-secure.vercel.app/services/${service?.id || normalizedId}`;
 
     return {
       meta: [
@@ -67,9 +68,12 @@ function ServiceDetailPage() {
   const { serviceId } = Route.useParams();
   const [openFaq, setOpenFaq] = useState<number | null>(0);
 
+  // Normalize legacy/plural aliases so external crawlers don't get 404
+  const normalizedId = serviceId === "video-door-phones" ? "video-door-phone" : serviceId;
+
   // Find service by id or slug
   const service = SERVICES_DATA.find(
-    (s) => s.id === serviceId || s.slug === serviceId
+    (s) => s.id === normalizedId || s.slug === normalizedId
   );
 
   const serviceImage = service ? SERVICE_IMAGES[service.id] || null : null;
@@ -379,8 +383,56 @@ function ServiceDetailPage() {
 
             </div>
 
+            {/* ─── 4. Related Security Solutions (Internal Link Building) ─── */}
+            <div className="pt-6 border-t border-neutral-200/80 space-y-6">
+              <div className="flex items-center justify-between">
+                <div>
+                  <div className="inline-flex items-center gap-2 mb-1">
+                    <span className="font-mono text-xs font-bold tracking-[0.25em] text-[#FF7A00] uppercase">
+                      COMPLETE PERIMETER DEFENSE
+                    </span>
+                  </div>
+                  <h3 className="text-xl sm:text-2xl font-black text-[#111827] tracking-tight">
+                    Explore Other Security &amp; Automation Systems
+                  </h3>
+                </div>
+                <Link
+                  to="/services"
+                  className="hidden sm:inline-flex items-center gap-1 text-xs font-bold text-[#FF7A00] hover:underline"
+                >
+                  <span>View All Solutions</span>
+                  <span>→</span>
+                </Link>
+              </div>
 
-
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                {SERVICES_DATA.filter((s) => s.id !== service.id).map((other) => (
+                  <Link
+                    key={other.id}
+                    to="/services/$serviceId"
+                    params={{ serviceId: other.id }}
+                    className="p-5 rounded-2xl bg-white border border-neutral-200/90 shadow-sm hover:border-[#FF7A00] hover:shadow-md transition-all group flex flex-col justify-between"
+                  >
+                    <div>
+                      <div className="text-2xl mb-2">{other.icon}</div>
+                      <div className="text-xs font-mono font-bold text-[#FF7A00] uppercase tracking-wider mb-1">
+                        {other.badge}
+                      </div>
+                      <h4 className="text-sm font-extrabold text-[#111827] group-hover:text-[#FF7A00] transition-colors mb-1.5">
+                        {other.title}
+                      </h4>
+                      <p className="text-xs text-neutral-500 line-clamp-2 leading-relaxed">
+                        {other.tagline}
+                      </p>
+                    </div>
+                    <div className="mt-4 pt-3 border-t border-neutral-100 flex items-center justify-between text-[11px] font-bold text-[#FF7A00]">
+                      <span>Learn More</span>
+                      <span className="group-hover:translate-x-1 transition-transform">→</span>
+                    </div>
+                  </Link>
+                ))}
+              </div>
+            </div>
           </div>
         </div>
       </main>

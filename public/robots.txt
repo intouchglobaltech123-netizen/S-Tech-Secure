@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://stecsecure.com/sitemap.xml
+Sitemap: https://stec-secure.vercel.app/sitemap.xml

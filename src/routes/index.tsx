@@ -20,19 +20,19 @@ export const Route = createFileRoute("/")({
       { property: "og:title", content: title },
       { property: "og:description", content: description },
       { property: "og:type", content: "website" },
-      { property: "og:url", content: "https://stecsecure.com/" },
-      { property: "og:image", content: "https://stecsecure.com/services/cctv.jpg" },
+      { property: "og:url", content: "https://stec-secure.vercel.app/" },
+      { property: "og:image", content: "https://stec-secure.vercel.app/services/cctv.jpg" },
       { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:title", content: title },
       { name: "twitter:description", content: description },
-      { name: "twitter:image", content: "https://stecsecure.com/services/cctv.jpg" },
+      { name: "twitter:image", content: "https://stec-secure.vercel.app/services/cctv.jpg" },
       {
         name: "keywords",
         content:
           "CCTV camera installation, security camera installation, IP camera installation, CCTV dealers Erode, AI CCTV camera, PTZ camera installation, CCTV maintenance",
       },
     ],
-    links: [{ rel: "canonical", href: "https://stecsecure.com/" }],
+    links: [{ rel: "canonical", href: "https://stec-secure.vercel.app/" }],
     scripts: [
       { type: "application/ld+json", children: JSON.stringify(localBusinessJsonLd) },
       { type: "application/ld+json", children: JSON.stringify(faqJsonLd) },

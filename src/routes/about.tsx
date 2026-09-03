@@ -17,19 +17,19 @@ export const Route = createFileRoute("/about")({
       { property: "og:title", content: aboutTitle },
       { property: "og:description", content: aboutDescription },
       { property: "og:type", content: "website" },
-      { property: "og:url", content: "https://stecsecure.com/about" },
-      { property: "og:image", content: "https://stecsecure.com/services/cctv.jpg" },
+      { property: "og:url", content: "https://stec-secure.vercel.app/about" },
+      { property: "og:image", content: "https://stec-secure.vercel.app/services/cctv.jpg" },
       { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:title", content: aboutTitle },
       { name: "twitter:description", content: aboutDescription },
-      { name: "twitter:image", content: "https://stecsecure.com/services/cctv.jpg" },
+      { name: "twitter:image", content: "https://stec-secure.vercel.app/services/cctv.jpg" },
       {
         name: "keywords",
         content:
           "About STEC Secure, CCTV installation company Erode, surveillance engineers Tamil Nadu, home automation team Erode",
       },
     ],
-    links: [{ rel: "canonical", href: "https://stecsecure.com/about" }],
+    links: [{ rel: "canonical", href: "https://stec-secure.vercel.app/about" }],
   }),
   component: AboutPage,
 });

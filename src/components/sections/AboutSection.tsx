@@ -285,9 +285,9 @@ export function AboutSection() {
                 {/* Direct Action Button: Connect on WhatsApp */}
                 <div>
                   <a
-                    href="https://wa.me/919876543210"
+                    href="https://wa.me/919600252605?text=Hi%20STEC%20Secure%2C%20I%20would%20like%20to%20know%20more%20about%20your%20security%20solutions."
                     target="_blank"
-                    rel="noopener noreferrer"
+                    rel="noopener noreferrer nofollow"
                     className="relative group/btn inline-flex items-center gap-3 px-6 py-3.5 rounded-2xl bg-gradient-to-r from-[#25D366] to-[#1DA851] hover:from-[#22bf5b] hover:to-[#179646] text-white font-extrabold text-sm tracking-wide shadow-[0_8px_25px_rgba(37,211,102,0.35)] hover:shadow-[0_12px_35px_rgba(37,211,102,0.5)] hover:scale-105 active:scale-95 transition-all duration-300 overflow-hidden"
                   >
                     <svg
@@ -494,9 +494,9 @@ export function AboutSection() {
 
                 {/* Single Action: WhatsApp Coverage Check */}
                 <a
-                  href="https://wa.me/919876543210?text=Hi%2C%20I%20want%20to%20check%20if%20you%20cover%20my%20area"
+                  href="https://wa.me/919600252605?text=Hi%2C%20I%20want%20to%20check%20if%20you%20cover%20my%20area"
                   target="_blank"
-                  rel="noopener noreferrer"
+                  rel="noopener noreferrer nofollow"
                   className="w-full inline-flex items-center justify-center gap-2.5 px-6 py-4 rounded-2xl bg-[#25D366] hover:bg-[#20bd5a] text-white font-extrabold text-sm tracking-wide shadow-[0_8px_25px_rgba(37,211,102,0.35)] hover:shadow-[0_12px_35px_rgba(37,211,102,0.5)] hover:scale-[1.02] active:scale-95 transition-all duration-300"
                 >
                   <svg className="w-5 h-5 fill-current flex-shrink-0" viewBox="0 0 24 24">

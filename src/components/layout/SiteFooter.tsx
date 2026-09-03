@@ -59,7 +59,7 @@ export function SiteFooter() {
               <h4 className="text-sm font-black text-[#111827] uppercase tracking-wider mb-5">
                 Core Solutions
               </h4>
-              <ul className="space-y-3 text-sm text-[#4B5563] font-medium">
+              <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 gap-y-2.5 gap-x-4 text-xs sm:text-sm text-[#4B5563] font-medium">
                 <li>
                   <Link to="/services/$serviceId" params={{ serviceId: "cctv" }} className="inline-flex items-center gap-2 hover:text-[#FF7A00] transition-colors group">
                     <span className="w-1.5 h-1.5 rounded-full bg-[#FF7A00] group-hover:scale-125 transition-transform flex-shrink-0" />
@@ -70,6 +70,18 @@ export function SiteFooter() {
                   <Link to="/services/$serviceId" params={{ serviceId: "home-automation" }} className="inline-flex items-center gap-2 hover:text-[#FF7A00] transition-colors group">
                     <span className="w-1.5 h-1.5 rounded-full bg-[#FF7A00] group-hover:scale-125 transition-transform flex-shrink-0" />
                     <span>Smart Home IoT Automation</span>
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/services/$serviceId" params={{ serviceId: "burglar-alarm" }} className="inline-flex items-center gap-2 hover:text-[#FF7A00] transition-colors group">
+                    <span className="w-1.5 h-1.5 rounded-full bg-[#FF7A00] group-hover:scale-125 transition-transform flex-shrink-0" />
+                    <span>Intrusion Burglar Alarms</span>
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/services/$serviceId" params={{ serviceId: "gate-automation" }} className="inline-flex items-center gap-2 hover:text-[#FF7A00] transition-colors group">
+                    <span className="w-1.5 h-1.5 rounded-full bg-[#FF7A00] group-hover:scale-125 transition-transform flex-shrink-0" />
+                    <span>Automatic Gate Automation</span>
                   </Link>
                 </li>
                 <li>
@@ -85,15 +97,21 @@ export function SiteFooter() {
                   </Link>
                 </li>
                 <li>
-                  <Link to="/services/$serviceId" params={{ serviceId: "burglar-alarm" }} className="inline-flex items-center gap-2 hover:text-[#FF7A00] transition-colors group">
+                  <Link to="/services/$serviceId" params={{ serviceId: "video-door-phone" }} className="inline-flex items-center gap-2 hover:text-[#FF7A00] transition-colors group">
                     <span className="w-1.5 h-1.5 rounded-full bg-[#FF7A00] group-hover:scale-125 transition-transform flex-shrink-0" />
-                    <span>Intrusion Burglar Alarms</span>
+                    <span>Video Door Phones</span>
                   </Link>
                 </li>
                 <li>
-                  <Link to="/services/$serviceId" params={{ serviceId: "video-door-phones" }} className="inline-flex items-center gap-2 hover:text-[#FF7A00] transition-colors group">
+                  <Link to="/services/$serviceId" params={{ serviceId: "intercom" }} className="inline-flex items-center gap-2 hover:text-[#FF7A00] transition-colors group">
                     <span className="w-1.5 h-1.5 rounded-full bg-[#FF7A00] group-hover:scale-125 transition-transform flex-shrink-0" />
-                    <span>Video Door Phones & Intercom</span>
+                    <span>EPABX & Intercom Systems</span>
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/services/$serviceId" params={{ serviceId: "nurse-calling" }} className="inline-flex items-center gap-2 hover:text-[#FF7A00] transition-colors group">
+                    <span className="w-1.5 h-1.5 rounded-full bg-[#FF7A00] group-hover:scale-125 transition-transform flex-shrink-0" />
+                    <span>Hospital Nurse Calling Systems</span>
                   </Link>
                 </li>
               </ul>
@@ -142,7 +160,7 @@ export function SiteFooter() {
                 <a
                   href="https://facebook.com"
                   target="_blank"
-                  rel="noopener noreferrer"
+                  rel="noopener noreferrer nofollow"
                   aria-label="Facebook"
                   className="w-10 h-10 rounded-xl bg-white hover:bg-[#1877F2] text-[#111827] hover:text-white border border-neutral-200 hover:border-[#1877F2] shadow-sm flex items-center justify-center transition-all duration-200 hover:scale-110"
                 >
@@ -155,7 +173,7 @@ export function SiteFooter() {
                 <a
                   href="https://linkedin.com"
                   target="_blank"
-                  rel="noopener noreferrer"
+                  rel="noopener noreferrer nofollow"
                   aria-label="LinkedIn"
                   className="w-10 h-10 rounded-xl bg-white hover:bg-[#0A66C2] text-[#111827] hover:text-white border border-neutral-200 hover:border-[#0A66C2] shadow-sm flex items-center justify-center transition-all duration-200 hover:scale-110"
                 >
@@ -168,7 +186,7 @@ export function SiteFooter() {
                 <a
                   href="https://www.instagram.com/igsyourdigitalpartner/"
                   target="_blank"
-                  rel="noopener noreferrer"
+                  rel="noopener noreferrer nofollow"
                   aria-label="Instagram"
                   className="w-10 h-10 rounded-xl bg-white hover:bg-[#E1306C] text-[#111827] hover:text-white border border-neutral-200 hover:border-[#E1306C] shadow-sm flex items-center justify-center transition-all duration-200 hover:scale-110"
                 >
@@ -181,7 +199,7 @@ export function SiteFooter() {
                 <a
                   href="https://twitter.com"
                   target="_blank"
-                  rel="noopener noreferrer"
+                  rel="noopener noreferrer nofollow"
                   aria-label="Twitter / X"
                   className="w-10 h-10 rounded-xl bg-white hover:bg-black text-[#111827] hover:text-white border border-neutral-200 hover:border-black shadow-sm flex items-center justify-center transition-all duration-200 hover:scale-110"
                 >
@@ -194,7 +212,7 @@ export function SiteFooter() {
                 <a
                   href={whatsappUrl}
                   target="_blank"
-                  rel="noopener noreferrer"
+                  rel="noopener noreferrer nofollow"
                   aria-label="WhatsApp"
                   className="w-10 h-10 rounded-xl bg-white hover:bg-[#25D366] text-[#111827] hover:text-white border border-neutral-200 hover:border-[#25D366] shadow-sm flex items-center justify-center transition-all duration-200 hover:scale-110"
                 >
@@ -217,7 +235,7 @@ export function SiteFooter() {
               <a
                 href="https://www.instagram.com/igsyourdigitalpartner/"
                 target="_blank"
-                rel="noopener noreferrer"
+                rel="noopener noreferrer nofollow"
                 className="font-extrabold text-[#111827] hover:text-[#FF7A00] transition-colors underline decoration-neutral-300 hover:decoration-[#FF7A00]"
               >
                 IconoGraphy Solutionz
@@ -233,7 +251,7 @@ export function SiteFooter() {
           <a
             href={whatsappUrl}
             target="_blank"
-            rel="noopener noreferrer"
+            rel="noopener noreferrer nofollow"
             aria-label="Chat with us on WhatsApp"
             className="group relative flex items-center justify-center w-14 h-14 sm:w-15 sm:h-15 rounded-full bg-[#25D366] hover:bg-[#20bd5a] text-white shadow-[0_8px_25px_rgba(37,211,102,0.45),0_3px_10px_rgba(0,0,0,0.15)] hover:shadow-[0_12px_35px_rgba(37,211,102,0.7),0_5px_15px_rgba(0,0,0,0.2)] hover:scale-110 active:scale-95 transition-all duration-200 cursor-pointer"
           >

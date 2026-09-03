@@ -37,19 +37,19 @@ export const Route = createFileRoute("/services/")({
       { property: "og:title", content: servicesTitle },
       { property: "og:description", content: servicesDescription },
       { property: "og:type", content: "website" },
-      { property: "og:url", content: "https://stecsecure.com/services" },
-      { property: "og:image", content: "https://stecsecure.com/services/cctv.jpg" },
+      { property: "og:url", content: "https://stec-secure.vercel.app/services" },
+      { property: "og:image", content: "https://stec-secure.vercel.app/services/cctv.jpg" },
       { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:title", content: servicesTitle },
       { name: "twitter:description", content: servicesDescription },
-      { name: "twitter:image", content: "https://stecsecure.com/services/cctv.jpg" },
+      { name: "twitter:image", content: "https://stec-secure.vercel.app/services/cctv.jpg" },
       {
         name: "keywords",
         content:
           "CCTV installation, smart home automation, burglar alarm, automatic gate, boom barriers, biometric access control, video door phone, nurse call system, intercom, Erode, Tamil Nadu",
       },
     ],
-    links: [{ rel: "canonical", href: "https://stecsecure.com/services" }],
+    links: [{ rel: "canonical", href: "https://stec-secure.vercel.app/services" }],
   }),
   component: ServicesPage,
 });
@@ -440,7 +440,7 @@ function ServicesPage() {
                     <a
                       href={`https://wa.me/${COMPANY_CONTACT.phoneRaw}?text=Hi%2C%20I%20want%20to%20inquire%20about%20the%20${encodeURIComponent(activeProfile.label)}%20package`}
                       target="_blank"
-                      rel="noopener noreferrer"
+                      rel="noopener noreferrer nofollow"
                       className="w-full inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl bg-[#25D366] hover:bg-[#20bd5a] text-white font-extrabold text-sm tracking-wide shadow-md hover:scale-105 active:scale-95 transition-all duration-200"
                     >
                       <WhatsAppIcon className="w-4 h-4 fill-white" />
@@ -482,7 +482,7 @@ function ServicesPage() {
 
                   <div className="lg:col-span-4 flex justify-start lg:justify-end">
                     <a
-                      href="http://stecsecure.com/S%20TEC%20SECURE%20Company%20Brochure.pdf"
+                      href="/stec-secure-brochure.pdf"
                       target="_blank"
                       rel="noopener noreferrer"
                       className="inline-flex items-center justify-center gap-2.5 px-8 py-4 rounded-xl bg-[#FF7A00] hover:bg-[#e66e00] text-white font-extrabold text-sm tracking-wider uppercase shadow-[0_8px_25px_rgba(255,122,0,0.35)] hover:scale-105 active:scale-95 transition-all duration-200"

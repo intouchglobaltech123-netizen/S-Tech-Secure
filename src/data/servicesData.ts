@@ -87,7 +87,7 @@ export const SERVICES_DATA: ServiceDetail[] = [
           "Our team configures your DVR or NVR system with optimal settings and provides hands-on training to ensure you can easily review and retrieve recordings.",
       },
     ],
-    brochureUrl: "http://stecsecure.com/S%20TEC%20SECURE%20Company%20Brochure.pdf",
+    brochureUrl: "/stec-secure-brochure.pdf",
   },
   {
     id: "home-automation",
@@ -143,7 +143,7 @@ export const SERVICES_DATA: ServiceDetail[] = [
         answer: "All physical touch switches and local RF/Zigbee automations continue working normally even if your home Wi-Fi is temporarily offline.",
       },
     ],
-    brochureUrl: "http://stecsecure.com/S%20TEC%20SECURE%20Company%20Brochure.pdf",
+    brochureUrl: "/stec-secure-brochure.pdf",
   },
   {
     id: "burglar-alarm",
@@ -215,7 +215,7 @@ export const SERVICES_DATA: ServiceDetail[] = [
           "We configure automated GSM emergency dialing and SMS push notifications so up to 5 family members receive instant calls and alerts the second an intrusion is detected.",
       },
     ],
-    brochureUrl: "http://stecsecure.com/S%20TEC%20SECURE%20Company%20Brochure.pdf",
+    brochureUrl: "/stec-secure-brochure.pdf",
   },
   {
     id: "gate-automation",
@@ -283,7 +283,7 @@ export const SERVICES_DATA: ServiceDetail[] = [
           "Integration with video door phones, RFID card readers, and wireless keypad switches to allow easy visitor screening and 1-tap remote unlocking.",
       },
     ],
-    brochureUrl: "http://stecsecure.com/S%20TEC%20SECURE%20Company%20Brochure.pdf",
+    brochureUrl: "/stec-secure-brochure.pdf",
   },
   {
     id: "boom-barriers",
@@ -351,7 +351,7 @@ export const SERVICES_DATA: ServiceDetail[] = [
           "Boom barriers require minimal routine maintenance—mainly periodic optical sensor dusting, checking arm balance springs, and inspecting gearbox oil levels every 6 to 12 months for 100% duty cycle reliability.",
       },
     ],
-    brochureUrl: "http://stecsecure.com/S%20TEC%20SECURE%20Company%20Brochure.pdf",
+    brochureUrl: "/stec-secure-brochure.pdf",
   },
   {
     id: "access-control",
@@ -419,7 +419,7 @@ export const SERVICES_DATA: ServiceDetail[] = [
           "Our solutions utilize encrypted communication protocols, tamper-resistant hardware, and battery-backed electromagnetic locks. They easily scale from a single glass office door to enterprise campuses with hundreds of access points across multiple facilities.",
       },
     ],
-    brochureUrl: "http://stecsecure.com/S%20TEC%20SECURE%20Company%20Brochure.pdf",
+    brochureUrl: "/stec-secure-brochure.pdf",
   },
   {
     id: "video-door-phone",
@@ -487,7 +487,7 @@ export const SERVICES_DATA: ServiceDetail[] = [
           "Yes, whenever a visitor presses the outdoor doorbell, the call rings simultaneously on your indoor wall screen and your smartphone app, allowing you to see, speak, and unlock the door remotely over 4G/5G or Wi-Fi.",
       },
     ],
-    brochureUrl: "http://stecsecure.com/S%20TEC%20SECURE%20Company%20Brochure.pdf",
+    brochureUrl: "/stec-secure-brochure.pdf",
   },
   {
     id: "nurse-calling",
@@ -555,7 +555,7 @@ export const SERVICES_DATA: ServiceDetail[] = [
           "Yes, our modular bus and IP nurse call architectures scale seamlessly from 10-bed specialty clinics to 500+ bed multi-wing medical hospitals with central operator software.",
       },
     ],
-    brochureUrl: "http://stecsecure.com/S%20TEC%20SECURE%20Company%20Brochure.pdf",
+    brochureUrl: "/stec-secure-brochure.pdf",
   },
   {
     id: "intercom",
@@ -619,7 +619,7 @@ export const SERVICES_DATA: ServiceDetail[] = [
           "Yes, we provide end-to-end installation, extension programming, and on-site annual maintenance across Erode and surrounding districts.",
       },
     ],
-    brochureUrl: "http://stecsecure.com/S%20TEC%20SECURE%20Company%20Brochure.pdf",
+    brochureUrl: "/stec-secure-brochure.pdf",
   },
 ];
 
@@ -628,5 +628,5 @@ export const COMPANY_CONTACT = {
   phoneRaw: "919600252605",
   email: "info@stecsecure.com",
   address: "S TEC SECURE, Erode, Tamil Nadu, India",
-  brochurePdf: "http://stecsecure.com/S%20TEC%20SECURE%20Company%20Brochure.pdf",
+  brochurePdf: "/stec-secure-brochure.pdf",
 };
