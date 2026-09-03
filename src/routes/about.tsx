@@ -5,9 +5,9 @@ import { Faq } from "@/components/sections/Faq";
 import { SiteFooter } from "@/components/layout/SiteFooter";
 import { CyberMeshBackground } from "@/components/background/CyberMeshBackground";
 
-const aboutTitle = "About STEC Secure | Premier Security & Automation Experts in Tamil Nadu";
+const aboutTitle = "About STEC Secure | Security & Automation in Tamil Nadu";
 const aboutDescription =
-  "Learn about STEC Secure, Tamil Nadu's trusted surveillance and smart automation engineering team. Over 6 years of expertise, 500+ installations, and certified brand hardware.";
+  "STEC Secure delivers certified CCTV camera installations, home automation, and perimeter security in Erode & Tamil Nadu. Learn about our engineering team.";
 
 export const Route = createFileRoute("/about")({
   head: () => ({

@@ -14,9 +14,9 @@ import {
 import { COMPANY_CONTACT } from "@/data/servicesData";
 import { WhatsAppIcon } from "@/components/ui/WhatsAppIcon";
 
-const blogTitle = "Security & Smart Automation Blog | Insights & Buying Guides | STEC Secure";
+const blogTitle = "Security & Smart Automation Guides & Blog | STEC Secure";
 const blogDescription =
-  "Expert installation guides, brand benchmarks (Hikvision vs Dahua vs CP Plus), CCTV camera checklists, and smart home automation insights for property owners in Tamil Nadu.";
+  "Expert security guides, CCTV camera buying advice, IoT smart automation tips, and maintenance blueprints from STEC Secure engineers in Erode, Tamil Nadu.";
 
 export const Route = createFileRoute("/blog")({
   head: () => ({

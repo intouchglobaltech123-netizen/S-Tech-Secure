@@ -18,10 +18,10 @@ export const company = {
   email: "info@stecsecure.com",
   // CONFIGURE: real street address
   address: {
-    street: "Street address",
+    street: "14/2 Thundukadu Street, Veerappan Chatram",
     locality: "Erode",
     region: "Tamil Nadu",
-    postalCode: "638001",
+    postalCode: "638004",
     country: "IN",
   },
   hours: "Mon – Sat, 9:30 AM – 7:00 PM",

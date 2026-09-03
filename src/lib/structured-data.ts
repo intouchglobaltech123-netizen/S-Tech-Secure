@@ -8,6 +8,8 @@ export const localBusinessJsonLd = {
   legalName: company.legalName,
   description: company.description,
   url: company.siteUrl,
+  image: `${company.siteUrl}/services/cctv.jpg`,
+  priceRange: "₹₹",
   telephone: company.phone,
   email: company.email,
   address: {

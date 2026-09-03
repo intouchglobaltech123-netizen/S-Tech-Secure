@@ -1,0 +1,22 @@
+# STEC Secure
+
+> STEC Secure is Tamil Nadu's premier security technology and automation engineering firm based in Erode, delivering certified 4K CCTV surveillance, smart IoT automation, biometric access control, and emergency security systems.
+
+## Solutions & Services
+- [4K CCTV Surveillance Systems](https://stec-secure.vercel.app/services/cctv): High-definition IP and analog CCTV camera surveillance with night vision, AI human detection, remote smartphone monitoring, and continuous local recording.
+- [Smart Home IoT Automation](https://stec-secure.vercel.app/services/home-automation): Intelligent lighting, smart switches, voice assistant control, and energy-efficient automation for luxury homes and apartments.
+- [Intrusion Burglar Alarms](https://stec-secure.vercel.app/services/burglar-alarm): GSM-backed perimeter intrusion detection, PIR motion sensors, loud sirens, and instant multi-phone emergency dialing.
+- [Automatic Gate Automation](https://stec-secure.vercel.app/services/gate-automation): Heavy-duty motorized sliding and swing gate automation with remote control and safety obstacle sensors.
+- [Automatic Boom Barriers](https://stec-secure.vercel.app/services/boom-barriers): High-speed barrier gates for apartments, commercial parking layouts, toll plazas, and industrial vehicle checkpoints.
+- [Biometric Access Control](https://stec-secure.vercel.app/services/access-control): Fingerprint scanners, facial recognition terminals, RFID keycards, and battery-backed electromagnetic door locks.
+- [Smart Video Door Phones](https://stec-secure.vercel.app/services/video-door-phone): High-resolution video doorbells with indoor touch monitors, two-way audio, and remote mobile door unlocking.
+- [Hospital Nurse Calling Systems](https://stec-secure.vercel.app/services/nurse-calling): Dedicated wired and wireless emergency call buttons and master nurse station consoles for clinics and hospitals.
+- [EPABX & Intercom Systems](https://stec-secure.vercel.app/services/intercom): Multi-line internal communication systems for offices, apartments, educational institutions, and hospitals.
+
+## Service Coverage & Regional Dispatch
+- Headquarters: 14/2 Thundukadu Street, Veerappan Chatram, Erode, Tamil Nadu 638004
+- Key Service Areas: Erode, Perundurai, Bhavani, Gobichettipalayam, Salem, Namakkal, Tiruchengode, Karur, and Coimbatore
+- Phone / WhatsApp: +91 96 00 25 26 05
+- Email: info@stecsecure.com
+- Website: https://stec-secure.vercel.app
+- Survey Policy: Free on-site survey and coverage consultation with transparent itemized quotations

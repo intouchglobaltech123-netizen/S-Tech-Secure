@@ -1,0 +1,9 @@
+{
+  "redirects": [
+    {
+      "source": "/services/video-door-phones",
+      "destination": "/services/video-door-phone",
+      "permanent": true
+    }
+  ]
+}

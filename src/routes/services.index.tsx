@@ -25,9 +25,9 @@ import {
 } from "lucide-react";
 import { WhatsAppIcon } from "@/components/ui/WhatsAppIcon";
 
-const servicesTitle = "Security & Automation Systems in Erode | STEC Secure Services";
+const servicesTitle = "Security Systems & CCTV Installation Erode | STEC Secure";
 const servicesDescription =
-  "Explore STEC Secure's certified solutions: 4K CCTV surveillance, smart home automation, burglar alarms, gate automation, boom barriers, access control, video door phones, intercoms, and nurse call systems across Tamil Nadu.";
+  "Explore certified CCTV surveillance, smart home automation, burglar alarms, boom barriers, and access control across Erode & Tamil Nadu with STEC Secure.";
 
 export const Route = createFileRoute("/services/")({
   head: () => ({

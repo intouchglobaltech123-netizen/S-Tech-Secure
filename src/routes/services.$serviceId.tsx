@@ -31,11 +31,12 @@ export const Route = createFileRoute("/services/$serviceId")({
       (s) => s.id === normalizedId || s.slug === normalizedId
     );
     const title = service
-      ? `${service.title} Installation in Erode & Tamil Nadu | STEC Secure`
-      : "Security Solution Details | STEC Secure";
-    const description = service
-      ? `${service.tagline || service.shortDescription}. Certified equipment, prompt site surveys and professional installation across Erode, Salem and Tamil Nadu.`
-      : "Professional security and automation system installation by STEC Secure.";
+      ? `${service.title} Installation Erode | STEC Secure`
+      : "Security Systems in Erode | STEC Secure";
+    const rawDesc = service
+      ? `${service.tagline} Certified ${service.title} installation, on-site surveys and warranty in Erode & Tamil Nadu.`
+      : "Professional CCTV and security system installation in Erode and Tamil Nadu by STEC Secure engineers.";
+    const description = rawDesc.length > 158 ? rawDesc.slice(0, 155).trim() + "..." : rawDesc;
     const imagePath = service ? SERVICE_IMAGES[service.id] || "/services/cctv.jpg" : "/services/cctv.jpg";
     const image = `https://stec-secure.vercel.app${imagePath}`;
     const canonical = `https://stec-secure.vercel.app/services/${service?.id || normalizedId}`;

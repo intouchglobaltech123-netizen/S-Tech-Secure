@@ -8,9 +8,9 @@ import { TestimonialsSection } from "@/components/sections/TestimonialsSection";
 import { SiteFooter } from "@/components/layout/SiteFooter";
 import { localBusinessJsonLd, faqJsonLd } from "@/lib/structured-data";
 
-const title = "CCTV Camera Installation & Security Systems in Erode | STEC Secure";
+const title = "CCTV Camera Installation & Security in Erode | STEC Secure";
 const description =
-  "Professional CCTV camera installation, IP surveillance, AI video analytics and access control in Erode, Salem, Namakkal and nearby areas. Free site survey and coverage plan.";
+  "Professional CCTV camera installation, IP surveillance, smart automation, and access control across Erode & Tamil Nadu. Book your free on-site survey today.";
 
 export const Route = createFileRoute("/")({
   head: () => ({

@@ -221,7 +221,7 @@ export function ToonhubHero() {
             <div key={`${img.src}-${i}`} style={getItemStyle(i)}>
               <img
                 src={img.src}
-                alt={`Figurine ${i + 1}`}
+                alt={`STEC Secure CCTV & Security Hardware ${i + 1}`}
                 draggable={false}
                 style={{
                   width: "100%",

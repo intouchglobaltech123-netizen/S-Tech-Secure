@@ -7,9 +7,9 @@ import { ShieldCheck, MapPin, CheckCircle2, Clock, PhoneCall, HelpCircle, Compas
 import { useState } from "react";
 import { serviceAreas } from "@/data/company";
 
-const contactTitle = "Contact STEC Secure | Free Security Site Survey in Erode & Tamil Nadu";
+const contactTitle = "Contact STEC Secure | Free Security Survey in Tamil Nadu";
 const contactDescription =
-  "Contact STEC Secure for free CCTV site surveys, customized security system quotations, and immediate consultation for homes, villas, commercial spaces, and factories across Tamil Nadu.";
+  "Contact STEC Secure for free CCTV site surveys, transparent equipment quotations, and expert security consultation for homes and businesses across Tamil Nadu.";
 
 export const Route = createFileRoute("/contact")({
   head: () => ({
