@@ -24,32 +24,55 @@ import {
   X,
 } from "lucide-react";
 import { WhatsAppIcon } from "@/components/ui/WhatsAppIcon";
+import {
+  stecLocalBusinessJsonLd,
+  createBreadcrumbJsonLd,
+  faqJsonLd,
+  STEC_SITE_URL,
+} from "@/lib/structured-data";
 
-const servicesTitle = "Security Systems & CCTV Installation Erode | STEC Secure";
+const servicesTitle = "Security Systems & Smart Home Automation Solutions | S Tec Secure Tamil Nadu";
 const servicesDescription =
-  "Explore certified CCTV surveillance, smart home automation, burglar alarms, boom barriers, and access control across Erode & Tamil Nadu with STEC Secure.";
+  "Explore certified 4K CCTV surveillance, smart IoT home automation, burglar alarms, automatic boom barriers & biometric access control across Salem, Erode & Coimbatore.";
 
 export const Route = createFileRoute("/services/")({
   head: () => ({
     meta: [
       { title: servicesTitle },
       { name: "description", content: servicesDescription },
-      { property: "og:title", content: servicesTitle },
-      { property: "og:description", content: servicesDescription },
-      { property: "og:type", content: "website" },
-      { property: "og:url", content: "https://stec-secure.vercel.app/services" },
-      { property: "og:image", content: "https://stec-secure.vercel.app/services/cctv.jpg" },
-      { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:title", content: servicesTitle },
-      { name: "twitter:description", content: servicesDescription },
-      { name: "twitter:image", content: "https://stec-secure.vercel.app/services/cctv.jpg" },
       {
         name: "keywords",
         content:
-          "CCTV installation, smart home automation, burglar alarm, automatic gate, boom barriers, biometric access control, video door phone, nurse call system, intercom, Erode, Tamil Nadu",
+          "CCTV installation Salem, smart home automation Erode, burglar alarm Coimbatore, automatic sliding gate, boom barriers, biometric access control, video door phone, nurse call system, Tamil Nadu",
       },
+      { name: "author", content: "S Tec Secure" },
+      { name: "robots", content: "index, follow, max-image-preview:large" },
+      { property: "og:title", content: servicesTitle },
+      { property: "og:description", content: servicesDescription },
+      { property: "og:type", content: "website" },
+      { property: "og:url", content: `${STEC_SITE_URL}/services` },
+      { property: "og:image", content: `${STEC_SITE_URL}/services/cctv.jpg` },
+      { property: "og:site_name", content: "S Tec Secure" },
+      { property: "og:locale", content: "en_IN" },
+      { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:title", content: servicesTitle },
+      { name: "twitter:description", content: servicesDescription },
+      { name: "twitter:image", content: `${STEC_SITE_URL}/services/cctv.jpg` },
     ],
-    links: [{ rel: "canonical", href: "https://stec-secure.vercel.app/services" }],
+    links: [{ rel: "canonical", href: `${STEC_SITE_URL}/services` }],
+    scripts: [
+      { type: "application/ld+json", children: JSON.stringify(stecLocalBusinessJsonLd) },
+      {
+        type: "application/ld+json",
+        children: JSON.stringify(
+          createBreadcrumbJsonLd([
+            { name: "Home", url: "/" },
+            { name: "Security & Automation Solutions", url: "/services" },
+          ])
+        ),
+      },
+      { type: "application/ld+json", children: JSON.stringify(faqJsonLd) },
+    ],
   }),
   component: ServicesPage,
 });

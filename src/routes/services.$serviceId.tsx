@@ -11,6 +11,11 @@ import {
   Cpu,
 } from "lucide-react";
 import { useEffect, useState } from "react";
+import {
+  createServiceJsonLd,
+  createBreadcrumbJsonLd,
+  STEC_SITE_URL,
+} from "@/lib/structured-data";
 
 const SERVICE_IMAGES: Record<string, string> = {
   cctv: "/services/cctv.jpg",
@@ -31,35 +36,62 @@ export const Route = createFileRoute("/services/$serviceId")({
       (s) => s.id === normalizedId || s.slug === normalizedId
     );
     const title = service
-      ? `${service.title} Installation Erode | STEC Secure`
-      : "Security Systems in Erode | STEC Secure";
+      ? `${service.title} Installation & Systems | S Tec Secure Tamil Nadu`
+      : "Security Systems & Automation in Tamil Nadu | S Tec Secure";
     const rawDesc = service
-      ? `${service.tagline} Certified ${service.title} installation, on-site surveys and warranty in Erode & Tamil Nadu.`
-      : "Professional CCTV and security system installation in Erode and Tamil Nadu by STEC Secure engineers.";
+      ? `${service.tagline} Certified ${service.title} installation, transparent quotations and on-site surveys in Salem, Erode & Coimbatore.`
+      : "Professional CCTV surveillance and smart home automation system installation in Tamil Nadu by S Tec Secure engineers.";
     const description = rawDesc.length > 158 ? rawDesc.slice(0, 155).trim() + "..." : rawDesc;
     const imagePath = service ? SERVICE_IMAGES[service.id] || "/services/cctv.jpg" : "/services/cctv.jpg";
-    const image = `https://stec-secure.vercel.app${imagePath}`;
-    const canonical = `https://stec-secure.vercel.app/services/${service?.id || normalizedId}`;
+    const image = `${STEC_SITE_URL}${imagePath}`;
+    const canonical = `${STEC_SITE_URL}/services/${service?.id || normalizedId}`;
 
     return {
       meta: [
         { title },
         { name: "description", content: description },
+        {
+          name: "keywords",
+          content: `${service?.title || "Security System"}, ${service?.title || "CCTV"} Salem, ${service?.title || "CCTV"} Erode, installation Tamil Nadu, S Tec Secure`,
+        },
+        { name: "author", content: "S Tec Secure" },
+        { name: "robots", content: "index, follow, max-image-preview:large" },
         { property: "og:title", content: title },
         { property: "og:description", content: description },
         { property: "og:type", content: "website" },
         { property: "og:url", content: canonical },
         { property: "og:image", content: image },
+        { property: "og:site_name", content: "S Tec Secure" },
+        { property: "og:locale", content: "en_IN" },
         { name: "twitter:card", content: "summary_large_image" },
         { name: "twitter:title", content: title },
         { name: "twitter:description", content: description },
         { name: "twitter:image", content: image },
-        {
-          name: "keywords",
-          content: `${service?.title || "Security System"}, ${service?.title || "CCTV"} Erode, installation Erode, CCTV dealers Tamil Nadu, STEC Secure`,
-        },
       ],
       links: [{ rel: "canonical", href: canonical }],
+      scripts: [
+        {
+          type: "application/ld+json",
+          children: JSON.stringify(
+            createServiceJsonLd({
+              name: service?.title || "Security System",
+              description,
+              url: canonical,
+              image,
+            })
+          ),
+        },
+        {
+          type: "application/ld+json",
+          children: JSON.stringify(
+            createBreadcrumbJsonLd([
+              { name: "Home", url: "/" },
+              { name: "Services", url: "/services" },
+              { name: service?.title || "Solution Detail", url: `/services/${service?.id || normalizedId}` },
+            ])
+          ),
+        },
+      ],
     };
   },
   component: ServiceDetailPage,

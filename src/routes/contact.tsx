@@ -6,32 +6,53 @@ import { CyberMeshBackground } from "@/components/background/CyberMeshBackground
 import { ShieldCheck, MapPin, CheckCircle2, Clock, PhoneCall, HelpCircle, Compass } from "lucide-react";
 import { useState } from "react";
 import { serviceAreas } from "@/data/company";
+import {
+  stecLocalBusinessJsonLd,
+  createBreadcrumbJsonLd,
+  STEC_SITE_URL,
+} from "@/lib/structured-data";
 
-const contactTitle = "Contact STEC Secure | Free Security Survey in Tamil Nadu";
+const contactTitle = "Contact S Tec Secure | Free Security Site Survey in Salem, Erode & Coimbatore";
 const contactDescription =
-  "Contact STEC Secure for free CCTV site surveys, transparent equipment quotations, and expert security consultation for homes and businesses across Tamil Nadu.";
+  "Schedule your free on-site security walkthrough with S Tec Secure engineers. Transparent pricing on CCTV, smart home automation & access systems across Tamil Nadu. Call +91 96002 52605.";
 
 export const Route = createFileRoute("/contact")({
   head: () => ({
     meta: [
       { title: contactTitle },
       { name: "description", content: contactDescription },
-      { property: "og:title", content: contactTitle },
-      { property: "og:description", content: contactDescription },
-      { property: "og:type", content: "website" },
-      { property: "og:url", content: "https://stec-secure.vercel.app/contact" },
-      { property: "og:image", content: "https://stec-secure.vercel.app/services/cctv.jpg" },
-      { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:title", content: contactTitle },
-      { name: "twitter:description", content: contactDescription },
-      { name: "twitter:image", content: "https://stec-secure.vercel.app/services/cctv.jpg" },
       {
         name: "keywords",
         content:
-          "Contact STEC Secure, CCTV quote Erode, security site survey, CCTV dealers phone number Erode, CCTV installation near me, CCTV Tamil Nadu",
+          "Contact S Tec Secure, CCTV quote Salem, security site survey Erode, CCTV dealers phone number Coimbatore, CCTV installation near me, CCTV Tamil Nadu",
+      },
+      { name: "author", content: "S Tec Secure" },
+      { name: "robots", content: "index, follow, max-image-preview:large" },
+      { property: "og:title", content: contactTitle },
+      { property: "og:description", content: contactDescription },
+      { property: "og:type", content: "website" },
+      { property: "og:url", content: `${STEC_SITE_URL}/contact` },
+      { property: "og:image", content: `${STEC_SITE_URL}/services/cctv.jpg` },
+      { property: "og:site_name", content: "S Tec Secure" },
+      { property: "og:locale", content: "en_IN" },
+      { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:title", content: contactTitle },
+      { name: "twitter:description", content: contactDescription },
+      { name: "twitter:image", content: `${STEC_SITE_URL}/services/cctv.jpg` },
+    ],
+    links: [{ rel: "canonical", href: `${STEC_SITE_URL}/contact` }],
+    scripts: [
+      { type: "application/ld+json", children: JSON.stringify(stecLocalBusinessJsonLd) },
+      {
+        type: "application/ld+json",
+        children: JSON.stringify(
+          createBreadcrumbJsonLd([
+            { name: "Home", url: "/" },
+            { name: "Contact Us & Free Survey", url: "/contact" },
+          ])
+        ),
       },
     ],
-    links: [{ rel: "canonical", href: "https://stec-secure.vercel.app/contact" }],
   }),
   component: ContactPage,
 });

@@ -1,6 +1,12 @@
 User-agent: *
 Allow: /
 
+User-agent: Googlebot
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
 User-agent: GPTBot
 Allow: /
 
@@ -22,4 +28,4 @@ Allow: /
 User-agent: OAI-SearchBot
 Allow: /
 
-Sitemap: https://stec-secure.vercel.app/sitemap.xml
+Sitemap: https://stecsecure.com/sitemap.xml

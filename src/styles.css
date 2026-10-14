@@ -47,7 +47,7 @@
   --color-ring-offset-background: var(--background);
 
   --shadow-elevated: 0 24px 60px -24px oklch(0 0 0 / 0.85);
-  --shadow-glow: 0 0 40px -6px oklch(0.68 0.17 245 / 0.35);
+  --shadow-glow: 0 0 40px -6px rgba(255, 122, 0, 0.35);
 }
 
 :root {
@@ -65,12 +65,12 @@
   --popover: oklch(0.17 0.014 250);
   --popover-foreground: oklch(0.975 0.004 250);
 
-  /* electric blue accent from the brand mark */
-  --primary: oklch(0.62 0.19 250);
-  --primary-foreground: oklch(0.98 0.005 250);
-  --accent: oklch(0.62 0.19 250);
-  --accent-foreground: oklch(0.98 0.005 250);
-  --highlight: oklch(0.82 0.13 205);
+  /* S Tec Secure Signature Amber-Orange (#FF7A00) from the Brand Mark */
+  --primary: oklch(0.68 0.19 48);
+  --primary-foreground: oklch(0.98 0.005 48);
+  --accent: oklch(0.68 0.19 48);
+  --accent-foreground: oklch(0.98 0.005 48);
+  --highlight: oklch(0.78 0.16 55);
 
   --secondary: oklch(0.26 0.016 250);
   --secondary-foreground: oklch(0.95 0.005 250);
@@ -83,7 +83,7 @@
   --border: oklch(1 0 0 / 8%);
   --border-strong: oklch(1 0 0 / 16%);
   --input: oklch(1 0 0 / 12%);
-  --ring: oklch(0.62 0.19 250);
+  --ring: oklch(0.68 0.19 48);
 
   --grid-line: oklch(1 0 0 / 4%);
 }
@@ -472,6 +472,33 @@
   100% {
     top: 100%;
     opacity: 0;
+  }
+}
+
+@keyframes amberPulse {
+  0%, 100% {
+    box-shadow: 0 0 10px rgba(255, 122, 0, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 25px rgba(255, 122, 0, 0.7);
+  }
+}
+
+@keyframes shimmerSweep {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+@keyframes radarSweep {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
   }
 }
 

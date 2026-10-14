@@ -13,32 +13,53 @@ import {
 } from "lucide-react";
 import { COMPANY_CONTACT } from "@/data/servicesData";
 import { WhatsAppIcon } from "@/components/ui/WhatsAppIcon";
+import {
+  stecLocalBusinessJsonLd,
+  createBreadcrumbJsonLd,
+  STEC_SITE_URL,
+} from "@/lib/structured-data";
 
-const blogTitle = "Security & Smart Automation Guides & Blog | STEC Secure";
+const blogTitle = "Security & Smart Automation Technical Guides & Blog | S Tec Secure";
 const blogDescription =
-  "Expert security guides, CCTV camera buying advice, IoT smart automation tips, and maintenance blueprints from STEC Secure engineers in Erode, Tamil Nadu.";
+  "Expert security guides, CCTV camera buying advice, IoT smart automation tips, and maintenance blueprints from S Tec Secure engineers in Salem, Erode & Tamil Nadu.";
 
 export const Route = createFileRoute("/blog")({
   head: () => ({
     meta: [
       { title: blogTitle },
       { name: "description", content: blogDescription },
-      { property: "og:title", content: blogTitle },
-      { property: "og:description", content: blogDescription },
-      { property: "og:type", content: "website" },
-      { property: "og:url", content: "https://stec-secure.vercel.app/blog" },
-      { property: "og:image", content: "https://stec-secure.vercel.app/blog/home-cctv.jpg" },
-      { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:title", content: blogTitle },
-      { name: "twitter:description", content: blogDescription },
-      { name: "twitter:image", content: "https://stec-secure.vercel.app/blog/home-cctv.jpg" },
       {
         name: "keywords",
         content:
-          "CCTV camera blog, home security guide, Hikvision vs Dahua vs CP Plus, CCTV mobile viewing guide, CCTV maintenance checklist, burglar alarm vs CCTV",
+          "CCTV camera blog, home security guide Salem, Hikvision vs Dahua vs CP Plus, CCTV mobile viewing guide, CCTV maintenance checklist Erode, burglar alarm vs CCTV Tamil Nadu",
+      },
+      { name: "author", content: "S Tec Secure" },
+      { name: "robots", content: "index, follow, max-image-preview:large" },
+      { property: "og:title", content: blogTitle },
+      { property: "og:description", content: blogDescription },
+      { property: "og:type", content: "website" },
+      { property: "og:url", content: `${STEC_SITE_URL}/blog` },
+      { property: "og:image", content: `${STEC_SITE_URL}/blog/home-cctv.jpg` },
+      { property: "og:site_name", content: "S Tec Secure" },
+      { property: "og:locale", content: "en_IN" },
+      { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:title", content: blogTitle },
+      { name: "twitter:description", content: blogDescription },
+      { name: "twitter:image", content: `${STEC_SITE_URL}/blog/home-cctv.jpg` },
+    ],
+    links: [{ rel: "canonical", href: `${STEC_SITE_URL}/blog` }],
+    scripts: [
+      { type: "application/ld+json", children: JSON.stringify(stecLocalBusinessJsonLd) },
+      {
+        type: "application/ld+json",
+        children: JSON.stringify(
+          createBreadcrumbJsonLd([
+            { name: "Home", url: "/" },
+            { name: "Security Knowledge Base", url: "/blog" },
+          ])
+        ),
       },
     ],
-    links: [{ rel: "canonical", href: "https://stec-secure.vercel.app/blog" }],
   }),
   component: BlogPage,
 });
