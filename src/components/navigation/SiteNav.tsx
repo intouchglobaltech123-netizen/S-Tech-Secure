@@ -203,11 +203,11 @@ export function SiteNav({ revealed = true }: { revealed?: boolean }) {
           </Link>
         </div>
 
-        {/* Center: The Exact Floating Pill Capsule Navbar (Reference Design - shifted 100px right) */}
-        <div className="hidden md:flex flex-1 justify-center z-20 px-4 md:translate-x-[100px]">
+        {/* Right: Floating Pill Capsule Navbar aligned completely to the right side */}
+        <div className="flex items-center gap-3 z-20">
           <nav
             aria-label="Main Navigation"
-            className="inline-flex items-center rounded-full bg-white/95 backdrop-blur-2xl border border-neutral-200/90 shadow-[0_12px_36px_rgba(0,0,0,0.12),0_2px_8px_rgba(0,0,0,0.06)] p-1.5 transition-all duration-300"
+            className="hidden md:inline-flex items-center rounded-full bg-white/95 backdrop-blur-2xl border border-neutral-200/90 shadow-[0_12px_36px_rgba(0,0,0,0.12),0_2px_8px_rgba(0,0,0,0.06)] p-1.5 transition-all duration-300"
           >
             {navLinks.map((link) => {
               const isCurrent =
@@ -232,10 +232,7 @@ export function SiteNav({ revealed = true }: { revealed?: boolean }) {
               );
             })}
           </nav>
-        </div>
 
-        {/* Right Side: Mobile Toggle & Spacer to keep pill dock centered */}
-        <div className="flex items-center justify-end z-20 flex-shrink-0 md:min-w-[120px] lg:min-w-[200px]">
           {/* Mobile Menu Toggle Button */}
           <button
             type="button"
