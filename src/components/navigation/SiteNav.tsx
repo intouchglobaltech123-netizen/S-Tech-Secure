@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Menu, X } from "lucide-react";
+import { Menu, X, ArrowUpRight } from "lucide-react";
 import { useRouterState, Link } from "@tanstack/react-router";
 import { hasHeroVideoPlayedOnce } from "@/components/hero/Hero";
 
@@ -149,14 +149,13 @@ export function SiteNav({ revealed = true }: { revealed?: boolean }) {
   const isHome = pathname === "/";
   // Subpages (/about, /services, /blog, /contact) always reveal immediately. Homepage reveals when video reaches last 2s, scrolled, or already played in session.
   const isRevealed = !isHome || revealed || scrolled || hasHeroVideoPlayedOnce;
-  const isLightNav = true; // White header background; use crisp dark brand typography
+  const isLightNav = !isHome || scrolled;
 
   const navLinks = [
     { label: "Home", href: "/" },
     { label: "About", href: "/about" },
     { label: "Services", href: "/services" },
     { label: "Blog", href: "/blog" },
-    { label: "Contact", href: "/contact" },
   ];
 
   useEffect(() => {
@@ -179,13 +178,17 @@ export function SiteNav({ revealed = true }: { revealed?: boolean }) {
     <header
       className={`fixed top-0 inset-x-0 z-50 w-full select-none transition-all duration-500 ease-out ${
         isRevealed ? "translate-y-0 opacity-100 pointer-events-auto" : "-translate-y-full opacity-0 pointer-events-none"
-      } bg-white/95 backdrop-blur-xl border-b border-neutral-200/80 shadow-[0_2px_15px_rgba(0,0,0,0.05)]`}
+      } ${
+        scrolled
+          ? "bg-[#070A12]/80 backdrop-blur-2xl border-b border-white/5 shadow-[0_10px_30px_rgba(0,0,0,0.5)]"
+          : "bg-transparent"
+      }`}
       style={{
         fontFamily: "'Inter', sans-serif",
       }}
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 sm:py-3.5 flex items-center justify-between">
-        {/* Left: Big Brand Logo */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3.5 sm:py-4 flex items-center justify-between gap-4">
+        {/* Left: Brand Logo */}
         <div className="flex items-center flex-shrink-0 z-20">
           <Link
             to="/"
@@ -193,34 +196,33 @@ export function SiteNav({ revealed = true }: { revealed?: boolean }) {
             aria-label="S TEC SECURE Home"
           >
             <MergedLogo
-              isLightNav={true}
-              className="h-14 sm:h-16 md:h-18 lg:h-20 max-h-[74px] sm:max-h-[84px] w-auto object-contain transition-transform duration-200 group-hover:scale-[1.02]"
+              isLightNav={isLightNav}
+              className="h-12 sm:h-14 md:h-16 lg:h-18 max-h-[68px] sm:max-h-[76px] w-auto object-contain transition-transform duration-200 group-hover:scale-[1.02]"
             />
           </Link>
         </div>
 
-        {/* Right: Transparent Navigation Navbar without any container color (mixes with white bg) */}
-        <div className="flex items-center gap-3 z-20">
+        {/* Center: Floating Dark Navy Pill Capsule Navbar (as in reference image) */}
+        <div className="hidden md:flex items-center justify-center flex-1 z-20">
           <nav
             aria-label="Main Navigation"
-            className="hidden md:inline-flex items-center gap-1 sm:gap-1.5 transition-all duration-300"
+            className="inline-flex items-center rounded-full bg-[#0D1C34] border border-white/10 shadow-[0_8px_32px_rgba(13,28,52,0.4)] p-1.5 transition-all duration-300"
           >
             {navLinks.map((link) => {
               const isCurrent =
                 (link.label === "Home" && isHomeActive) ||
                 (link.label === "About" && isAboutActive) ||
                 (link.label === "Services" && isServicesActive) ||
-                (link.label === "Blog" && isBlogActive) ||
-                (link.label === "Contact" && isContactActive);
+                (link.label === "Blog" && isBlogActive);
 
               return (
                 <a
                   key={link.label}
                   href={link.href}
-                  className={`relative px-4 sm:px-5 py-2 rounded-full text-xs sm:text-[13.5px] font-semibold tracking-normal transition-all duration-300 cursor-pointer ${
+                  className={`relative px-4 sm:px-5 py-1.5 rounded-full text-xs sm:text-[13.5px] tracking-normal transition-all duration-300 cursor-pointer ${
                     isCurrent
-                      ? "bg-[#FF7A00] text-white font-bold shadow-[0_4px_16px_rgba(255,122,0,0.4)] scale-[1.02]"
-                      : "text-neutral-700 hover:text-neutral-950 hover:bg-neutral-100"
+                      ? "bg-white text-[#0D1C34] font-semibold shadow-sm scale-[1.02]"
+                      : "text-white/80 hover:text-white hover:bg-white/10 font-medium"
                   }`}
                 >
                   {link.label}
@@ -228,12 +230,38 @@ export function SiteNav({ revealed = true }: { revealed?: boolean }) {
               );
             })}
           </nav>
+        </div>
+
+        {/* Right: Standalone Contact ↗ Pill Button with circular arrow badge (as in reference image) */}
+        <div className="flex items-center gap-3 z-20">
+          <Link
+            to="/contact"
+            className={`hidden sm:inline-flex items-center gap-2.5 rounded-full pl-5 pr-1.5 py-1.5 border shadow-[0_8px_32px_rgba(13,28,52,0.4)] transition-all duration-300 group cursor-pointer ${
+              isContactActive
+                ? "bg-white text-[#0D1C34] border-white font-semibold"
+                : "bg-[#0D1C34] hover:bg-[#142A4D] text-white border-white/10 font-medium"
+            }`}
+            aria-label="Contact Us"
+          >
+            <span className="text-xs sm:text-[13.5px] tracking-normal">
+              Contact
+            </span>
+            <span
+              className={`w-7 h-7 rounded-full flex items-center justify-center transition-transform duration-200 group-hover:scale-105 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 ${
+                isContactActive
+                  ? "bg-[#0D1C34] text-white"
+                  : "bg-white text-[#0D1C34]"
+              }`}
+            >
+              <ArrowUpRight size={14} className="stroke-[2.5]" />
+            </span>
+          </Link>
 
           {/* Mobile Menu Toggle Button */}
           <button
             type="button"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="md:hidden p-2 rounded-full shadow-sm text-neutral-800 bg-neutral-100 hover:bg-neutral-200 border border-neutral-200 transition-all duration-200 focus:outline-none active:scale-90"
+            className="md:hidden p-2 rounded-full shadow-md text-white bg-[#0D1C34] hover:bg-[#142A4D] border border-white/10 transition-all duration-200 focus:outline-none active:scale-90"
             aria-label="Toggle navigation menu"
           >
             {mobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
@@ -244,7 +272,7 @@ export function SiteNav({ revealed = true }: { revealed?: boolean }) {
       {/* Mobile Drawer Dropdown Card */}
       {mobileMenuOpen && (
         <div
-          className="absolute top-full left-4 right-4 mt-2 p-4 rounded-3xl shadow-xl animate-in slide-in-from-top-2 duration-200 border border-neutral-200 bg-white/98 backdrop-blur-2xl text-neutral-900 flex flex-col gap-2"
+          className="absolute top-full left-4 right-4 mt-2 p-4 rounded-3xl shadow-2xl animate-in slide-in-from-top-2 duration-200 border border-white/10 bg-[#0D1C34]/98 backdrop-blur-2xl text-white flex flex-col gap-2.5"
         >
           <div className="flex flex-col gap-1.5">
             {navLinks.map((link) => {
@@ -252,8 +280,7 @@ export function SiteNav({ revealed = true }: { revealed?: boolean }) {
                 (link.label === "Home" && isHomeActive) ||
                 (link.label === "About" && isAboutActive) ||
                 (link.label === "Services" && isServicesActive) ||
-                (link.label === "Blog" && isBlogActive) ||
-                (link.label === "Contact" && isContactActive);
+                (link.label === "Blog" && isBlogActive);
 
               return (
                 <a
@@ -262,8 +289,8 @@ export function SiteNav({ revealed = true }: { revealed?: boolean }) {
                   onClick={() => setMobileMenuOpen(false)}
                   className={`text-sm font-semibold py-2 px-4 rounded-full transition-all text-center ${
                     isCurrent
-                      ? "bg-[#FF7A00] text-white font-bold"
-                      : "hover:bg-neutral-100 text-neutral-700"
+                      ? "bg-white text-[#0D1C34]"
+                      : "hover:bg-white/10 text-white/80"
                   }`}
                 >
                   {link.label}
@@ -272,14 +299,15 @@ export function SiteNav({ revealed = true }: { revealed?: boolean }) {
             })}
           </div>
 
-          <div className="pt-2 border-t border-neutral-200 mt-1">
-            <a
-              href="/contact"
+          <div className="pt-2 border-t border-white/10 mt-1">
+            <Link
+              to="/contact"
               onClick={() => setMobileMenuOpen(false)}
-              className="w-full flex items-center justify-center py-2.5 rounded-full bg-[#FF7A00] hover:bg-[#FF8F00] text-white font-bold text-xs tracking-wide shadow-md cursor-pointer transition-colors"
+              className="w-full flex items-center justify-center gap-2 py-2.5 rounded-full bg-white hover:bg-neutral-100 text-[#0D1C34] font-bold text-xs tracking-wide shadow-md cursor-pointer transition-colors"
             >
-              Book Free Site Survey
-            </a>
+              <span>Contact Us</span>
+              <ArrowUpRight size={14} className="stroke-[2.5]" />
+            </Link>
           </div>
         </div>
       )}
