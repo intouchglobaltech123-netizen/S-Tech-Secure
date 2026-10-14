@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState, useEffect } from "react";
 import { SiteNav } from "@/components/navigation/SiteNav";
-import { Hero, hasHeroVideoPlayedOnce } from "@/components/hero/Hero";
+import { Hero, hasHeroPlayedInSession } from "@/components/hero/Hero";
 import { ServicesSection } from "@/components/sections/ServicesSection";
 import { WhyChooseUs } from "@/components/sections/WhyChooseUs";
 import { HowItWorks } from "@/components/sections/HowItWorks";
@@ -51,10 +51,10 @@ export const Route = createFileRoute("/")({
 });
 
 function Home() {
-  const [navRevealed, setNavRevealed] = useState(hasHeroVideoPlayedOnce);
+  const [navRevealed, setNavRevealed] = useState(hasHeroPlayedInSession());
 
   useEffect(() => {
-    if (hasHeroVideoPlayedOnce) {
+    if (hasHeroPlayedInSession()) {
       setNavRevealed(true);
       return;
     }

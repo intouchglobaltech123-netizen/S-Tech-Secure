@@ -7,15 +7,53 @@ interface HeroProps {
   onReveal?: () => void;
 }
 
-// Module-level flag: resets to false on browser reload/refresh, stays true across internal client-side navigation
+// Module-level flag: persists during client-side navigation within the active window session
 export let hasHeroVideoPlayedOnce = false;
+
+// Helper to detect if current page load is an explicit browser reload/refresh (F5, browser reload button)
+export function isBrowserReload(): boolean {
+  if (typeof window === "undefined") return false;
+  try {
+    const navEntries = window.performance?.getEntriesByType?.("navigation");
+    if (navEntries && navEntries.length > 0) {
+      return (navEntries[0] as PerformanceNavigationTiming).type === "reload";
+    }
+    return (window.performance as any)?.navigation?.type === 1;
+  } catch {
+    return false;
+  }
+}
+
+export function hasHeroPlayedInSession(): boolean {
+  if (typeof window === "undefined") return false;
+  try {
+    // If user explicitly pressed browser Refresh / Reload, replay the video intro!
+    if (isBrowserReload()) {
+      sessionStorage.removeItem("stec_hero_played");
+      hasHeroVideoPlayedOnce = false;
+      return false;
+    }
+    return (
+      hasHeroVideoPlayedOnce ||
+      sessionStorage.getItem("stec_hero_played") === "true"
+    );
+  } catch {
+    return hasHeroVideoPlayedOnce;
+  }
+}
 
 export function setHeroVideoPlayed() {
   hasHeroVideoPlayedOnce = true;
+  if (typeof window !== "undefined") {
+    try {
+      sessionStorage.setItem("stec_hero_played", "true");
+    } catch {}
+  }
 }
 
 export function Hero({ active = true, onReveal }: HeroProps) {
-  const shouldSkipIntro = hasHeroVideoPlayedOnce;
+  // Only play intro on explicit refresh or fresh first visit; otherwise show completed page
+  const shouldSkipIntro = hasHeroPlayedInSession();
   const [revealed, setRevealed] = useState(shouldSkipIntro);
   const revealedRef = useRef(shouldSkipIntro);
   const videoRef = useRef<HTMLVideoElement | null>(null);
@@ -23,7 +61,7 @@ export function Hero({ active = true, onReveal }: HeroProps) {
   const triggerReveal = () => {
     if (revealedRef.current) return;
     revealedRef.current = true;
-    hasHeroVideoPlayedOnce = true;
+    setHeroVideoPlayed();
     setRevealed(true);
     if (onReveal) {
       onReveal();
@@ -32,12 +70,13 @@ export function Hero({ active = true, onReveal }: HeroProps) {
 
   useEffect(() => {
     if (shouldSkipIntro) {
-      // Internal navigation back to Home: reveal immediately and freeze video on end frame
+      // Internal navigation / already played: reveal immediately and ensure video is frozen at end
       if (onReveal) {
         onReveal();
       }
       const v = videoRef.current;
       if (v) {
+        v.pause();
         const freezeAtEnd = () => {
           if (v.duration && v.duration > 0) {
             v.currentTime = Math.max(0, v.duration - 0.05);
@@ -111,6 +150,15 @@ export function Hero({ active = true, onReveal }: HeroProps) {
             preload="auto"
             onTimeUpdate={handleTimeUpdate}
             onEnded={handleEnded}
+            onLoadedMetadata={(e) => {
+              if (shouldSkipIntro) {
+                const v = e.currentTarget;
+                if (v.duration && v.duration > 0) {
+                  v.currentTime = Math.max(0, v.duration - 0.05);
+                  v.pause();
+                }
+              }
+            }}
             className="absolute inset-0 w-full h-full object-cover scale-105"
           >
             <source src="/services/hero.mp4" type="video/mp4" />
