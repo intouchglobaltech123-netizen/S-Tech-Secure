@@ -44,6 +44,12 @@ function processLogoCanvases() {
             d[i + 3] = 0;
           } else if (avg > 200 && r > 180 && g > 180 && b > 180) {
             d[i + 3] = Math.round(255 * (1 - (avg - 200) / 35));
+          } else if (r < 85 && g < 85 && b < 85) {
+            // Make dark typography crisp and deep navy/black for high contrast on light backgrounds
+            d[i] = 13;
+            d[i + 1] = 28;
+            d[i + 2] = 52;
+            d[i + 3] = 255;
           }
         }
         ctxLight.putImageData(imgData, 0, 0);
@@ -72,10 +78,11 @@ function processLogoCanvases() {
             d[i + 3] = Math.round(255 * (1 - (avg - 200) / 35));
           }
           // Convert dark lettering to luminous white, preserving amber/orange colors
-          else if (r < 85 && g < 85 && b < 85) {
+          else if (r < 95 && g < 95 && b < 95) {
             d[i] = 255;
             d[i + 1] = 255;
             d[i + 2] = 255;
+            d[i + 3] = 255;
           }
         }
         ctxDark.putImageData(imgData, 0, 0);
@@ -95,6 +102,10 @@ function processLogoCanvases() {
   };
 }
 
+if (typeof window !== "undefined") {
+  processLogoCanvases();
+}
+
 export function MergedLogo({
   isLightNav = false,
   className = "h-14 sm:h-16 md:h-18 lg:h-20 max-h-[74px] sm:max-h-[84px] w-auto object-contain transition-transform duration-200 group-hover:scale-[1.02]",
@@ -102,35 +113,26 @@ export function MergedLogo({
   isLightNav?: boolean;
   className?: string;
 }) {
-  const [currentSrc, setCurrentSrc] = useState<string>(
-    isLightNav ? cachedLightLogo || "/logo.png" : cachedDarkLogo || "/logo.png"
-  );
+  const [, setRerender] = useState(0);
 
   useEffect(() => {
-    const updateSrc = () => {
-      if (isLightNav) {
-        if (cachedLightLogo) setCurrentSrc(cachedLightLogo);
-      } else {
-        if (cachedDarkLogo) setCurrentSrc(cachedDarkLogo);
-      }
-    };
-
-    if (isLightNav && cachedLightLogo) {
-      setCurrentSrc(cachedLightLogo);
-    } else if (!isLightNav && cachedDarkLogo) {
-      setCurrentSrc(cachedDarkLogo);
-    } else {
-      logoListeners.push(updateSrc);
+    const handleReady = () => setRerender((v) => v + 1);
+    if (!cachedLightLogo || !cachedDarkLogo) {
+      logoListeners.push(handleReady);
       processLogoCanvases();
     }
-  }, [isLightNav]);
+  }, []);
+
+  const currentSrc = isLightNav
+    ? (cachedLightLogo || "/logo.png")
+    : (cachedDarkLogo || "/logo.png");
 
   return (
     <div className="relative flex items-center">
       <img
         src={currentSrc}
         alt="S TEC SECURE — Surveillance & Automation Solutions"
-        className={`relative z-10 ${className}`}
+        className={`relative z-10 ${className} transition-opacity duration-300`}
         loading="eager"
       />
     </div>
@@ -149,7 +151,7 @@ export function SiteNav({ revealed = true }: { revealed?: boolean }) {
   const isHome = pathname === "/";
   // Subpages (/about, /services, /blog, /contact) always reveal immediately. Homepage reveals when video reaches last 2s, scrolled, or already played in session.
   const isRevealed = !isHome || revealed || scrolled || hasHeroPlayedInSession();
-  const isLightNav = false; // Always preserve luminous white brand typography on transparent floating header
+  const isLightNav = !isHome || scrolled;
 
   const navLinks = [
     { label: "Home", href: "/" },
@@ -177,9 +179,13 @@ export function SiteNav({ revealed = true }: { revealed?: boolean }) {
 
   return (
     <header
-      className={`fixed top-0 inset-x-0 z-50 w-full select-none transition-all duration-500 ease-out ${
+      className={`fixed top-0 inset-x-0 z-50 w-full select-none transition-all duration-300 ease-out ${
         isRevealed ? "translate-y-0 opacity-100 pointer-events-auto" : "-translate-y-full opacity-0 pointer-events-none"
-      } bg-transparent`}
+      } ${
+        scrolled || !isHome
+          ? "bg-white/90 backdrop-blur-xl border-b border-neutral-200/60 shadow-sm"
+          : "bg-transparent"
+      }`}
       style={{
         fontFamily: "'Inter', sans-serif",
       }}
@@ -193,7 +199,7 @@ export function SiteNav({ revealed = true }: { revealed?: boolean }) {
             aria-label="S TEC SECURE Home"
           >
             <MergedLogo
-              isLightNav={false}
+              isLightNav={isLightNav}
               className="h-12 sm:h-14 md:h-16 lg:h-18 max-h-[68px] sm:max-h-[76px] w-auto object-contain transition-transform duration-200 group-hover:scale-[1.02]"
             />
           </Link>
