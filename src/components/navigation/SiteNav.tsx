@@ -149,7 +149,7 @@ export function SiteNav({ revealed = true }: { revealed?: boolean }) {
   const isHome = pathname === "/";
   // Subpages (/about, /services, /blog, /contact) always reveal immediately. Homepage reveals when video reaches last 2s, scrolled, or already played in session.
   const isRevealed = !isHome || revealed || scrolled || hasHeroVideoPlayedOnce;
-  const isLightNav = !isHome || scrolled;
+  const isLightNav = true; // White header background; use crisp dark brand typography
 
   const navLinks = [
     { label: "Home", href: "/" },
@@ -179,11 +179,7 @@ export function SiteNav({ revealed = true }: { revealed?: boolean }) {
     <header
       className={`fixed top-0 inset-x-0 z-50 w-full select-none transition-all duration-500 ease-out ${
         isRevealed ? "translate-y-0 opacity-100 pointer-events-auto" : "-translate-y-full opacity-0 pointer-events-none"
-      } ${
-        scrolled || !isHome
-          ? "bg-[#070A12]/95 backdrop-blur-2xl border-b border-white/10 shadow-[0_10px_30px_rgba(0,0,0,0.6)]"
-          : "bg-gradient-to-b from-[#070A12]/95 via-[#070A12]/50 to-transparent"
-      }`}
+      } bg-white/95 backdrop-blur-xl border-b border-neutral-200/80 shadow-[0_2px_15px_rgba(0,0,0,0.05)]`}
       style={{
         fontFamily: "'Inter', sans-serif",
       }}
@@ -197,17 +193,17 @@ export function SiteNav({ revealed = true }: { revealed?: boolean }) {
             aria-label="S TEC SECURE Home"
           >
             <MergedLogo
-              isLightNav={isLightNav}
+              isLightNav={true}
               className="h-14 sm:h-16 md:h-18 lg:h-20 max-h-[74px] sm:max-h-[84px] w-auto object-contain transition-transform duration-200 group-hover:scale-[1.02]"
             />
           </Link>
         </div>
 
-        {/* Right: Floating Pill Capsule Navbar aligned completely to the right side */}
+        {/* Right: Transparent Navigation Navbar without any container color (mixes with white bg) */}
         <div className="flex items-center gap-3 z-20">
           <nav
             aria-label="Main Navigation"
-            className="hidden md:inline-flex items-center rounded-full bg-white/95 backdrop-blur-2xl border border-neutral-200/90 shadow-[0_12px_36px_rgba(0,0,0,0.12),0_2px_8px_rgba(0,0,0,0.06)] p-1.5 transition-all duration-300"
+            className="hidden md:inline-flex items-center gap-1 sm:gap-1.5 transition-all duration-300"
           >
             {navLinks.map((link) => {
               const isCurrent =
@@ -224,7 +220,7 @@ export function SiteNav({ revealed = true }: { revealed?: boolean }) {
                   className={`relative px-4 sm:px-5 py-2 rounded-full text-xs sm:text-[13.5px] font-semibold tracking-normal transition-all duration-300 cursor-pointer ${
                     isCurrent
                       ? "bg-[#FF7A00] text-white font-bold shadow-[0_4px_16px_rgba(255,122,0,0.4)] scale-[1.02]"
-                      : "text-[#475569] hover:text-[#0F172A] hover:bg-neutral-100/70"
+                      : "text-neutral-700 hover:text-neutral-950 hover:bg-neutral-100"
                   }`}
                 >
                   {link.label}
@@ -237,11 +233,7 @@ export function SiteNav({ revealed = true }: { revealed?: boolean }) {
           <button
             type="button"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className={`md:hidden p-2 rounded-full shadow-md transition-all duration-200 focus:outline-none active:scale-90 ${
-              isLightNav
-                ? "text-[#111827] bg-white border border-neutral-200"
-                : "text-white bg-black/60 backdrop-blur-xl border border-white/15"
-            }`}
+            className="md:hidden p-2 rounded-full shadow-sm text-neutral-800 bg-neutral-100 hover:bg-neutral-200 border border-neutral-200 transition-all duration-200 focus:outline-none active:scale-90"
             aria-label="Toggle navigation menu"
           >
             {mobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
@@ -252,11 +244,7 @@ export function SiteNav({ revealed = true }: { revealed?: boolean }) {
       {/* Mobile Drawer Dropdown Card */}
       {mobileMenuOpen && (
         <div
-          className={`absolute top-full left-4 right-4 mt-2 p-4 rounded-3xl shadow-2xl animate-in slide-in-from-top-2 duration-200 border flex flex-col gap-2 ${
-            isLightNav
-              ? "bg-white/98 backdrop-blur-2xl border-neutral-200 text-[#111827]"
-              : "bg-[#070A12]/98 backdrop-blur-2xl border-white/10 text-white"
-          }`}
+          className="absolute top-full left-4 right-4 mt-2 p-4 rounded-3xl shadow-xl animate-in slide-in-from-top-2 duration-200 border border-neutral-200 bg-white/98 backdrop-blur-2xl text-neutral-900 flex flex-col gap-2"
         >
           <div className="flex flex-col gap-1.5">
             {navLinks.map((link) => {
@@ -275,7 +263,7 @@ export function SiteNav({ revealed = true }: { revealed?: boolean }) {
                   className={`text-sm font-semibold py-2 px-4 rounded-full transition-all text-center ${
                     isCurrent
                       ? "bg-[#FF7A00] text-white font-bold"
-                      : "hover:bg-neutral-100 dark:hover:bg-white/10"
+                      : "hover:bg-neutral-100 text-neutral-700"
                   }`}
                 >
                   {link.label}
@@ -284,7 +272,7 @@ export function SiteNav({ revealed = true }: { revealed?: boolean }) {
             })}
           </div>
 
-          <div className="pt-2 border-t border-neutral-200/60 dark:border-white/10 mt-1">
+          <div className="pt-2 border-t border-neutral-200 mt-1">
             <a
               href="/contact"
               onClick={() => setMobileMenuOpen(false)}
