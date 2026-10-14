@@ -4,28 +4,27 @@ import { SiteNav } from "@/components/navigation/SiteNav";
 import { Hero, hasHeroPlayedInSession } from "@/components/hero/Hero";
 import { ServicesSection } from "@/components/sections/ServicesSection";
 import { WhyChooseUs } from "@/components/sections/WhyChooseUs";
+import { WhoWeServe } from "@/components/sections/WhoWeServe";
 import { HowItWorks } from "@/components/sections/HowItWorks";
 import { TestimonialsSection } from "@/components/sections/TestimonialsSection";
-import { Faq } from "@/components/sections/Faq";
 import { SiteFooter } from "@/components/layout/SiteFooter";
 import { CyberMeshBackground } from "@/components/background/CyberMeshBackground";
 import {
   stecLocalBusinessJsonLd,
   websiteJsonLd,
-  faqJsonLd,
   STEC_SITE_URL,
 } from "@/lib/structured-data";
 
-const title = "S Tec Secure | #1 CCTV Camera Installation & Smart Home Automation in Tamil Nadu";
+const title = "CCTV & Smart Home Automation in Erode | S Tec Secure";
 const description =
-  "S Tec Secure provides certified 4K CCTV surveillance, smart IoT home automation, burglar alarms & perimeter gate access across Salem, Erode, Coimbatore & Tamil Nadu. Book a free site survey.";
+  "CCTV cameras, smart home automation, burglar alarms, gates and access control installed by our own engineers in Erode, Salem and Coimbatore. Free site survey.";
 
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
       { title },
       { name: "description", content: description },
-      { name: "keywords", content: "S Tec Secure, CCTV camera installation, smart home automation, security systems, burglar alarm, Salem, Erode, Coimbatore, Tamil Nadu, 4K CCTV, Hikvision dealer" },
+      { name: "keywords", content: "CCTV installation Erode, CCTV camera Salem, smart home automation Coimbatore, burglar alarm, video door phone, gate automation, access control, Tamil Nadu" },
       { name: "author", content: "S Tec Secure" },
       { name: "robots", content: "index, follow, max-image-preview:large" },
       { property: "og:title", content: title },
@@ -44,7 +43,6 @@ export const Route = createFileRoute("/")({
     scripts: [
       { type: "application/ld+json", children: JSON.stringify(stecLocalBusinessJsonLd) },
       { type: "application/ld+json", children: JSON.stringify(websiteJsonLd) },
-      { type: "application/ld+json", children: JSON.stringify(faqJsonLd) },
     ],
   }),
   component: Home,
@@ -81,13 +79,12 @@ function Home() {
             <ServicesSection />
             {/* Why Choose Us */}
             <WhyChooseUs />
+            {/* Who We Serve */}
+            <WhoWeServe />
             {/* How It Works */}
             <HowItWorks />
             {/* Client Testimonials */}
             <TestimonialsSection />
-            {/* Frequently Asked Questions */}
-            <Faq />
-            {/* Professional Luxury Footer */}
             <SiteFooter />
           </div>
         </div>

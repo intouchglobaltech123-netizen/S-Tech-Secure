@@ -58,12 +58,12 @@ function ContactPage() {
     <div className="min-h-screen bg-[#F8FAFC] text-[#111827] flex flex-col justify-between overflow-x-hidden relative">
       <SiteNav revealed={true} />
       
-      <main className="relative pt-24 sm:pt-28 pb-8 sm:pb-12 flex-1 flex flex-col justify-center items-center">
+      {/* Fits in one screen on laptops: nav height + heading + two cards */}
+      <main className="relative pt-24 sm:pt-[104px] lg:pt-[88px] lg:[@media(min-height:860px)]:pt-24 pb-8 lg:pb-4 lg:[@media(min-height:860px)]:pb-8 flex-1 flex flex-col justify-center lg:min-h-[100svh]">
         <CyberMeshBackground />
-        
+
         <div className="relative z-10 w-full">
-          {/* Main Contact & Survey Bento Cards */}
-          <ContactSection showHeader={false} />
+          <ContactSection showHeader />
         </div>
       </main>
     </div>

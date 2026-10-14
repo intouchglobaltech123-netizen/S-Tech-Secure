@@ -15,7 +15,7 @@ export const company = {
   // CONFIGURE: real phone number
   phone: "+91 96 00 25 26 05",
   phoneHref: "tel:+919600252605",
-  email: "info@stecsecure.com",
+  email: "stecsecure@gmail.com",
   // CONFIGURE: real street address
   address: {
     street: "14/2 Thundukadu Street, Veerappan Chatram",
@@ -24,9 +24,9 @@ export const company = {
     postalCode: "638004",
     country: "IN",
   },
-  hours: "Mon – Sat, 9:30 AM – 7:00 PM",
+  hours: "Mon – Sat, 8:00 AM – 8:00 PM",
   whatsapp: "https://wa.me/919600252605",
-  siteUrl: "https://stec-secure.vercel.app",
+  siteUrl: "https://stecsecure.com",
 } as const;
 
 export const addressLine = `${company.address.street}, ${company.address.locality}, ${company.address.region} ${company.address.postalCode}`;

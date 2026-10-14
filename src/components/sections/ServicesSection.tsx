@@ -1,7 +1,5 @@
-"use client";
-
 import { Link } from "@tanstack/react-router";
-import { ArrowRight, ChevronRight, ShieldCheck } from "lucide-react";
+import { SERVICES_DATA } from "@/data/servicesData";
 
 // Precise SVG Icon Components matching the exact customer designs
 function CctvIcon({ className = "w-16 h-16" }: { className?: string }) {
@@ -133,140 +131,97 @@ export const HOME_SERVICES = [
   {
     id: "cctv",
     title: "CCTV Surveillance",
-    description:
-      "Monitor your property 24/7 with advanced HD surveillance systems and remote access.",
+    description: "HD and 4K cameras with recording and live viewing on your phone, day and night.",
     Icon: CctvIcon,
-    badge: "24/7 MONITORING",
   },
   {
     id: "home-automation",
     title: "Home Automation",
-    description:
-      "Smart control over lighting, appliances, and climate — all from your phone or voice assistant.",
+    description: "Control lights, fans, curtains and appliances from your phone or by voice.",
     Icon: HomeAutomationIcon,
-    badge: "SMART LIVING",
   },
   {
     id: "video-door-phone",
     title: "Video Door Phone",
-    description:
-      "Secure your entry points by seeing and speaking to visitors before opening the door.",
+    description: "See and speak to visitors before you open the door, from inside or on your phone.",
     Icon: VideoDoorPhoneIcon,
-    badge: "ENTRY VERIFICATION",
   },
   {
     id: "burglar-alarm",
     title: "Burglar Alarm",
-    description:
-      "Advanced sensors and real-time alerts to prevent unauthorized entry and protect valuables.",
+    description: "Door, window and motion sensors with a loud siren and alerts on your phone.",
     Icon: BurglarAlarmIcon,
-    badge: "INTRUSION SHIELD",
   },
 ];
 
+const featuredIds = new Set(HOME_SERVICES.map((s) => s.id));
+const otherServices = SERVICES_DATA.filter((s) => !featuredIds.has(s.id));
+
 export function ServicesSection() {
   return (
-    <section
-      id="services"
-      className="relative w-full pt-20 sm:pt-28 pb-16 sm:pb-24 overflow-hidden select-none bg-transparent"
-      style={{
-        fontFamily: "'Inter', sans-serif",
-      }}
-    >
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-8 lg:px-16">
-        {/* Section Header */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12 sm:mb-16 border-b border-neutral-200/80 pb-8">
+    <section id="services" className="relative w-full py-20 sm:py-24" style={{ fontFamily: "'Inter', sans-serif" }}>
+      <div className="max-w-7xl mx-auto px-6 sm:px-10 lg:px-12">
+        {/* Header */}
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-5">
           <div className="max-w-2xl">
-            <div className="inline-flex items-center gap-2 mb-2.5">
-              <span className="relative flex h-2 w-2">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#FF7A00] opacity-75" />
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-[#FF7A00]" />
-              </span>
-              <span className="font-mono text-xs sm:text-sm font-bold tracking-[0.25em] text-[#FF7A00] uppercase">
-                INTELLIGENT PROTECTION
-              </span>
-            </div>
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-[#111827] tracking-tight leading-[1.1]">
-              Explore Our <span className="text-[#FF7A00]">Core Services</span>
+            <p className="text-sm font-semibold text-[#FF7A00]">Our services</p>
+            <h2 className="mt-2 text-[28px] sm:text-4xl font-bold tracking-tight text-[#111827] leading-tight">
+              Security and smart automation, installed right
             </h2>
-            <p className="mt-3 text-base sm:text-lg text-[#4B5563] font-normal leading-relaxed">
-              Industrial-grade hardware and seamless smart integration engineered for residential homes and commercial enterprises.
+            <p className="mt-3 text-base text-neutral-600 leading-relaxed">
+              Planned after a free site survey and installed by our own engineers for homes and businesses across
+              Erode and nearby towns.
             </p>
           </div>
-
-          {/* Link to Full Catalog */}
-          <div className="flex-shrink-0">
-            <Link
-              to="/services"
-              className="inline-flex items-center gap-2 px-5 py-3 rounded-2xl bg-white hover:bg-neutral-50 text-[#111827] hover:text-[#FF7A00] font-bold text-sm border border-neutral-200 shadow-sm transition-all duration-200 group"
-            >
-              <span>View All 8 Services</span>
-              <ArrowRight className="w-4 h-4 text-[#FF7A00] group-hover:translate-x-1 transition-transform" />
-            </Link>
-          </div>
+          <Link
+            to="/services"
+            className="group inline-flex flex-shrink-0 items-center gap-2 self-start md:self-auto rounded-full border border-neutral-300 bg-white px-5 py-2.5 text-sm font-semibold text-[#0D1C34] hover:border-[#FF7A00] hover:text-[#FF7A00] transition-colors"
+          >
+            View all {SERVICES_DATA.length} services
+            <span aria-hidden className="transition-transform group-hover:translate-x-0.5">→</span>
+          </Link>
         </div>
 
-        {/* The 4 Home Page Service Cards in Clean Responsive 4-Column Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {HOME_SERVICES.map((service, index) => {
+        {/* Featured services (customer icon designs) */}
+        <div className="mt-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+          {HOME_SERVICES.map((service) => {
             const IconComp = service.Icon;
-
             return (
               <Link
                 key={service.id}
                 to="/services/$serviceId"
                 params={{ serviceId: service.id }}
-                className="group relative flex flex-col justify-between p-7 sm:p-8 rounded-3xl bg-[#091222]/95 hover:bg-[#0E1A33] border border-white/10 hover:border-[#FF7A00]/70 shadow-[0_12px_35px_rgba(0,0,0,0.25)] hover:shadow-[0_20px_50px_rgba(255,122,0,0.22)] backdrop-blur-2xl transition-all duration-300 hover:-translate-y-2 cursor-pointer select-none overflow-hidden"
+                className="group relative flex flex-col rounded-3xl bg-[#0D1C34] p-6 sm:p-7 text-white border border-white/5 hover:-translate-y-1 hover:shadow-[0_18px_40px_rgba(13,28,52,0.25)] transition-all duration-300"
               >
-                {/* Top Subtle Amber Indicator Line */}
-                <div className="absolute inset-x-0 top-0 h-1 bg-transparent group-hover:bg-[#FF7A00] transition-colors duration-300" />
-
-                {/* Subtle Background Radial Aura on Hover */}
-                <div
-                  className="absolute -top-12 -right-12 w-36 h-36 rounded-full bg-[#FF7A00]/0 group-hover:bg-[#FF7A00]/15 blur-2xl transition-all duration-500 pointer-events-none"
-                  aria-hidden="true"
-                />
-
-                <div className="relative z-10 flex flex-col items-center text-center">
-                  {/* Icon Pedestal */}
-                  <div className="w-20 h-20 mb-6 flex items-center justify-center text-white group-hover:text-[#FF7A00] group-hover:scale-110 transition-all duration-300">
-                    <IconComp className="w-16 h-16" />
-                  </div>
-
-                  {/* Service Title */}
-                  <h3 className="text-xl sm:text-2xl font-black text-white mb-3.5 tracking-tight group-hover:text-[#FF7A00] transition-colors">
-                    {service.title}
-                  </h3>
-
-                  {/* Service Description */}
-                  <p className="text-neutral-300 text-sm leading-relaxed mb-6 font-normal">
-                    {service.description}
-                  </p>
-                </div>
-
-                {/* Learn More -> Link */}
-                <div className="relative z-10 pt-4 border-t border-white/10 w-full flex items-center justify-center">
-                  <span className="text-sm font-extrabold text-white group-hover:text-[#FF7A00] inline-flex items-center gap-2 group-hover:gap-3 transition-all duration-200">
-                    <span>Learn More</span>
-                    <ArrowRight className="w-4 h-4 text-[#FF7A00] group-hover:translate-x-1 transition-transform" />
-                  </span>
-                </div>
+                <span className="absolute inset-x-7 top-0 h-0.5 rounded-full bg-[#FF7A00] scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left" />
+                <IconComp className="h-12 w-12 sm:h-14 sm:w-14 text-white group-hover:text-[#FF7A00] transition-colors duration-300" />
+                <h3 className="mt-5 sm:mt-6 text-xl font-bold tracking-tight">{service.title}</h3>
+                <p className="mt-2 flex-1 text-sm leading-relaxed text-white/65">{service.description}</p>
+                <span className="mt-5 sm:mt-6 inline-flex items-center gap-1.5 text-sm font-semibold text-[#FF7A00]">
+                  Learn more
+                  <span aria-hidden className="transition-transform group-hover:translate-x-0.5">→</span>
+                </span>
               </Link>
             );
           })}
         </div>
 
-        {/* Bottom Trust Guarantee Strip */}
-        <div className="mt-10 sm:mt-12 p-5 sm:p-6 rounded-2xl bg-white border border-neutral-200 shadow-sm flex flex-wrap items-center justify-between gap-4 text-xs sm:text-sm text-[#4B5563]">
-          <div className="flex items-center gap-2 text-[#111827] font-bold">
-            <ShieldCheck className="w-5 h-5 text-[#FF7A00]" />
-            <span>All systems backed by 1–3 Years official manufacturer warranty</span>
-          </div>
-          <div className="flex items-center gap-6 font-medium text-neutral-500">
-            <span>• Free On-Site Survey</span>
-            <span>• Same-Day Installation</span>
-            <span>• 100% Genuine Authorized Brands</span>
-          </div>
+        {/* Remaining services as quick links */}
+        <div className="mt-5 flex flex-col lg:flex-row lg:items-center gap-4 rounded-3xl border border-neutral-200 bg-white px-6 py-5 sm:px-7">
+          <p className="flex-shrink-0 text-sm font-semibold text-[#111827]">We also install</p>
+          <ul className="flex flex-wrap gap-2">
+            {otherServices.map((s) => (
+              <li key={s.id}>
+                <Link
+                  to="/services/$serviceId"
+                  params={{ serviceId: s.id }}
+                  className="inline-flex whitespace-nowrap rounded-full bg-neutral-100 px-3.5 py-1.5 text-sm font-medium text-neutral-700 hover:bg-[#FFF4E8] hover:text-[#FF7A00] transition-colors"
+                >
+                  {s.title}
+                </Link>
+              </li>
+            ))}
+          </ul>
         </div>
       </div>
     </section>

@@ -1,29 +1,13 @@
-"use client";
-
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useState, useEffect, useRef } from "react";
+import { useState } from "react";
 import { SiteNav } from "@/components/navigation/SiteNav";
 import { SiteFooter } from "@/components/layout/SiteFooter";
 import { CyberMeshBackground } from "@/components/background/CyberMeshBackground";
 import { SERVICES_DATA, COMPANY_CONTACT } from "@/data/servicesData";
-import {
-  ArrowRight,
-  CheckCircle2,
-  Phone,
-  Shield,
-  Sparkles,
-  Check,
-  ChevronRight,
-  ChevronDown,
-  ChevronUp,
-  Home as HomeIcon,
-  Store,
-  Factory,
-  Download,
-  FileText,
-  X,
-} from "lucide-react";
-import { WhatsAppIcon } from "@/components/ui/WhatsAppIcon";
+import { serviceAreas } from "@/data/company";
+import { faqs } from "@/data/site";
+import { serviceSeoName } from "@/data/serviceSeo";
+import { FaqList } from "@/components/ui/FaqList";
 import {
   stecLocalBusinessJsonLd,
   createBreadcrumbJsonLd,
@@ -31,9 +15,33 @@ import {
   STEC_SITE_URL,
 } from "@/lib/structured-data";
 
-const servicesTitle = "Security Systems & Smart Home Automation Solutions | S Tec Secure Tamil Nadu";
+// ── SEO ──────────────────────────────────────────────────────────────
+// Title ≈ 60 characters and description ≈ 155 characters so Google shows them in full.
+const servicesTitle = "CCTV & Smart Home Services in Erode, Salem | S Tec Secure";
 const servicesDescription =
-  "Explore certified 4K CCTV surveillance, smart IoT home automation, burglar alarms, automatic boom barriers & biometric access control across Salem, Erode & Coimbatore.";
+  "CCTV installation, smart home automation, burglar alarms, gate automation, boom barriers and access control for homes and businesses across Tamil Nadu.";
+
+const serviceName = serviceSeoName;
+
+/** List of all services as structured data, so search engines understand what is offered. */
+const servicesListJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "ItemList",
+  name: "S Tec Secure security and automation services",
+  itemListElement: SERVICES_DATA.map((s, i) => ({
+    "@type": "ListItem",
+    position: i + 1,
+    item: {
+      "@type": "Service",
+      name: serviceName(s.id, s.title),
+      description: s.tagline,
+      url: `${STEC_SITE_URL}/services/${s.id}`,
+      image: `${STEC_SITE_URL}/services/${s.id}.jpg`,
+      provider: { "@type": "HomeAndConstructionBusiness", name: "S Tec Secure", telephone: "+91-9600252605" },
+      areaServed: { "@type": "AdministrativeArea", name: "Tamil Nadu" },
+    },
+  })),
+};
 
 export const Route = createFileRoute("/services/")({
   head: () => ({
@@ -43,7 +51,7 @@ export const Route = createFileRoute("/services/")({
       {
         name: "keywords",
         content:
-          "CCTV installation Salem, smart home automation Erode, burglar alarm Coimbatore, automatic sliding gate, boom barriers, biometric access control, video door phone, nurse call system, Tamil Nadu",
+          "CCTV installation Erode, CCTV installation Salem, CCTV camera dealers Coimbatore, smart home automation Tamil Nadu, burglar alarm, automatic gate, boom barrier, biometric access control, video door phone, intercom, nurse call system",
       },
       { name: "author", content: "S Tec Secure" },
       { name: "robots", content: "index, follow, max-image-preview:large" },
@@ -52,6 +60,7 @@ export const Route = createFileRoute("/services/")({
       { property: "og:type", content: "website" },
       { property: "og:url", content: `${STEC_SITE_URL}/services` },
       { property: "og:image", content: `${STEC_SITE_URL}/services/cctv.jpg` },
+      { property: "og:image:alt", content: "CCTV camera installed by S Tec Secure" },
       { property: "og:site_name", content: "S Tec Secure" },
       { property: "og:locale", content: "en_IN" },
       { name: "twitter:card", content: "summary_large_image" },
@@ -67,512 +76,380 @@ export const Route = createFileRoute("/services/")({
         children: JSON.stringify(
           createBreadcrumbJsonLd([
             { name: "Home", url: "/" },
-            { name: "Security & Automation Solutions", url: "/services" },
+            { name: "Services", url: "/services" },
           ])
         ),
       },
+      { type: "application/ld+json", children: JSON.stringify(servicesListJsonLd) },
       { type: "application/ld+json", children: JSON.stringify(faqJsonLd) },
     ],
   }),
   component: ServicesPage,
 });
 
-
+// ── Content ──────────────────────────────────────────────────────────
 const PROPERTY_PROFILES = [
   {
     id: "home",
-    icon: HomeIcon,
-    label: "Residential Home",
-    subtitle: "Apartments & 2-3 BHKs",
-    cameras: "4 HD Night-Vision Cameras",
-    storage: "1TB Surveillance HDD (10-14 Days)",
-    wiring: "Concealed PVC Indoor / Outdoor",
-    remoteApp: "Live Stream on 2-4 Family Mobiles",
-    bestFeatures: ["Front Door & Driveway Coverage", "Motion Push Notifications", "Zero Monthly Subscription"],
-    popularBadge: "ESSENTIAL",
+    label: "Home",
+    subtitle: "Apartments & 2–3 BHK",
+    cameras: "4 HD night-vision cameras",
+    storage: "1TB surveillance HDD (10–14 days)",
+    wiring: "Concealed PVC, indoor / outdoor",
+    remoteApp: "Live view on 2–4 family phones",
+    bestFeatures: ["Front door & driveway coverage", "Motion push notifications", "No monthly subscription"],
   },
   {
     id: "villa",
-    icon: Sparkles,
-    label: "Independent Villa",
-    subtitle: "Duplexes & Luxury Estates",
-    cameras: "6–8 4K AI Smart Cameras",
-    storage: "2TB NVR Storage (20+ Days)",
-    wiring: "Armored Conduit & Multi-Zone Hub",
-    remoteApp: "Full Cloud Access + Video Door Phone",
-    bestFeatures: ["Full Color Night Vision 24/7", "Human & Car AI Filtering", "Smart Video Intercom Sync"],
-    popularBadge: "MOST POPULAR",
+    label: "Villa",
+    subtitle: "Duplexes & independent houses",
+    cameras: "6–8 4K AI cameras",
+    storage: "2TB NVR storage (20+ days)",
+    wiring: "Armoured conduit & multi-zone hub",
+    remoteApp: "Remote access + video door phone",
+    bestFeatures: ["Full-colour night vision", "Human & vehicle AI filtering", "Video intercom sync"],
   },
   {
     id: "commercial",
-    icon: Store,
-    label: "Retail & Showroom",
-    subtitle: "Shops, Supermarkets & Offices",
-    cameras: "8–16 Audio IP Cameras",
-    storage: "4TB NVR (30-Day Mandatory Retention)",
-    wiring: "Gigabit PoE Network Switching",
-    remoteApp: "Manager & Owner Remote Monitoring",
-    bestFeatures: ["Cash Billing Counter Audio Mic", "Employee Staff Presence Tracking", "Customer Entry Heatmap"],
-    popularBadge: "HIGH DEMAND",
+    label: "Shop & Office",
+    subtitle: "Retail, showrooms & offices",
+    cameras: "8–16 IP cameras with audio",
+    storage: "4TB NVR (30-day retention)",
+    wiring: "Gigabit PoE network switching",
+    remoteApp: "Owner & manager remote monitoring",
+    bestFeatures: ["Billing counter audio", "Staff presence tracking", "Customer entry coverage"],
   },
   {
     id: "industrial",
-    icon: Factory,
-    label: "Warehouse & Factory",
-    subtitle: "Industrial Parks & Gated Premises",
-    cameras: "16–64+ Long-Range IP Cameras",
-    storage: "Enterprise Server Rack & RAID Storage",
-    wiring: "Optical Fiber Gigabit Backbone",
-    remoteApp: "Security Gatehouse + Central Display Wall",
-    bestFeatures: ["PTZ 360° Optical Zoom (150m)", "Perimeter Laser Tripwire Alarms", "Annual Maintenance Contract (AMC)"],
-    popularBadge: "ENTERPRISE",
+    label: "Factory & Warehouse",
+    subtitle: "Industrial & gated premises",
+    cameras: "16–64+ long-range IP cameras",
+    storage: "Server rack with RAID storage",
+    wiring: "Optical fibre gigabit backbone",
+    remoteApp: "Gatehouse + central display wall",
+    bestFeatures: ["PTZ optical zoom cameras", "Perimeter tripwire alarms", "Annual maintenance contract"],
   },
 ];
 
-// 3D Perspective Card Component with Real-Time Mouse Tracking
-function ThreeDServiceCard({
-  sys,
-  idx,
-}: {
-  sys: (typeof SERVICES_DATA)[0];
-  idx: number;
-}) {
-  const cardRef = useRef<HTMLDivElement>(null);
-  const [rotate, setRotate] = useState({ x: 0, y: 0 });
-  const [glare, setGlare] = useState({ x: 50, y: 50, opacity: 0 });
+const STANDARDS = [
+  {
+    title: "Blind-spot mapping",
+    copy: "Lens choice (2.8mm, 4mm, 6mm) and camera height are planned so every entry point is covered.",
+  },
+  {
+    title: "Concealed cabling",
+    copy: "Fire-retardant CAT6 in UV-resistant PVC conduit with weatherproof IP66 junction boxes.",
+  },
+  {
+    title: "Surge-protected power",
+    copy: "Regulated SMPS power with proper earthing protects cameras and recorders from voltage swings.",
+  },
+  {
+    title: "Tested before handover",
+    copy: "H.265+ recording, mobile app access and multi-day recording checks are completed on site.",
+  },
+];
 
-  const SERVICE_IMAGES: Record<string, string> = {
-    cctv: "/services/cctv.jpg",
-    "home-automation": "/services/home-automation.jpg",
-    "burglar-alarm": "/services/burglar-alarm.jpg",
-    "gate-automation": "/services/gate-automation.jpg",
-    "boom-barriers": "/services/boom-barriers.jpg",
-    "access-control": "/services/access-control.jpg",
-    "video-door-phone": "/services/video-door-phone.jpg",
-    "nurse-calling": "/services/nurse-calling.jpg",
-    intercom: "/services/intercom.jpg",
-  };
+const sectionHeading = "text-2xl sm:text-[28px] font-bold tracking-tight text-[#111827]";
+const eyebrow = "text-sm font-semibold text-[#FF7A00]";
 
-  const cameraImg = SERVICE_IMAGES[sys.id] || null;
-
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    const card = cardRef.current;
-    if (!card) return;
-    const rect = card.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
-    const centerX = rect.width / 2;
-    const centerY = rect.height / 2;
-
-    const rotateX = -((y - centerY) / centerY) * 10;
-    const rotateY = ((x - centerX) / centerX) * 10;
-    setRotate({ x: rotateX, y: rotateY });
-
-    setGlare({
-      x: (x / rect.width) * 100,
-      y: (y / rect.height) * 100,
-      opacity: 0.16,
-    });
-  };
-
-  const handleMouseLeave = () => {
-    setRotate({ x: 0, y: 0 });
-    setGlare((prev) => ({ ...prev, opacity: 0 }));
-  };
-
-  return (
-    <div
-      ref={cardRef}
-      onMouseMove={handleMouseMove}
-      onMouseLeave={handleMouseLeave}
-      className="relative rounded-3xl transition-all duration-300 h-full flex flex-col"
-      style={{
-        perspective: "1000px",
-      }}
-    >
-      <div
-        className="rounded-3xl bg-white border border-neutral-200/90 shadow-[0_12px_35px_rgba(0,0,0,0.04)] hover:shadow-[0_22px_50px_rgba(255,122,0,0.14)] hover:border-[#FF7A00]/70 transition-all duration-200 p-7 sm:p-8 flex flex-col justify-between relative overflow-hidden h-full"
-        style={{
-          transform: `rotateX(${rotate.x}deg) rotateY(${rotate.y}deg) scale3d(${
-            rotate.x !== 0 ? 1.02 : 1
-          }, ${rotate.x !== 0 ? 1.02 : 1}, 1)`,
-          transformStyle: "preserve-3d",
-          transition: "transform 0.15s ease-out, box-shadow 0.2s ease",
-        }}
-      >
-        {/* Dynamic 3D Glare Specular Highlight */}
-        <div
-          className="absolute inset-0 pointer-events-none transition-opacity duration-300 rounded-3xl"
-          style={{
-            background: `radial-gradient(circle at ${glare.x}% ${glare.y}%, rgba(255,255,255,${glare.opacity}), transparent 60%)`,
-          }}
-        />
-
-        {/* Ambient Top Glow */}
-        <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-to-bl from-[#FFF7ED]/80 via-transparent to-transparent pointer-events-none rounded-tr-3xl" />
-
-        {/* Card Header (3D Elevated) */}
-        <div style={{ transform: "translateZ(20px)" }} className="relative z-10 flex flex-col flex-1">
-          <div className="flex items-center justify-between mb-5">
-            <div className="flex items-center gap-2">
-              <span className="w-2 h-2 rounded-full bg-[#FF7A00] animate-pulse" />
-              <span className="text-[10px] font-mono font-black px-2.5 py-1 rounded-full bg-[#FFF7ED] text-[#FF7A00] border border-[#FFEDD5] uppercase tracking-wider">
-                {sys.badge}
-              </span>
-            </div>
-          </div>
-
-          {/* 3D Hardware Render / Floating Pedestal */}
-          <div
-            style={{ transform: "translateZ(35px)" }}
-            className="w-full h-44 rounded-2xl bg-gradient-to-br from-[#F8FAFC] via-[#F1F5F9] to-[#E2E8F0] border border-neutral-200/80 mb-6 flex items-center justify-center relative overflow-hidden group-hover:border-[#FF7A00]/40 transition-colors"
-          >
-            <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,#FF7A0012,transparent_70%)] pointer-events-none" />
-
-            {cameraImg ? (
-              <img
-                src={cameraImg}
-                alt={sys.title}
-                className="w-36 h-36 object-contain drop-shadow-[0_15px_25px_rgba(0,0,0,0.18)] group-hover:scale-110 transition-transform duration-300"
-              />
-            ) : (
-              <div className="w-20 h-20 rounded-2xl bg-white border border-[#FFEDD5] shadow-md flex items-center justify-center text-4xl group-hover:scale-110 transition-transform duration-300">
-                {sys.icon}
-              </div>
-            )}
-          </div>
-
-          <h3 className="text-xl sm:text-2xl font-black text-[#111827] tracking-tight mb-1">
-            {sys.title}
-          </h3>
-          <p className="text-xs font-bold text-[#FF7A00] mb-3">{sys.tagline}</p>
-          <p className="text-xs sm:text-sm text-[#4B5563] leading-relaxed mb-6 font-normal line-clamp-3 flex-1">
-            {sys.overview}
-          </p>
-
-          {/* 4 Feature Badges */}
-          <div className="grid grid-cols-2 gap-2 mb-6">
-            {sys.keyFeatures.slice(0, 4).map((f) => (
-              <div
-                key={f.title}
-                className="p-2 rounded-xl bg-neutral-50 border border-neutral-200/70 text-[11px] font-bold text-[#111827] truncate flex items-center gap-1.5"
-              >
-                <CheckCircle2 className="w-3 h-3 text-[#FF7A00] flex-shrink-0" />
-                <span className="truncate">{f.title}</span>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* Action Triggers (3D Elevated) */}
-        <div
-          style={{ transform: "translateZ(25px)" }}
-          className="pt-4 border-t border-neutral-100 relative z-10 mt-auto"
-        >
-          <Link
-            to="/services/$serviceId"
-            params={{ serviceId: sys.id }}
-            className="w-full py-3.5 px-4 rounded-xl font-extrabold text-xs tracking-wider uppercase transition-all duration-200 flex items-center justify-center gap-2 cursor-pointer shadow-sm bg-[#111827] hover:bg-[#FF7A00] text-white hover:scale-[1.02] active:scale-[0.98]"
-          >
-            <span>Full Tech Specs</span>
-            <ChevronRight className="w-4 h-4" />
-          </Link>
-        </div>
-      </div>
-    </div>
-  );
+function titleCase(value: string) {
+  return value
+    .toLowerCase()
+    .split(" ")
+    .map((w) => (w.length > 3 ? w[0].toUpperCase() + w.slice(1) : w.toUpperCase()))
+    .join(" ")
+    .replace(/\bIOT\b/, "IoT");
 }
 
+// ── Page ─────────────────────────────────────────────────────────────
 function ServicesPage() {
   const [activeProfileId, setActiveProfileId] = useState<string>("villa");
-
-  const activeProfile = PROPERTY_PROFILES.find((p) => p.id === activeProfileId) || PROPERTY_PROFILES[1];
+  const activeProfile = PROPERTY_PROFILES.find((p) => p.id === activeProfileId) ?? PROPERTY_PROFILES[1];
+  const surveyUrl = `https://wa.me/${COMPANY_CONTACT.phoneRaw}?text=${encodeURIComponent(
+    `Hi, I would like a free site survey for my ${activeProfile.label.toLowerCase()}.`
+  )}`;
 
   return (
-    <div
-      className="min-h-screen bg-[#F8FAFC] text-[#111827] overflow-x-hidden select-none"
-      style={{ fontFamily: "'Inter', sans-serif" }}
-    >
+    <div className="min-h-screen bg-[#F8FAFC] text-[#111827] overflow-x-hidden" style={{ fontFamily: "'Inter', sans-serif" }}>
       <SiteNav revealed={true} />
 
-      {/* CyberMeshBackground matching the About page */}
-      <main className="relative pt-24 sm:pt-28 min-h-screen">
+      <main className="relative">
         <CyberMeshBackground />
 
-        <div className="relative z-10">
-          {/* 1. Services Header */}
-          <section className="pt-10 pb-12 sm:pb-16 px-4 sm:px-12 lg:px-[100px]">
-            <div className="max-w-7xl mx-auto">
-              <div className="inline-flex items-center gap-2 mb-2.5">
-                <span className="relative flex h-2 w-2">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#FF7A00] opacity-75" />
-                  <span className="relative inline-flex rounded-full h-2 w-2 bg-[#FF7A00]" />
-                </span>
-                <span className="font-mono text-xs sm:text-sm font-bold tracking-[0.25em] text-[#FF7A00] uppercase">
-                  OUR SERVICES
-                </span>
+        <div className="relative z-10 max-w-7xl mx-auto px-6 sm:px-10 lg:px-12 pt-24 sm:pt-[104px] lg:pt-28 pb-20">
+          {/* ── 1. Heading ─────────────────────────────────────── */}
+          <header>
+            <h1 className="text-3xl sm:text-4xl lg:text-[34px] font-bold tracking-tight leading-tight">
+              Security &amp; Automation <span className="text-[#FF7A00]">Services</span>
+            </h1>
+          </header>
+
+          <dl className="mt-6 grid grid-cols-2 lg:grid-cols-4 gap-px overflow-hidden rounded-2xl border border-neutral-200 bg-neutral-200">
+            {[
+              { value: "2021", label: "Serving Tamil Nadu since" },
+              { value: String(SERVICES_DATA.length), label: "Security & automation services" },
+              { value: String(serviceAreas.length), label: "Towns and cities served" },
+              { value: "1–3 yr", label: "Brand warranty on hardware" },
+            ].map((stat) => (
+              <div key={stat.label} className="flex flex-col-reverse justify-end bg-white px-5 py-4 sm:px-6">
+                <dt className="mt-0.5 text-xs sm:text-sm text-neutral-500">{stat.label}</dt>
+                <dd className="text-2xl font-bold tracking-tight text-[#111827]">{stat.value}</dd>
+              </div>
+            ))}
+          </dl>
+
+          {/* ── 2. All services (compact: all nine fit in about one screen) ── */}
+          <section aria-label="All services" className="mt-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {SERVICES_DATA.map((sys) => {
+              const name = serviceName(sys.id, sys.title);
+              return (
+                <Link
+                  key={sys.id}
+                  to="/services/$serviceId"
+                  params={{ serviceId: sys.id }}
+                  className="group flex items-center gap-4 rounded-2xl bg-white border border-neutral-200 p-3 pr-4 hover:-translate-y-0.5 hover:border-[#FF7A00]/60 hover:shadow-[0_18px_40px_-26px_rgba(13,28,52,0.45)] transition-all duration-300"
+                >
+                  <div className="h-28 w-28 flex-shrink-0 overflow-hidden rounded-xl bg-neutral-100">
+                    <img
+                      src={`/services/${sys.id}.jpg`}
+                      alt={`${name} installed by S Tec Secure`}
+                      loading="lazy"
+                      className="h-full w-full object-cover group-hover:scale-[1.06] transition-transform duration-500"
+                    />
+                  </div>
+                  <div className="min-w-0 flex-1">
+                    <p className="text-xs font-semibold text-[#FF7A00]">{titleCase(sys.badge)}</p>
+                    <h2 className="mt-1 text-base font-bold tracking-tight leading-snug text-[#111827] group-hover:text-[#FF7A00] transition-colors">
+                      {name}
+                    </h2>
+                    <p className="mt-1 text-sm text-neutral-500 leading-snug line-clamp-2">{sys.tagline}</p>
+                    <span className="mt-2 inline-flex items-center gap-1.5 text-sm font-semibold text-[#111827]">
+                      View details
+                      <span aria-hidden className="text-[#FF7A00] transition-transform group-hover:translate-x-1">
+                        →
+                      </span>
+                    </span>
+                  </div>
+                </Link>
+              );
+            })}
+          </section>
+
+          {/* ── 3. Find the right setup ────────────────────────── */}
+          <section aria-labelledby="setup-heading" className="mt-20">
+            <p className={eyebrow}>CCTV setup guide</p>
+            <h2 id="setup-heading" className={`mt-2 ${sectionHeading}`}>
+              Find the right setup for your property
+            </h2>
+
+            <div className="mt-6 flex flex-wrap gap-2">
+              {PROPERTY_PROFILES.map((p) => (
+                <button
+                  key={p.id}
+                  type="button"
+                  aria-pressed={p.id === activeProfileId}
+                  onClick={() => setActiveProfileId(p.id)}
+                  className={`px-4 py-2 rounded-full border text-sm font-medium transition-colors cursor-pointer ${
+                    p.id === activeProfileId
+                      ? "bg-[#0D1C34] border-[#0D1C34] text-white"
+                      : "bg-white border-neutral-200 text-neutral-600 hover:border-neutral-300 hover:text-[#111827]"
+                  }`}
+                >
+                  {p.label}
+                </button>
+              ))}
+            </div>
+
+            <div className="mt-5 grid grid-cols-1 lg:grid-cols-12 gap-5">
+              <div className="lg:col-span-8 rounded-3xl bg-white border border-neutral-200 p-6 sm:p-8">
+                <p className="text-sm text-neutral-500">{activeProfile.subtitle}</p>
+                <h3 className="mt-1 text-xl font-bold tracking-tight">Recommended plan for a {activeProfile.label.toLowerCase()}</h3>
+
+                <dl className="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-x-8 divide-y divide-neutral-100 sm:divide-y-0">
+                  {[
+                    ["Cameras", activeProfile.cameras],
+                    ["Recording", activeProfile.storage],
+                    ["Wiring", activeProfile.wiring],
+                    ["Mobile viewing", activeProfile.remoteApp],
+                  ].map(([label, value]) => (
+                    <div key={label} className="py-3 sm:border-b sm:border-neutral-100">
+                      <dt className="text-xs text-neutral-500">{label}</dt>
+                      <dd className="mt-0.5 text-[15px] font-semibold text-[#111827]">{value}</dd>
+                    </div>
+                  ))}
+                </dl>
+
+                <ul className="mt-5 flex flex-wrap gap-2">
+                  {activeProfile.bestFeatures.map((f) => (
+                    <li key={f} className="rounded-full bg-[#FFF4E8] px-3.5 py-1.5 text-sm text-[#C25E00]">
+                      {f}
+                    </li>
+                  ))}
+                </ul>
               </div>
 
-              <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6">
-                <div className="max-w-3xl">
-                  <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black text-[#111827] tracking-tight leading-tight mb-4">
-                    Security &amp; Automation <span className="text-[#FF7A00]">Solutions</span>
-                  </h1>
-                  <p className="text-[#4B5563] text-base sm:text-lg leading-relaxed font-normal">
-                    Explore our comprehensive surveillance and smart automation systems. Click any solution to inspect technical capabilities, equipment specifications, and complete installation details across Tamil Nadu.
+              <div className="lg:col-span-4 rounded-3xl bg-[#FFF4E8] border border-[#FFE2C2] p-6 sm:p-8 flex flex-col justify-between gap-6">
+                <div>
+                  <p className="text-xl font-bold tracking-tight text-[#111827]">Not sure which plan fits?</p>
+                  <p className="mt-2 text-sm text-[#7C2D12]/80 leading-relaxed">
+                    An engineer visits, checks camera positions and gives you a clear quote. The survey is free.
                   </p>
                 </div>
-
-                <div className="flex items-center gap-3 bg-white border border-neutral-200/90 rounded-2xl p-4 shadow-sm self-start lg:self-auto">
-                  <div className="w-10 h-10 rounded-xl bg-[#FFF7ED] text-[#FF7A00] flex items-center justify-center flex-shrink-0">
-                    <Shield className="w-5 h-5" />
-                  </div>
-                  <div>
-                    <div className="text-xs font-mono font-bold text-[#FF7A00] uppercase tracking-wider">
-                      CERTIFIED HARDWARE
-                    </div>
-                    <div className="text-sm font-black text-[#111827]">
-                      1–3 Year Brand Warranty
-                    </div>
-                  </div>
-                </div>
+                <a
+                  href={surveyUrl}
+                  target="_blank"
+                  rel="noopener noreferrer nofollow"
+                  className="inline-flex items-center justify-center h-11 px-6 rounded-xl bg-[#FF7A00] hover:bg-[#E96F00] text-white text-sm font-semibold transition-colors"
+                >
+                  Book a free site survey
+                </a>
               </div>
             </div>
           </section>
 
-          {/* 2. THE 3D SECURITY SERVICES GRID */}
-          <section className="pb-20 sm:pb-28 px-4 sm:px-12 lg:px-[100px] relative">
-            <div className="max-w-7xl mx-auto">
-              {/* 3D Cyber Perspective Wireframe Grid Matrix Backdrop */}
-              <div className="absolute inset-0 bg-[linear-gradient(to_right,#00000006_1px,transparent_1px),linear-gradient(to_bottom,#00000006_1px,transparent_1px)] bg-[size:48px_48px] pointer-events-none rounded-3xl opacity-60" />
-
-              {/* The 3D Responsive Grid (All 9 Services in a 3-Grid) */}
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 relative z-10">
-                {SERVICES_DATA.map((sys, idx) => (
-                  <ThreeDServiceCard key={sys.id} sys={sys} idx={idx} />
-                ))}
-              </div>
-            </div>
-          </section>
-
-          {/* 3. Property Configurator */}
-          <section className="py-16 sm:py-20 px-4 sm:px-12 lg:px-[100px] bg-white/70 border-y border-neutral-200/80">
-            <div className="max-w-7xl mx-auto">
-              <div className="mb-10">
-                <div className="inline-flex items-center gap-2 mb-2.5">
-                  <span className="relative flex h-2 w-2">
-                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#FF7A00] opacity-75" />
-                    <span className="relative inline-flex rounded-full h-2 w-2 bg-[#FF7A00]" />
-                  </span>
-                  <span className="font-mono text-xs sm:text-sm font-bold tracking-[0.25em] text-[#FF7A00] uppercase">
-                    SYSTEM CONFIGURATOR
-                  </span>
-                </div>
-                <h2 className="text-2xl sm:text-3xl lg:text-4xl font-black text-[#111827] tracking-tight">
-                  Find the Right Setup for <span className="text-[#FF7A00]">Your Property</span>
+          {/* ── 4. How we install (navy panel to break up the page) ── */}
+          <section
+            aria-labelledby="standards-heading"
+            className="mt-20 relative overflow-hidden rounded-3xl bg-[#0D1C34] text-white px-6 py-10 sm:px-10 sm:py-12"
+          >
+            <div aria-hidden className="pointer-events-none absolute -right-24 -top-24 h-72 w-72 rounded-full bg-[#FF7A00]/15 blur-3xl" />
+            <div className="relative flex flex-col gap-2 lg:flex-row lg:items-end lg:justify-between">
+              <div>
+                <p className="text-sm font-semibold text-[#FFA04D]">Installation standards</p>
+                <h2 id="standards-heading" className="mt-2 text-2xl sm:text-[28px] font-bold tracking-tight">
+                  How we install every system
                 </h2>
-                <p className="mt-2.5 text-sm sm:text-base text-[#4B5563] font-normal max-w-xl">
-                  Select your property category to see recommended camera counts, storage capacity, and cabling specifications.
+              </div>
+              <p className="max-w-md text-sm text-white/60 lg:text-right">
+                The same careful process on every job, from a two-camera home to a full factory.
+              </p>
+            </div>
+            <ol className="relative mt-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-px overflow-hidden rounded-2xl bg-white/10">
+              {STANDARDS.map((st, i) => (
+                <li key={st.title} className="bg-[#0D1C34] p-5 sm:p-6">
+                  <span className="text-sm font-bold text-[#FF7A00] tabular-nums">{String(i + 1).padStart(2, "0")}</span>
+                  <h3 className="mt-2 text-base font-bold">{st.title}</h3>
+                  <p className="mt-1.5 text-sm text-white/60 leading-relaxed">{st.copy}</p>
+                </li>
+              ))}
+            </ol>
+          </section>
+
+          {/* ── 5. Local SEO content ───────────────────────────── */}
+          <section aria-labelledby="local-heading" className="mt-20 grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
+            <div className="lg:col-span-5">
+              <p className={eyebrow}>Across Tamil Nadu</p>
+              <h2 id="local-heading" className={`mt-2 ${sectionHeading}`}>
+                CCTV installation and security systems near you
+              </h2>
+              <div className="mt-5 space-y-4 text-[15px] text-neutral-600 leading-relaxed">
+                <p>
+                  S Tec Secure designs and installs{" "}
+                  <Link to="/services/$serviceId" params={{ serviceId: "cctv" }} className="font-semibold text-[#111827] underline decoration-neutral-300 underline-offset-4 hover:decoration-[#FF7A00]">
+                    CCTV camera systems
+                  </Link>{" "}
+                  for homes, villas, shops, offices, factories and warehouses. Every project starts with a free site survey, so
+                  camera count, recording days and wiring are planned for your property instead of a fixed package.
+                </p>
+                <p>
+                  Alongside surveillance we fit{" "}
+                  <Link to="/services/$serviceId" params={{ serviceId: "home-automation" }} className="font-semibold text-[#111827] underline decoration-neutral-300 underline-offset-4 hover:decoration-[#FF7A00]">
+                    smart home automation
+                  </Link>
+                  ,{" "}
+                  <Link to="/services/$serviceId" params={{ serviceId: "burglar-alarm" }} className="font-semibold text-[#111827] underline decoration-neutral-300 underline-offset-4 hover:decoration-[#FF7A00]">
+                    burglar alarms
+                  </Link>
+                  ,{" "}
+                  <Link to="/services/$serviceId" params={{ serviceId: "gate-automation" }} className="font-semibold text-[#111827] underline decoration-neutral-300 underline-offset-4 hover:decoration-[#FF7A00]">
+                    automatic gates
+                  </Link>
+                  ,{" "}
+                  <Link to="/services/$serviceId" params={{ serviceId: "access-control" }} className="font-semibold text-[#111827] underline decoration-neutral-300 underline-offset-4 hover:decoration-[#FF7A00]">
+                    biometric access control
+                  </Link>{" "}
+                  and{" "}
+                  <Link to="/services/$serviceId" params={{ serviceId: "video-door-phone" }} className="font-semibold text-[#111827] underline decoration-neutral-300 underline-offset-4 hover:decoration-[#FF7A00]">
+                    video door phones
+                  </Link>
+                  , all installed and serviced by our own engineers from our Erode office.
                 </p>
               </div>
+            </div>
 
-              {/* Property Selector Buttons */}
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 mb-8">
-                {PROPERTY_PROFILES.map((p) => {
-                  const IconC = p.icon;
-                  const isAct = p.id === activeProfileId;
-                  return (
-                    <button
-                      key={p.id}
-                      type="button"
-                      onClick={() => setActiveProfileId(p.id)}
-                      className={`p-4 sm:p-5 rounded-2xl border text-left transition-all duration-200 cursor-pointer ${
-                        isAct
-                          ? "bg-white border-[#FF7A00] shadow-md ring-2 ring-[#FF7A00]/20 scale-105"
-                          : "bg-white/80 border-neutral-200/90 hover:border-neutral-300 shadow-sm"
-                      }`}
-                    >
-                      <div className="flex items-center justify-between mb-3">
-                        <IconC className={`w-6 h-6 ${isAct ? "text-[#FF7A00]" : "text-neutral-500"}`} />
-                        <span
-                          className={`text-[9px] font-mono font-black px-2 py-0.5 rounded-full uppercase ${
-                            isAct ? "bg-[#FFF7ED] text-[#FF7A00] border border-[#FFEDD5]" : "bg-neutral-100 text-neutral-600"
-                          }`}
-                        >
-                          {p.popularBadge}
-                        </span>
-                      </div>
-                      <div className="font-extrabold text-sm sm:text-base text-[#111827] tracking-tight">{p.label}</div>
-                      <div className="text-xs text-[#6B7280] mt-0.5 truncate">{p.subtitle}</div>
-                    </button>
-                  );
-                })}
-              </div>
-
-              {/* Recommended Architecture Blueprint Box */}
-              <div className="rounded-3xl bg-white border border-neutral-200/90 shadow-sm p-6 sm:p-10">
-                <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
-                  <div className="lg:col-span-7">
-                    <span className="text-xs font-mono font-bold text-[#FF7A00] uppercase tracking-wider block mb-1">
-                      RECOMMENDED ARCHITECTURE
-                    </span>
-                    <h3 className="text-2xl font-black text-[#111827] tracking-tight mb-4">
-                      {activeProfile.label} &bull; Security Plan
-                    </h3>
-
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5 mb-6">
-                      <div className="p-3.5 rounded-2xl bg-neutral-50 border border-neutral-200/70">
-                        <div className="text-xs font-mono font-bold text-neutral-500 uppercase">Camera Layout</div>
-                        <div className="text-sm font-extrabold text-[#111827] mt-0.5">{activeProfile.cameras}</div>
-                      </div>
-                      <div className="p-3.5 rounded-2xl bg-neutral-50 border border-neutral-200/70">
-                        <div className="text-xs font-mono font-bold text-neutral-500 uppercase">Storage Retention</div>
-                        <div className="text-sm font-extrabold text-[#111827] mt-0.5">{activeProfile.storage}</div>
-                      </div>
-                      <div className="p-3.5 rounded-2xl bg-neutral-50 border border-neutral-200/70">
-                        <div className="text-xs font-mono font-bold text-neutral-500 uppercase">Wiring Standard</div>
-                        <div className="text-sm font-extrabold text-[#111827] mt-0.5">{activeProfile.wiring}</div>
-                      </div>
-                      <div className="p-3.5 rounded-2xl bg-neutral-50 border border-neutral-200/70">
-                        <div className="text-xs font-mono font-bold text-neutral-500 uppercase">Mobile App Live Sync</div>
-                        <div className="text-sm font-extrabold text-[#111827] mt-0.5">{activeProfile.remoteApp}</div>
-                      </div>
-                    </div>
-
-                    <div className="space-y-2">
-                      {activeProfile.bestFeatures.map((bf) => (
-                        <div key={bf} className="flex items-center gap-2 text-xs font-semibold text-[#374151]">
-                          <CheckCircle2 className="w-4 h-4 text-[#FF7A00] flex-shrink-0" />
-                          <span>{bf}</span>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-
-                  <div className="lg:col-span-5 flex flex-col justify-center bg-[#FFF7ED]/50 border border-[#FFEDD5] p-6 sm:p-8 rounded-2xl text-center">
-                    <div className="w-12 h-12 rounded-2xl bg-[#FF7A00] text-white flex items-center justify-center mx-auto mb-3 shadow-md">
-                      <Phone className="w-5 h-5" />
-                    </div>
-                    <h4 className="text-lg font-black text-[#111827] mb-1">
-                      Ready to Setup {activeProfile.label}?
-                    </h4>
-                    <p className="text-xs text-[#4B5563] mb-5">
-                      Schedule an on-site engineer visit to assess camera placements and provide a transparent quote.
+            <div className="lg:col-span-7">
+              <h3 className="text-base font-bold text-[#111827]">Areas we serve</h3>
+              <ul className="mt-4 grid grid-cols-2 sm:grid-cols-3 gap-3">
+                {serviceAreas.map((a) => (
+                  <li
+                    key={a.name}
+                    className="rounded-2xl bg-white border border-neutral-200 px-4 py-3 hover:border-[#FF7A00]/50 transition-colors"
+                  >
+                    <p className="flex items-center gap-2 text-[15px] font-semibold text-[#111827]">
+                      <span aria-hidden className="h-1.5 w-1.5 rounded-full bg-[#FF7A00]" />
+                      {a.name}
                     </p>
-
-                    <a
-                      href={`https://wa.me/${COMPANY_CONTACT.phoneRaw}?text=Hi%2C%20I%20want%20to%20inquire%20about%20the%20${encodeURIComponent(activeProfile.label)}%20package`}
-                      target="_blank"
-                      rel="noopener noreferrer nofollow"
-                      className="w-full inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl bg-[#25D366] hover:bg-[#20bd5a] text-white font-extrabold text-sm tracking-wide shadow-md hover:scale-105 active:scale-95 transition-all duration-200"
-                    >
-                      <WhatsAppIcon className="w-4 h-4 fill-white" />
-                      <span>Book Free Site Survey on WhatsApp</span>
-                    </a>
-                  </div>
-                </div>
-              </div>
+                    <p className="mt-1 text-xs text-neutral-500 leading-snug">{a.note}</p>
+                  </li>
+                ))}
+              </ul>
             </div>
           </section>
 
-          {/* 4.5. Engineering Standards & Field Protocol */}
-          <section className="pb-16 px-4 sm:px-12 lg:px-[100px]">
-            <div className="max-w-7xl mx-auto">
-              <div className="p-8 sm:p-12 rounded-3xl bg-white border border-neutral-200/90 shadow-sm space-y-8">
-                <div className="max-w-3xl">
-                  <div className="inline-flex items-center gap-2 mb-2">
-                    <span className="font-mono text-xs font-bold tracking-[0.25em] text-[#FF7A00] uppercase">
-                      QUALITY &amp; COMPLIANCE
-                    </span>
-                  </div>
-                  <h2 className="text-2xl sm:text-3xl font-black text-[#111827] tracking-tight">
-                    Our Installation Engineering Standards
-                  </h2>
-                  <p className="text-sm text-neutral-600 mt-2 leading-relaxed">
-                    Surveillance and smart automation systems are only as reliable as their physical wiring and network topology. STEC Secure implements stringent industrial field protocols for residential, commercial, and industrial sites.
-                  </p>
-                </div>
+          {/* ── 6. FAQ (matches the FAQ structured data) ────────── */}
+          <section aria-labelledby="faq-heading" className="mt-20 grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
+            <div className="lg:col-span-4 lg:sticky lg:top-28">
+              <p className={eyebrow}>Questions</p>
+              <h2 id="faq-heading" className={`mt-2 ${sectionHeading}`}>
+                Frequently asked questions
+              </h2>
+              <p className="mt-3 text-[15px] text-neutral-600 leading-relaxed">
+                Answers to what our customers ask most before installing a security system.
+              </p>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                  <div className="p-5 rounded-2xl bg-[#F8FAFC] border border-neutral-200/70 space-y-2">
-                    <span className="font-mono text-xs font-bold text-[#FF7A00] block">01 / OPTICS</span>
-                    <h3 className="text-sm font-extrabold text-[#111827]">Zero-Blindspot Mapping</h3>
-                    <p className="text-xs text-neutral-600 leading-relaxed">
-                      Strategic optical geometry, focal length matching (2.8mm, 4mm, 6mm), and wide dynamic range sensor positioning ensure complete coverage without exposed vulnerable dead angles.
-                    </p>
-                  </div>
-
-                  <div className="p-5 rounded-2xl bg-[#F8FAFC] border border-neutral-200/70 space-y-2">
-                    <span className="font-mono text-xs font-bold text-[#FF7A00] block">02 / CABLING</span>
-                    <h3 className="text-sm font-extrabold text-[#111827]">Concealed Conduit Routing</h3>
-                    <p className="text-xs text-neutral-600 leading-relaxed">
-                      Heavy-duty fire-retardant CAT6 and shielded copper wiring enclosed in UV-resistant PVC conduits with weatherproof IP66 junction boxes for maximum physical tamper resistance.
-                    </p>
-                  </div>
-
-                  <div className="p-5 rounded-2xl bg-[#F8FAFC] border border-neutral-200/70 space-y-2">
-                    <span className="font-mono text-xs font-bold text-[#FF7A00] block">03 / POWER</span>
-                    <h3 className="text-sm font-extrabold text-[#111827]">Power Surge Redundancy</h3>
-                    <p className="text-xs text-neutral-600 leading-relaxed">
-                      Regulated SMPS power supply units with dedicated earthing and surge suppression protect high-resolution sensors and DVR/NVR hard drives against erratic voltage fluctuations.
-                    </p>
-                  </div>
-
-                  <div className="p-5 rounded-2xl bg-[#F8FAFC] border border-neutral-200/70 space-y-2">
-                    <span className="font-mono text-xs font-bold text-[#FF7A00] block">04 / AUDIT</span>
-                    <h3 className="text-sm font-extrabold text-[#111827]">Network &amp; Storage Tuning</h3>
-                    <p className="text-xs text-neutral-600 leading-relaxed">
-                      H.265+ smart video compression configuration, cloud P2P mobile setup with biometric access authorization, and multi-day local redundant recording stress tests.
-                    </p>
-                  </div>
+              <div className="mt-6 rounded-2xl bg-[#0D1C34] text-white p-5">
+                <p className="text-base font-semibold">Still have a question?</p>
+                <p className="mt-1 text-sm text-white/60">Message or call our engineers directly.</p>
+                <div className="mt-4 flex flex-wrap items-center gap-3">
+                  <a
+                    href={`https://wa.me/${COMPANY_CONTACT.phoneRaw}?text=${encodeURIComponent("Hi S TEC SECURE, I have a question about your services.")}`}
+                    target="_blank"
+                    rel="noopener noreferrer nofollow"
+                    className="inline-flex h-10 items-center rounded-xl bg-[#FF7A00] hover:bg-[#E96F00] px-4 text-sm font-semibold transition-colors"
+                  >
+                    Ask on WhatsApp
+                  </a>
+                  <a href={`tel:${COMPANY_CONTACT.phoneRaw}`} className="text-sm font-medium text-white/75 hover:text-white transition-colors">
+                    {COMPANY_CONTACT.phone}
+                  </a>
                 </div>
               </div>
             </div>
+
+            <FaqList items={faqs.map((f) => ({ q: f.q, a: f.a }))} className="lg:col-span-8" />
           </section>
 
-          {/* 5. Our Company Brochure */}
-          <section className="pb-20 px-4 sm:px-12 lg:px-[100px]">
-            <div className="max-w-7xl mx-auto">
-              <div className="relative rounded-3xl bg-white border border-neutral-200/90 shadow-[0_15px_45px_rgba(0,0,0,0.05)] p-8 sm:p-12 lg:p-14 overflow-hidden">
-                <div className="absolute top-0 right-0 w-80 h-80 bg-gradient-to-bl from-[#FFF7ED] via-transparent to-transparent pointer-events-none rounded-tr-3xl" />
-                
-                <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
-                  <div className="lg:col-span-8">
-                    <div className="inline-flex items-center gap-2 mb-3">
-                      <span className="relative flex h-2 w-2">
-                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#FF7A00] opacity-75" />
-                        <span className="relative inline-flex rounded-full h-2 w-2 bg-[#FF7A00]" />
-                      </span>
-                      <span className="font-mono text-xs font-bold tracking-[0.25em] text-[#FF7A00] uppercase">
-                        DOWNLOAD RESOURCES
-                      </span>
-                    </div>
-
-                    <h2 className="text-2xl sm:text-3xl lg:text-4xl font-black text-[#111827] tracking-tight mb-3">
-                      Our Company Brochure
-                    </h2>
-                    <p className="text-[#4B5563] text-sm sm:text-base leading-relaxed max-w-2xl font-normal">
-                      Our expert team provides tailored surveillance systems and smart automation solutions to address today’s security challenges. From cutting-edge cameras to integrated automation, we prioritize your safety and convenience.
-                    </p>
-                  </div>
-
-                  <div className="lg:col-span-4 flex justify-start lg:justify-end">
-                    <a
-                      href="/stec-secure-brochure.pdf"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center justify-center gap-2.5 px-8 py-4 rounded-xl bg-[#FF7A00] hover:bg-[#e66e00] text-white font-extrabold text-sm tracking-wider uppercase shadow-[0_8px_25px_rgba(255,122,0,0.35)] hover:scale-105 active:scale-95 transition-all duration-200"
-                    >
-                      <Download className="w-4 h-4" />
-                      <span>Download PDF</span>
-                    </a>
-                  </div>
-                </div>
-              </div>
+          {/* ── 7. Brochure ────────────────────────────────────── */}
+          <section
+            aria-label="Company brochure"
+            className="mt-20 rounded-3xl bg-[#0D1C34] text-white px-6 py-7 sm:px-10 sm:py-8 flex flex-col md:flex-row md:items-center justify-between gap-5"
+          >
+            <div className="max-w-2xl">
+              <p className="text-xl sm:text-2xl font-bold tracking-tight">Download our company brochure</p>
+              <p className="mt-1.5 text-sm text-white/60 leading-relaxed">
+                All our surveillance and automation services, in one PDF you can share.
+              </p>
             </div>
+            <a
+              href={COMPANY_CONTACT.brochurePdf}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center justify-center h-11 px-6 rounded-xl bg-[#FF7A00] hover:bg-[#E96F00] text-white text-sm font-semibold transition-colors flex-shrink-0"
+            >
+              Download PDF
+            </a>
           </section>
-
-
         </div>
       </main>
 

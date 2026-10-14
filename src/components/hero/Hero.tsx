@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { Camera, Trophy, ShieldCheck, ArrowRight, PhoneCall, Sparkles } from "lucide-react";
 import { COMPANY_CONTACT } from "@/data/servicesData";
 
@@ -24,14 +24,22 @@ export function isBrowserReload(): boolean {
   }
 }
 
+// The browser keeps reporting "reload" for the whole life of a refreshed page, even
+// after in-app navigation. Only treat the reload as a "replay the intro" signal once,
+// so going Home → About → Home after a refresh keeps the finished hero.
+let reloadHandled = false;
+
 export function hasHeroPlayedInSession(): boolean {
   if (typeof window === "undefined") return false;
   try {
-    // If user explicitly pressed browser Refresh / Reload, replay the video intro!
-    if (isBrowserReload()) {
-      sessionStorage.removeItem("stec_hero_played");
-      hasHeroVideoPlayedOnce = false;
-      return false;
+    // If user explicitly pressed browser Refresh / Reload, replay the video intro (once)
+    if (!reloadHandled) {
+      reloadHandled = true;
+      if (isBrowserReload()) {
+        sessionStorage.removeItem("stec_hero_played");
+        hasHeroVideoPlayedOnce = false;
+        return false;
+      }
     }
     return (
       hasHeroVideoPlayedOnce ||
@@ -51,12 +59,26 @@ export function setHeroVideoPlayed() {
   }
 }
 
+// useLayoutEffect in the browser (runs before paint, so no flash), useEffect on the server
+const useIsomorphicLayoutEffect = typeof window !== "undefined" ? useLayoutEffect : useEffect;
+
 export function Hero({ active = true, onReveal }: HeroProps) {
-  // Only play intro on explicit refresh or fresh first visit; otherwise show completed page
-  const shouldSkipIntro = hasHeroPlayedInSession();
-  const [revealed, setRevealed] = useState(shouldSkipIntro);
-  const revealedRef = useRef(shouldSkipIntro);
+  // Only play the intro on a browser refresh (or the very first visit); otherwise show the
+  // finished hero. This is decided after mount, because it reads sessionStorage: deciding it
+  // during render made the server HTML (hidden) and the browser (visible) disagree, and React
+  // kept the hidden version — leaving the hero blank.
+  const [skipIntro, setSkipIntro] = useState(false);
+  const [revealed, setRevealed] = useState(false);
+  const skipRef = useRef(false);
+  const revealedRef = useRef(false);
   const videoRef = useRef<HTMLVideoElement | null>(null);
+
+  const freezeAtEnd = (v: HTMLVideoElement) => {
+    if (v.duration && v.duration > 0) {
+      v.currentTime = Math.max(0, v.duration - 0.05);
+      v.pause();
+    }
+  };
 
   const triggerReveal = () => {
     if (revealedRef.current) return;
@@ -68,40 +90,43 @@ export function Hero({ active = true, onReveal }: HeroProps) {
     }
   };
 
-  useEffect(() => {
-    if (shouldSkipIntro) {
-      // Internal navigation / already played: reveal immediately and ensure video is frozen at end
+  useIsomorphicLayoutEffect(() => {
+    if (hasHeroPlayedInSession()) {
+      // Already played this session (and not a refresh): show the finished hero instantly
+      skipRef.current = true;
+      revealedRef.current = true;
+      setSkipIntro(true);
+      setRevealed(true);
       if (onReveal) {
         onReveal();
       }
       const v = videoRef.current;
       if (v) {
+        v.autoplay = false;
         v.pause();
-        const freezeAtEnd = () => {
-          if (v.duration && v.duration > 0) {
-            v.currentTime = Math.max(0, v.duration - 0.05);
-            v.pause();
-          }
-        };
         if (v.readyState >= 1) {
-          freezeAtEnd();
+          freezeAtEnd(v);
         } else {
-          v.addEventListener("loadedmetadata", freezeAtEnd, { once: true });
+          v.addEventListener("loadedmetadata", () => freezeAtEnd(v), { once: true });
         }
       }
       return;
     }
 
-    // Normal fresh reload / first visit: safety fallback if video blocked
+    // Refresh / first visit: play the intro, with a safety fallback if the video is blocked
+    const v = videoRef.current;
+    if (v && v.paused) {
+      v.play().catch(() => {});
+    }
     const fallbackTimer = setTimeout(() => {
       triggerReveal();
     }, 4500);
 
     return () => clearTimeout(fallbackTimer);
-  }, [shouldSkipIntro]);
+  }, []);
 
   const handleTimeUpdate = () => {
-    if (shouldSkipIntro) return;
+    if (skipRef.current) return;
     const v = videoRef.current;
     if (!v) return;
 
@@ -122,7 +147,7 @@ export function Hero({ active = true, onReveal }: HeroProps) {
   };
 
   const handleEnded = () => {
-    if (shouldSkipIntro) return;
+    if (skipRef.current) return;
     const v = videoRef.current;
     if (v) {
       v.pause();
@@ -144,20 +169,13 @@ export function Hero({ active = true, onReveal }: HeroProps) {
         <div className="absolute inset-0 w-full h-full overflow-hidden pointer-events-none select-none z-0">
           <video
             ref={videoRef}
-            autoPlay={!shouldSkipIntro}
             muted
             playsInline
             preload="auto"
             onTimeUpdate={handleTimeUpdate}
             onEnded={handleEnded}
             onLoadedMetadata={(e) => {
-              if (shouldSkipIntro) {
-                const v = e.currentTarget;
-                if (v.duration && v.duration > 0) {
-                  v.currentTime = Math.max(0, v.duration - 0.05);
-                  v.pause();
-                }
-              }
+              if (skipRef.current) freezeAtEnd(e.currentTarget);
             }}
             className="absolute inset-0 w-full h-full object-cover scale-105"
           >
@@ -174,7 +192,7 @@ export function Hero({ active = true, onReveal }: HeroProps) {
         <div className="relative z-20 max-w-7xl mx-auto px-6 sm:px-10 lg:px-12 pt-36 sm:pt-40 lg:pt-44 pb-16 lg:pb-24 w-full flex flex-col justify-center text-left select-none">
           <div
             className={`max-w-2xl transition-all ${
-              shouldSkipIntro ? "duration-0" : "duration-1000"
+              skipIntro ? "duration-0" : "duration-1000"
             } ease-out ${
               revealed
                 ? "opacity-100 translate-y-0 pointer-events-auto"

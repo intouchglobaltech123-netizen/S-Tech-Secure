@@ -16,7 +16,10 @@ export const stecLocalBusinessJsonLd = {
   logo: `${STEC_SITE_URL}/logo.png`,
   image: `${STEC_SITE_URL}/services/cctv.jpg`,
   telephone: "+91-9600252605",
-  email: "info@stecsecure.com",
+  email: "stecsecure@gmail.com",
+  slogan: "Your Trusted Partner in Smart Security Solutions",
+  foundingDate: "2021",
+  founder: { "@type": "Person", name: "Santhosh", jobTitle: "CEO" },
   priceRange: "₹₹",
   address: {
     "@type": "PostalAddress",
@@ -44,15 +47,12 @@ export const stecLocalBusinessJsonLd = {
     {
       "@type": "OpeningHoursSpecification",
       dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
-      opens: "09:00",
+      opens: "08:00",
       closes: "20:00",
     },
   ],
-  sameAs: [
-    "https://www.facebook.com/",
-    "https://www.instagram.com/igsyourdigitalpartner/",
-    "https://www.linkedin.com/",
-  ],
+  // CONFIGURE: add your real social profile URLs here (e.g. Instagram, Facebook, LinkedIn)
+  sameAs: [],
   contactPoint: [
     {
       "@type": "ContactPoint",
@@ -178,13 +178,6 @@ export function createServiceJsonLd({
     ],
     url: url.startsWith("http") ? url : `${STEC_SITE_URL}${url}`,
     image: image || `${STEC_SITE_URL}/services/cctv.jpg`,
-    offers: {
-      "@type": "Offer",
-      priceCurrency: "INR",
-      price: "Contact for Quotation",
-      availability: "https://schema.org/InStock",
-      validFrom: "2026-01-01",
-    },
   };
 }
 

@@ -1,7 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { SiteNav } from "@/components/navigation/SiteNav";
 import { AboutSection } from "@/components/sections/AboutSection";
-import { Faq } from "@/components/sections/Faq";
 import { SiteFooter } from "@/components/layout/SiteFooter";
 import { CyberMeshBackground } from "@/components/background/CyberMeshBackground";
 import {
@@ -11,9 +10,9 @@ import {
   STEC_SITE_URL,
 } from "@/lib/structured-data";
 
-const aboutTitle = "About S Tec Secure | Premier Surveillance & Smart Automation Firm Tamil Nadu";
+const aboutTitle = "About S TEC SECURE | CCTV & Security Company in Erode";
 const aboutDescription =
-  "Learn about S Tec Secure, Tamil Nadu's certified surveillance engineering firm delivering 4K CCTV systems, intelligent IoT home automation, and perimeter security across Salem, Erode & Coimbatore.";
+  "S TEC SECURE has installed CCTV, smart home and security systems across Tamil Nadu since 2021. Meet our CEO and see our mission and the areas we serve.";
 
 export const Route = createFileRoute("/about")({
   head: () => ({
@@ -31,13 +30,14 @@ export const Route = createFileRoute("/about")({
       { property: "og:description", content: aboutDescription },
       { property: "og:type", content: "website" },
       { property: "og:url", content: `${STEC_SITE_URL}/about` },
-      { property: "og:image", content: `${STEC_SITE_URL}/services/cctv.jpg` },
+      { property: "og:image", content: `${STEC_SITE_URL}/ceo.png` },
+      { property: "og:image:alt", content: "Mr. Santhosh, CEO of S TEC SECURE" },
       { property: "og:site_name", content: "S Tec Secure" },
       { property: "og:locale", content: "en_IN" },
       { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:title", content: aboutTitle },
       { name: "twitter:description", content: aboutDescription },
-      { name: "twitter:image", content: `${STEC_SITE_URL}/services/cctv.jpg` },
+      { name: "twitter:image", content: `${STEC_SITE_URL}/ceo.png` },
     ],
     links: [{ rel: "canonical", href: `${STEC_SITE_URL}/about` }],
     scripts: [
@@ -51,6 +51,17 @@ export const Route = createFileRoute("/about")({
           ])
         ),
       },
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "AboutPage",
+          name: aboutTitle,
+          description: aboutDescription,
+          url: `${STEC_SITE_URL}/about`,
+          mainEntity: { "@type": "Organization", name: "S Tec Secure", foundingDate: "2021", founder: { "@type": "Person", name: "Santhosh", jobTitle: "CEO" } },
+        }),
+      },
       { type: "application/ld+json", children: JSON.stringify(faqJsonLd) },
     ],
   }),
@@ -61,11 +72,10 @@ function AboutPage() {
   return (
     <div className="min-h-screen bg-[#F8FAFC] text-[#111827]">
       <SiteNav revealed={true} />
-      <main id="main-content" className="relative pt-20 sm:pt-24 min-h-screen">
+      <main id="main-content" className="relative min-h-screen">
         <CyberMeshBackground />
-        <div className="relative z-10">
+        <div className="relative z-10 pt-24 sm:pt-[104px] lg:pt-28 pb-20">
           <AboutSection />
-          <Faq />
         </div>
       </main>
       <SiteFooter />

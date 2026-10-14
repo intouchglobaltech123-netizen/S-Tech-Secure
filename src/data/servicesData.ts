@@ -626,7 +626,7 @@ export const SERVICES_DATA: ServiceDetail[] = [
 export const COMPANY_CONTACT = {
   phone: "+91 96 00 25 26 05",
   phoneRaw: "919600252605",
-  email: "info@stecsecure.com",
-  address: "S TEC SECURE, Erode, Tamil Nadu, India",
+  email: "stecsecure@gmail.com",
+  address: "14/2 Thundukadu Street, Veerappan Chatram, Erode – 638004, Tamil Nadu",
   brochurePdf: "/stec-secure-brochure.pdf",
 };

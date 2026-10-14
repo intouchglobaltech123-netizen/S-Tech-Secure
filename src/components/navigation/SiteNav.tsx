@@ -1,188 +1,219 @@
 import { useEffect, useState } from "react";
-import { Menu, X, ArrowUpRight } from "lucide-react";
+import { Menu, X, ArrowRight } from "lucide-react";
 import { useRouterState, Link } from "@tanstack/react-router";
 import { hasHeroPlayedInSession } from "@/components/hero/Hero";
 
+/**
+ * Brand logo.
+ *
+ * Uses two pre-processed, tightly-cropped PNGs (no canvas work at runtime):
+ *  - /logo-light.png → dark lettering, for light backgrounds
+ *  - /logo-dark.png  → white lettering, for dark backgrounds / over the hero
+ * Both are stacked and cross-faded so switching nav states is smooth.
+ */
 export function MergedLogo({
   isLightNav = false,
-  className = "",
+  className = "h-12 sm:h-14 w-auto",
 }: {
   isLightNav?: boolean;
   className?: string;
 }) {
   return (
-    <div className={`flex items-center gap-2.5 sm:gap-3.5 select-none ${className}`}>
-      {/* Brand Aperture Emblem + Orange S */}
+    <span className={`relative inline-flex items-center ${className}`}>
       <img
-        src="/favicon-brand.png"
-        alt="S TEC SECURE"
-        className={`h-9 sm:h-11 md:h-12 w-auto object-contain transition-all duration-300 ${
-          isLightNav
-            ? "filter-none"
-            : "drop-shadow-[0_2px_10px_rgba(255,122,0,0.4)]"
+        src="/logo-light.png"
+        width={360}
+        height={81}
+        alt={isLightNav ? "S TEC SECURE — Surveillance & Automation Solutions" : ""}
+        aria-hidden={!isLightNav}
+        className={`h-full w-auto object-contain transition-opacity duration-300 ${
+          isLightNav ? "opacity-100" : "opacity-0"
         }`}
         loading="eager"
+        decoding="async"
       />
-
-      {/* Elegant Vertical Divider */}
-      <div
-        className={`h-7 sm:h-8 w-[1.5px] rounded-full transition-colors duration-300 ${
-          isLightNav ? "bg-slate-300/80" : "bg-white/30"
+      <img
+        src="/logo-dark.png"
+        width={360}
+        height={81}
+        alt={isLightNav ? "" : "S TEC SECURE — Surveillance & Automation Solutions"}
+        aria-hidden={isLightNav}
+        className={`absolute inset-0 h-full w-full object-contain transition-opacity duration-300 ${
+          isLightNav ? "opacity-0" : "opacity-100"
         }`}
+        loading="eager"
+        decoding="async"
       />
-
-      {/* Brand Typography */}
-      <div className="flex flex-col justify-center leading-none">
-        <span
-          className={`font-black text-lg sm:text-xl md:text-[22px] tracking-[0.06em] uppercase transition-colors duration-300 ${
-            isLightNav ? "text-[#0B1528]" : "text-white"
-          }`}
-          style={{ fontFamily: "'Inter', sans-serif" }}
-        >
-          TEC SECURE
-        </span>
-        <span className="text-[7.5px] sm:text-[9px] font-bold tracking-[0.22em] text-[#FF7A00] uppercase mt-1">
-          SURVEILLANCE &amp; AUTOMATIONS
-        </span>
-      </div>
-    </div>
+    </span>
   );
 }
+
+const navLinks = [
+  { label: "Home", href: "/" },
+  { label: "About", href: "/about" },
+  { label: "Services", href: "/services" },
+  { label: "Blog", href: "/blog" },
+] as const;
 
 export function SiteNav({ revealed = true }: { revealed?: boolean }) {
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  // Session-storage based reveal state only exists in the browser. Wait until after
+  // hydration before using it, so the first client render matches the server HTML
+  // (otherwise React keeps the server's hidden classes and the nav never appears).
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
 
-  // Read current pathname from TanStack Router
   const pathname = useRouterState({
     select: (s) => s.location.pathname,
   });
 
   const isHome = pathname === "/";
-  // Subpages (/about, /services, /blog, /contact) always reveal immediately. Homepage reveals when video reaches last 2s, scrolled, or already played in session.
-  const isRevealed = !isHome || revealed || scrolled || hasHeroPlayedInSession();
-  const isLightNav = !isHome || scrolled;
-
-  const navLinks = [
-    { label: "Home", href: "/" },
-    { label: "About", href: "/about" },
-    { label: "Services", href: "/services" },
-    { label: "Blog", href: "/blog" },
-    { label: "Contact", href: "/contact" },
-  ];
+  // Subpages always reveal immediately. Homepage reveals when the hero video ends, on scroll, or if already played this session.
+  const isRevealed =
+    !isHome || (mounted && (revealed || scrolled || hasHeroPlayedInSession()));
+  // "Solid" = white bar (scrolled, or any subpage). Otherwise transparent over the hero.
+  const solid = !isHome || scrolled;
 
   useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 20);
-    };
+    const handleScroll = () => setScrolled(window.scrollY > 20);
     handleScroll();
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Determine active route
-  const isServicesActive = pathname.startsWith("/services");
-  const isHomeActive = pathname === "/" && !isServicesActive;
-  const isAboutActive = pathname === "/about";
-  const isBlogActive = pathname === "/blog";
-  const isContactActive = pathname === "/contact";
+  // Close the mobile menu on route change and on Escape
+  useEffect(() => {
+    setMobileMenuOpen(false);
+  }, [pathname]);
+
+  useEffect(() => {
+    if (!mobileMenuOpen) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setMobileMenuOpen(false);
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [mobileMenuOpen]);
+
+  const isActive = (href: string) =>
+    href === "/" ? pathname === "/" : pathname === href || pathname.startsWith(`${href}/`);
 
   return (
     <header
-      className={`fixed top-0 inset-x-0 z-50 w-full select-none transition-all duration-300 ease-out ${
-        isRevealed ? "translate-y-0 opacity-100 pointer-events-auto" : "-translate-y-full opacity-0 pointer-events-none"
+      className={`fixed top-0 inset-x-0 z-50 w-full select-none border-b transition-all duration-300 ease-out ${
+        isRevealed
+          ? "translate-y-0 opacity-100 pointer-events-auto"
+          : "-translate-y-full opacity-0 pointer-events-none"
       } ${
-        scrolled || !isHome
-          ? "bg-[#F8FAFC]/80 backdrop-blur-md shadow-[0_4px_20px_rgba(0,0,0,0.03)]"
-          : "bg-transparent"
+        solid
+          ? "bg-white/90 backdrop-blur-lg border-slate-200/80"
+          : "bg-transparent border-transparent"
       }`}
-      style={{
-        fontFamily: "'Inter', sans-serif",
-      }}
+      style={{ fontFamily: "'Space Grotesk', 'Inter', sans-serif" }}
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 sm:py-3.5 flex items-center justify-between gap-4">
-        {/* Left: Brand Logo */}
-        <div className="flex items-center flex-shrink-0 z-20">
-          <Link
-            to="/"
-            className="group flex items-center cursor-pointer select-none transition-transform duration-200 active:scale-95 py-0.5"
-            aria-label="S TEC SECURE Home"
-          >
-            <MergedLogo isLightNav={isLightNav} />
-          </Link>
-        </div>
+      {/* Same horizontal padding as the hero, so the logo lines up with the headline */}
+      <div
+        className={`max-w-7xl mx-auto px-6 sm:px-10 lg:px-12 flex items-center justify-between gap-6 transition-all duration-300 ${
+          solid ? "py-3" : "py-4 sm:py-5"
+        }`}
+      >
+        {/* Logo */}
+        <Link
+          to="/"
+          aria-label="S TEC SECURE Home"
+          className="flex-shrink-0 rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#FF7A00]/60"
+        >
+          <MergedLogo isLightNav={solid} className="h-9 sm:h-10 lg:h-11 w-auto" />
+        </Link>
 
-        {/* Right: Single Floating Capsule with Home, About, Services, Blog, and Contact */}
-        <div className="flex items-center gap-3 z-20">
+        {/* Desktop: links + one CTA */}
+        <div className="hidden md:flex items-center gap-3">
           <nav
             aria-label="Main Navigation"
-            className="hidden md:inline-flex items-center rounded-full bg-[#0D1C34] border border-white/10 shadow-[0_8px_32px_rgba(13,28,52,0.4)] p-1.5 transition-all duration-300"
+            className={`flex items-center gap-1 rounded-full border p-1 transition-colors duration-300 ${
+              solid ? "bg-[#0D1C34] border-[#0D1C34]" : "bg-white/[0.06] border-white/15 backdrop-blur-md"
+            }`}
           >
             {navLinks.map((link) => {
-              const isCurrent =
-                (link.label === "Home" && isHomeActive) ||
-                (link.label === "About" && isAboutActive) ||
-                (link.label === "Services" && isServicesActive) ||
-                (link.label === "Blog" && isBlogActive) ||
-                (link.label === "Contact" && isContactActive);
-
+              const current = isActive(link.href);
               return (
                 <Link
                   key={link.label}
                   to={link.href}
-                  className={`relative px-4 sm:px-5 py-1.5 rounded-full text-xs sm:text-[13.5px] tracking-normal transition-all duration-300 cursor-pointer ${
-                    isCurrent
-                      ? "bg-white text-[#0D1C34] font-semibold shadow-sm scale-[1.02]"
-                      : "text-white/80 hover:text-white hover:bg-white/10 font-medium"
+                  aria-current={current ? "page" : undefined}
+                  className={`inline-flex items-center gap-1.5 px-4 py-[7px] rounded-full text-sm font-medium transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#FF7A00]/60 ${
+                    current ? "bg-white text-[#0D1C34]" : "text-white/75 hover:text-white"
                   }`}
                 >
+                  {current && <span aria-hidden className="h-1.5 w-1.5 rounded-full bg-[#FF7A00]" />}
                   {link.label}
                 </Link>
               );
             })}
           </nav>
 
-          {/* Mobile Menu Toggle Button */}
-          <button
-            type="button"
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="md:hidden p-2 rounded-full shadow-md text-white bg-[#0D1C34] hover:bg-[#142A4D] border border-white/10 transition-all duration-200 focus:outline-none active:scale-90"
-            aria-label="Toggle navigation menu"
+          <Link
+            to="/contact"
+            aria-current={isActive("/contact") ? "page" : undefined}
+            className="inline-flex items-center gap-1.5 h-10 px-5 rounded-full bg-[#FF7A00] hover:bg-[#E96F00] text-white text-sm font-semibold transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#FF7A00]/60 focus-visible:ring-offset-2"
           >
-            {mobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
-          </button>
+            Contact
+            <ArrowRight size={15} strokeWidth={2.4} />
+          </Link>
         </div>
+
+        {/* Mobile toggle */}
+        <button
+          type="button"
+          onClick={() => setMobileMenuOpen((v) => !v)}
+          className={`md:hidden inline-flex h-10 w-10 items-center justify-center rounded-full transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#FF7A00]/60 ${
+            solid || mobileMenuOpen
+              ? "bg-[#0D1C34] text-white"
+              : "bg-white/[0.08] border border-white/20 text-white backdrop-blur-md"
+          }`}
+          aria-label={mobileMenuOpen ? "Close navigation menu" : "Open navigation menu"}
+          aria-expanded={mobileMenuOpen}
+          aria-controls="mobile-nav"
+        >
+          {mobileMenuOpen ? <X size={18} /> : <Menu size={18} />}
+        </button>
       </div>
 
-      {/* Mobile Drawer Dropdown Card */}
+      {/* Mobile menu */}
       {mobileMenuOpen && (
-        <div
-          className="absolute top-full left-4 right-4 mt-2 p-4 rounded-3xl shadow-2xl animate-in slide-in-from-top-2 duration-200 border border-white/10 bg-[#0D1C34]/98 backdrop-blur-2xl text-white flex flex-col gap-2"
-        >
-          <div className="flex flex-col gap-1.5">
-            {navLinks.map((link) => {
-              const isCurrent =
-                (link.label === "Home" && isHomeActive) ||
-                (link.label === "About" && isAboutActive) ||
-                (link.label === "Services" && isServicesActive) ||
-                (link.label === "Blog" && isBlogActive) ||
-                (link.label === "Contact" && isContactActive);
-
-              return (
-                <Link
-                  key={link.label}
-                  to={link.href}
-                  onClick={() => setMobileMenuOpen(false)}
-                  className={`text-sm font-semibold py-2 px-4 rounded-full transition-all text-center ${
-                    isCurrent
-                      ? "bg-white text-[#0D1C34]"
-                      : "hover:bg-white/10 text-white/80"
-                  }`}
-                >
-                  {link.label}
-                </Link>
-              );
-            })}
+        <div id="mobile-nav" className="md:hidden px-4 pb-4">
+          <div className="rounded-2xl bg-[#0D1C34] p-2 text-white shadow-xl animate-in fade-in slide-in-from-top-2 duration-200">
+            <nav aria-label="Mobile Navigation" className="flex flex-col">
+              {navLinks.map((link) => {
+                const current = isActive(link.href);
+                return (
+                  <Link
+                    key={link.label}
+                    to={link.href}
+                    onClick={() => setMobileMenuOpen(false)}
+                    aria-current={current ? "page" : undefined}
+                    className={`flex items-center gap-2.5 rounded-xl px-4 py-3 text-[15px] font-medium transition-colors ${
+                      current ? "bg-white/10 text-white" : "text-white/70 hover:text-white"
+                    }`}
+                  >
+                    <span
+                      aria-hidden
+                      className={`h-1.5 w-1.5 rounded-full ${current ? "bg-[#FF7A00]" : "bg-transparent"}`}
+                    />
+                    {link.label}
+                  </Link>
+                );
+              })}
+            </nav>
+            <Link
+              to="/contact"
+              onClick={() => setMobileMenuOpen(false)}
+              className="mt-2 flex items-center justify-center gap-1.5 rounded-xl bg-[#FF7A00] px-4 py-3 text-sm font-semibold text-white transition-colors hover:bg-[#E96F00]"
+            >
+              Contact
+              <ArrowRight size={15} />
+            </Link>
           </div>
         </div>
       )}
