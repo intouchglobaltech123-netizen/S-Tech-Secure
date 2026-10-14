@@ -3,138 +3,48 @@ import { Menu, X, ArrowUpRight } from "lucide-react";
 import { useRouterState, Link } from "@tanstack/react-router";
 import { hasHeroPlayedInSession } from "@/components/hero/Hero";
 
-// Module-level image cache so canvas processing runs only ONCE across the entire application lifecycle
-let cachedLightLogo: string | null = null;
-let cachedDarkLogo: string | null = null;
-let isProcessingLogo = false;
-const logoListeners: Array<() => void> = [];
-
-function processLogoCanvases() {
-  if (cachedLightLogo && cachedDarkLogo) return;
-  if (isProcessingLogo) return;
-  if (typeof window === "undefined") return;
-
-  isProcessingLogo = true;
-  const img = new Image();
-  img.src = "/logo.png";
-  img.crossOrigin = "anonymous";
-
-  img.onload = () => {
-    try {
-      const w = img.naturalWidth || img.width;
-      const h = img.naturalHeight || img.height;
-
-      // 1. Process Light Mode Logo (Transparent background, keep crisp dark text & orange)
-      const canvasLight = document.createElement("canvas");
-      canvasLight.width = w;
-      canvasLight.height = h;
-      const ctxLight = canvasLight.getContext("2d");
-      if (ctxLight) {
-        ctxLight.drawImage(img, 0, 0);
-        const imgData = ctxLight.getImageData(0, 0, w, h);
-        const d = imgData.data;
-        for (let i = 0; i < d.length; i += 4) {
-          const r = d[i];
-          const g = d[i + 1];
-          const b = d[i + 2];
-          const avg = (r + g + b) / 3;
-
-          // Smooth edge feathering for transparent background
-          if (avg > 235) {
-            d[i + 3] = 0;
-          } else if (avg > 200 && r > 180 && g > 180 && b > 180) {
-            d[i + 3] = Math.round(255 * (1 - (avg - 200) / 35));
-          } else if (r < 85 && g < 85 && b < 85) {
-            // Make dark typography crisp and deep navy/black for high contrast on light backgrounds
-            d[i] = 13;
-            d[i + 1] = 28;
-            d[i + 2] = 52;
-            d[i + 3] = 255;
-          }
-        }
-        ctxLight.putImageData(imgData, 0, 0);
-        cachedLightLogo = canvasLight.toDataURL("image/png");
-      }
-
-      // 2. Process Dark Mode Logo (Transparent background, convert dark text to bright white, keep orange vibrant)
-      const canvasDark = document.createElement("canvas");
-      canvasDark.width = w;
-      canvasDark.height = h;
-      const ctxDark = canvasDark.getContext("2d");
-      if (ctxDark) {
-        ctxDark.drawImage(img, 0, 0);
-        const imgData = ctxDark.getImageData(0, 0, w, h);
-        const d = imgData.data;
-        for (let i = 0; i < d.length; i += 4) {
-          const r = d[i];
-          const g = d[i + 1];
-          const b = d[i + 2];
-          const avg = (r + g + b) / 3;
-
-          // Background transparency
-          if (avg > 235) {
-            d[i + 3] = 0;
-          } else if (avg > 200 && r > 180 && g > 180 && b > 180) {
-            d[i + 3] = Math.round(255 * (1 - (avg - 200) / 35));
-          }
-          // Convert dark lettering to luminous white, preserving amber/orange colors
-          else if (r < 95 && g < 95 && b < 95) {
-            d[i] = 255;
-            d[i + 1] = 255;
-            d[i + 2] = 255;
-            d[i + 3] = 255;
-          }
-        }
-        ctxDark.putImageData(imgData, 0, 0);
-        cachedDarkLogo = canvasDark.toDataURL("image/png");
-      }
-
-      isProcessingLogo = false;
-      logoListeners.forEach((fn) => fn());
-      logoListeners.length = 0;
-    } catch {
-      isProcessingLogo = false;
-    }
-  };
-
-  img.onerror = () => {
-    isProcessingLogo = false;
-  };
-}
-
-if (typeof window !== "undefined") {
-  processLogoCanvases();
-}
-
 export function MergedLogo({
   isLightNav = false,
-  className = "h-14 sm:h-16 md:h-18 lg:h-20 max-h-[74px] sm:max-h-[84px] w-auto object-contain transition-transform duration-200 group-hover:scale-[1.02]",
+  className = "",
 }: {
   isLightNav?: boolean;
   className?: string;
 }) {
-  const [, setRerender] = useState(0);
-
-  useEffect(() => {
-    const handleReady = () => setRerender((v) => v + 1);
-    if (!cachedLightLogo || !cachedDarkLogo) {
-      logoListeners.push(handleReady);
-      processLogoCanvases();
-    }
-  }, []);
-
-  const currentSrc = isLightNav
-    ? (cachedLightLogo || "/logo.png")
-    : (cachedDarkLogo || "/logo.png");
-
   return (
-    <div className="relative flex items-center">
+    <div className={`flex items-center gap-2.5 sm:gap-3.5 select-none ${className}`}>
+      {/* Brand Aperture Emblem + Orange S */}
       <img
-        src={currentSrc}
-        alt="S TEC SECURE — Surveillance & Automation Solutions"
-        className={`relative z-10 ${className} transition-opacity duration-300`}
+        src="/favicon-brand.png"
+        alt="S TEC SECURE"
+        className={`h-9 sm:h-11 md:h-12 w-auto object-contain transition-all duration-300 ${
+          isLightNav
+            ? "filter-none"
+            : "drop-shadow-[0_2px_10px_rgba(255,122,0,0.4)]"
+        }`}
         loading="eager"
       />
+
+      {/* Elegant Vertical Divider */}
+      <div
+        className={`h-7 sm:h-8 w-[1.5px] rounded-full transition-colors duration-300 ${
+          isLightNav ? "bg-slate-300/80" : "bg-white/30"
+        }`}
+      />
+
+      {/* Brand Typography */}
+      <div className="flex flex-col justify-center leading-none">
+        <span
+          className={`font-black text-lg sm:text-xl md:text-[22px] tracking-[0.06em] uppercase transition-colors duration-300 ${
+            isLightNav ? "text-[#0B1528]" : "text-white"
+          }`}
+          style={{ fontFamily: "'Inter', sans-serif" }}
+        >
+          TEC SECURE
+        </span>
+        <span className="text-[7.5px] sm:text-[9px] font-bold tracking-[0.22em] text-[#FF7A00] uppercase mt-1">
+          SURVEILLANCE &amp; AUTOMATIONS
+        </span>
+      </div>
     </div>
   );
 }
@@ -183,25 +93,22 @@ export function SiteNav({ revealed = true }: { revealed?: boolean }) {
         isRevealed ? "translate-y-0 opacity-100 pointer-events-auto" : "-translate-y-full opacity-0 pointer-events-none"
       } ${
         scrolled || !isHome
-          ? "bg-white/90 backdrop-blur-xl border-b border-neutral-200/60 shadow-sm"
+          ? "bg-[#F8FAFC]/80 backdrop-blur-md shadow-[0_4px_20px_rgba(0,0,0,0.03)]"
           : "bg-transparent"
       }`}
       style={{
         fontFamily: "'Inter', sans-serif",
       }}
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3.5 sm:py-4 flex items-center justify-between gap-4">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 sm:py-3.5 flex items-center justify-between gap-4">
         {/* Left: Brand Logo */}
         <div className="flex items-center flex-shrink-0 z-20">
           <Link
             to="/"
-            className="group flex items-center cursor-pointer select-none transition-transform duration-200 active:scale-95 py-1"
+            className="group flex items-center cursor-pointer select-none transition-transform duration-200 active:scale-95 py-0.5"
             aria-label="S TEC SECURE Home"
           >
-            <MergedLogo
-              isLightNav={isLightNav}
-              className="h-12 sm:h-14 md:h-16 lg:h-18 max-h-[68px] sm:max-h-[76px] w-auto object-contain transition-transform duration-200 group-hover:scale-[1.02]"
-            />
+            <MergedLogo isLightNav={isLightNav} />
           </Link>
         </div>
 
