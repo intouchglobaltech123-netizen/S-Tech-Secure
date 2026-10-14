@@ -38,7 +38,7 @@ const SERVICE_OPTIONS = [
   "Boom Barrier",
 ];
 
-export function ContactSection() {
+export function ContactSection({ showHeader = false }: { showHeader?: boolean } = {}) {
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [propertyType, setPropertyType] = useState("residential");
@@ -88,32 +88,34 @@ Please share pricing and schedule a free on-site survey.`;
   return (
     <section
       id="contact"
-      className="relative w-full pt-4 sm:pt-6 pb-12 sm:pb-16 px-4 sm:px-10 lg:px-14 select-none bg-transparent text-[#111827]"
+      className="relative w-full pt-4 sm:pt-6 pb-8 sm:pb-12 px-4 sm:px-10 lg:px-14 select-none bg-transparent text-[#111827]"
       style={{ fontFamily: "'Inter', sans-serif" }}
     >
       <div className="max-w-6xl mx-auto">
         
-        {/* ─── Left-Aligned Clean Header ──────────────────────────── */}
-        <div className="mb-8 border-b border-neutral-200/80 pb-6">
-          <div className="inline-flex items-center gap-2 mb-2.5">
-            <span className="relative flex h-2 w-2">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#FF7A00] opacity-75" />
-              <span className="relative inline-flex rounded-full h-2 w-2 bg-[#FF7A00]" />
-            </span>
-            <span className="font-mono text-xs sm:text-sm font-bold tracking-[0.25em] text-[#FF7A00] uppercase">
-              DIRECT ENGINEERING DESK
-            </span>
-          </div>
+        {/* ─── Optional Header ───────────────────────────────────── */}
+        {showHeader && (
+          <div className="mb-8 border-b border-neutral-200/80 pb-6">
+            <div className="inline-flex items-center gap-2 mb-2.5">
+              <span className="relative flex h-2 w-2">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#FF7A00] opacity-75" />
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-[#FF7A00]" />
+              </span>
+              <span className="font-mono text-xs sm:text-sm font-bold tracking-[0.25em] text-[#FF7A00] uppercase">
+                DIRECT ENGINEERING DESK
+              </span>
+            </div>
 
-          <div className="max-w-3xl">
-            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black text-[#111827] tracking-tight leading-[1.1] mb-2.5">
-              Get in Touch with <span className="text-[#FF7A00]">S TEC SECURE</span>
-            </h1>
-            <p className="text-sm sm:text-base text-[#6B7280] font-normal leading-relaxed">
-              Free on-site camera surveys, wiring blueprints, and transparent quotations across Tamil Nadu.
-            </p>
+            <div className="max-w-3xl">
+              <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black text-[#111827] tracking-tight leading-[1.1] mb-2.5">
+                Get in Touch with <span className="text-[#FF7A00]">S TEC SECURE</span>
+              </h1>
+              <p className="text-sm sm:text-base text-[#6B7280] font-normal leading-relaxed">
+                Free on-site camera surveys, wiring blueprints, and transparent quotations across Tamil Nadu.
+              </p>
+            </div>
           </div>
-        </div>
+        )}
 
         {/* ─── Unified Two-Column Bento Layout (Equal Height) ─────── */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
