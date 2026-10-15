@@ -75,8 +75,15 @@ export function SiteNav({ revealed = true }: { revealed?: boolean }) {
   // "Solid" = white bar (scrolled, or any subpage). Otherwise transparent over the hero.
   const solid = !isHome || scrolled;
 
+  // Home page: the hero already has a "Call us" button, so the phone call button
+  // in the bar only appears once the hero has been scrolled past.
+  const [pastHero, setPastHero] = useState(false);
+
   useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 20);
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 20);
+      setPastHero(window.scrollY > window.innerHeight - 80);
+    };
     handleScroll();
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
@@ -185,7 +192,7 @@ export function SiteNav({ revealed = true }: { revealed?: boolean }) {
 
         {/* Phone: quick call + menu pill */}
         <div className="md:hidden flex items-center gap-2">
-          {!mobileMenuOpen && (
+          {!mobileMenuOpen && (!isHome || pastHero) && (
             <a
               href="tel:+919600252605"
               aria-label="Call S TEC SECURE"

@@ -1,4 +1,5 @@
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { LandingIntro } from "@/components/hero/LandingIntro";
 import { Camera, Trophy, ShieldCheck, ArrowRight, PhoneCall, Sparkles } from "lucide-react";
 import { COMPANY_CONTACT } from "@/data/servicesData";
 
@@ -59,6 +60,18 @@ export function setHeroVideoPlayed() {
   }
 }
 
+const DESKTOP_VIDEO = "/services/hero.mp4";
+const MOBILE_VIDEO = "/services/hero-mobile.mp4";
+
+/** Portrait screens (phones, tablets held upright) get the vertical video. */
+function pickHeroVideo(): string {
+  try {
+    return window.matchMedia("(max-aspect-ratio: 1/1)").matches ? MOBILE_VIDEO : DESKTOP_VIDEO;
+  } catch {
+    return DESKTOP_VIDEO;
+  }
+}
+
 // useLayoutEffect in the browser (runs before paint, so no flash), useEffect on the server
 const useIsomorphicLayoutEffect = typeof window !== "undefined" ? useLayoutEffect : useEffect;
 
@@ -69,9 +82,14 @@ export function Hero({ active = true, onReveal }: HeroProps) {
   // kept the hidden version — leaving the hero blank.
   const [skipIntro, setSkipIntro] = useState(false);
   const [revealed, setRevealed] = useState(false);
+  // Opening animation (camera sweep, then the screen opens). Rendered from the start so the
+  // server HTML already shows it; hidden straight away when the intro has already played.
+  const [showLanding, setShowLanding] = useState(true);
   const skipRef = useRef(false);
   const revealedRef = useRef(false);
   const videoRef = useRef<HTMLVideoElement | null>(null);
+  // True while the camera intro is on screen: the video waits at its first frame
+  const landingActiveRef = useRef(false);
 
   const freezeAtEnd = (v: HTMLVideoElement) => {
     if (v.duration && v.duration > 0) {
@@ -91,11 +109,19 @@ export function Hero({ active = true, onReveal }: HeroProps) {
   };
 
   useIsomorphicLayoutEffect(() => {
+    // The video source is chosen here (not in the server HTML) so each device only downloads its own video
+    const vid = videoRef.current;
+    if (vid) {
+      vid.src = pickHeroVideo();
+      vid.load();
+    }
+
     if (hasHeroPlayedInSession()) {
       // Already played this session (and not a refresh): show the finished hero instantly
       skipRef.current = true;
       revealedRef.current = true;
       setSkipIntro(true);
+      setShowLanding(false);
       setRevealed(true);
       if (onReveal) {
         onReveal();
@@ -113,17 +139,45 @@ export function Hero({ active = true, onReveal }: HeroProps) {
       return;
     }
 
-    // Refresh / first visit: play the intro, with a safety fallback if the video is blocked
+    // Refresh / first visit: the camera intro plays first; the hero video waits at its first
+    // frame and starts as soon as the screen opens (see finishLanding).
+    skipRef.current = true;
+    landingActiveRef.current = true;
     const v = videoRef.current;
-    if (v && v.paused) {
-      v.play().catch(() => {});
+    if (v) {
+      v.autoplay = false;
+      v.pause();
     }
+    // Safety net: never leave the hero hidden
     const fallbackTimer = setTimeout(() => {
+      setShowLanding(false);
       triggerReveal();
-    }, 4500);
+    }, 16000);
 
     return () => clearTimeout(fallbackTimer);
   }, []);
+
+  const finishLanding = () => {
+    landingActiveRef.current = false;
+    setShowLanding(false);
+    if (revealedRef.current) return;
+    const v = videoRef.current;
+    if (!v) {
+      triggerReveal();
+      return;
+    }
+    // Play the hero video once; the text appears near its end (handleTimeUpdate)
+    skipRef.current = false;
+    try {
+      v.currentTime = 0;
+    } catch {}
+    v.play().catch(() => {
+      // Autoplay blocked (e.g. low-power mode): show the finished hero straight away
+      skipRef.current = true;
+      freezeAtEnd(v);
+      triggerReveal();
+    });
+  };
 
   const handleTimeUpdate = () => {
     if (skipRef.current) return;
@@ -164,7 +218,9 @@ export function Hero({ active = true, onReveal }: HeroProps) {
         fontFamily: "'Inter', sans-serif",
       }}
     >
-      <div className="relative w-full overflow-hidden min-h-[92vh] lg:min-h-screen flex items-center">
+      {showLanding && <LandingIntro onDone={finishLanding} />}
+
+      <div className="relative w-full overflow-hidden min-h-[100svh] sm:min-h-[92vh] lg:min-h-screen flex items-end sm:items-center">
         {/* Fullscreen Cinematic Background Video (Plays once, freezes on final frame) */}
         <div className="absolute inset-0 w-full h-full overflow-hidden pointer-events-none select-none z-0">
           <video
@@ -175,21 +231,22 @@ export function Hero({ active = true, onReveal }: HeroProps) {
             onTimeUpdate={handleTimeUpdate}
             onEnded={handleEnded}
             onLoadedMetadata={(e) => {
-              if (skipRef.current) freezeAtEnd(e.currentTarget);
+              if (skipRef.current && !landingActiveRef.current) freezeAtEnd(e.currentTarget);
             }}
             className="absolute inset-0 w-full h-full object-cover scale-105"
           >
-            <source src="/services/hero.mp4" type="video/mp4" />
-            <source src="/hero.mp4" type="video/mp4" />
           </video>
 
           {/* Cinematic Vignette & Deep Luxury Gradient Overlays */}
-          <div className="absolute inset-0 bg-gradient-to-r from-[#070A12]/90 via-[#070A12]/60 to-[#070A12]/30" />
-          <div className="absolute inset-0 bg-gradient-to-t from-[#070A12] via-transparent to-[#070A12]/60" />
+          <div className="hidden sm:block absolute inset-0 bg-gradient-to-r from-[#070A12]/90 via-[#070A12]/60 to-[#070A12]/30" />
+          <div className="hidden sm:block absolute inset-0 bg-gradient-to-t from-[#070A12] via-transparent to-[#070A12]/60" />
+          {/* Phones: dark behind the text at the bottom, clear over the house, light shade under the menu */}
+          <div className="sm:hidden absolute inset-0 bg-[linear-gradient(to_top,#070A12_0%,rgba(7,10,18,0.92)_32%,rgba(7,10,18,0.55)_48%,rgba(7,10,18,0)_66%)]" />
+          <div className="sm:hidden absolute inset-x-0 top-0 h-28 bg-gradient-to-b from-[#070A12]/60 to-transparent" />
         </div>
 
         {/* Content Stack: Positioned cleanly below the fixed navbar */}
-        <div className="relative z-20 max-w-7xl mx-auto px-6 sm:px-10 lg:px-12 pt-36 sm:pt-40 lg:pt-44 pb-16 lg:pb-24 w-full flex flex-col justify-center text-left select-none">
+        <div className="relative z-20 max-w-7xl mx-auto px-6 sm:px-10 lg:px-12 pt-28 sm:pt-40 lg:pt-44 pb-10 sm:pb-16 lg:pb-24 w-full flex flex-col justify-center text-left select-none">
           <div
             className={`max-w-2xl transition-all ${
               skipIntro ? "duration-0" : "duration-1000"
@@ -232,60 +289,61 @@ export function Hero({ active = true, onReveal }: HeroProps) {
             </p>
 
             {/* Sleek Minimal Action CTAs */}
-            <div className="mt-6 sm:mt-7 flex flex-wrap items-center gap-3 sm:gap-3.5 pointer-events-auto">
+            <div className="mt-6 sm:mt-7 grid grid-cols-2 gap-2.5 sm:flex sm:flex-wrap sm:items-center sm:gap-3.5 pointer-events-auto">
               <a
                 href="/contact"
-                className="px-6 sm:px-7 py-3 rounded-full bg-[#FF7A00] hover:bg-[#FF8800] text-white font-semibold text-xs sm:text-sm tracking-wide shadow-md hover:shadow-lg active:scale-95 transition-all duration-200 cursor-pointer flex items-center gap-2"
+                className="justify-center whitespace-nowrap px-3 sm:px-7 py-3 rounded-full bg-[#FF7A00] hover:bg-[#FF8800] text-white font-semibold text-[13px] sm:text-sm tracking-wide shadow-md hover:shadow-lg active:scale-95 transition-all duration-200 cursor-pointer flex items-center gap-2"
               >
                 <span>Book Free Survey</span>
-                <ArrowRight size={15} />
+                <ArrowRight size={15} className="hidden sm:block" />
               </a>
 
               <a
                 href={`tel:${COMPANY_CONTACT.phoneRaw}`}
-                className="px-5 sm:px-6 py-3 rounded-full bg-white/[0.06] hover:bg-white/[0.12] border border-white/15 text-white font-medium text-xs sm:text-sm tracking-wide backdrop-blur-md transition-all duration-200 flex items-center gap-2"
+                className="justify-center whitespace-nowrap px-3 sm:px-6 py-3 rounded-full bg-white/[0.06] hover:bg-white/[0.12] border border-white/15 text-white font-medium text-[13px] sm:text-sm tracking-wide backdrop-blur-md transition-all duration-200 flex items-center gap-2"
               >
                 <PhoneCall size={14} className="text-[#FF7A00]" />
-                <span>+91 96 00 25 26 05</span>
+                <span className="sm:hidden">Call us</span>
+                <span className="hidden sm:inline">+91 96 00 25 26 05</span>
               </a>
             </div>
 
             {/* Clean Minimal Stat Cards */}
-            <div className="mt-8 grid grid-cols-3 gap-2.5 sm:gap-3.5 max-w-xl select-none pointer-events-auto">
+            <div className="mt-6 sm:mt-8 grid grid-cols-3 gap-2.5 sm:gap-3.5 max-w-xl select-none pointer-events-auto">
               {/* Stat 1 */}
-              <div className="flex items-center gap-2.5 sm:gap-3 px-3 py-2.5 sm:px-4 sm:py-3 rounded-xl bg-white/[0.04] hover:bg-white/[0.08] border border-white/10 backdrop-blur-md transition-all">
-                <Camera className="w-4 h-4 sm:w-5 sm:h-5 text-[#FF7A00] shrink-0" />
+              <div className="flex items-center justify-center sm:justify-start text-center sm:text-left gap-2.5 sm:gap-3 px-2 py-3 sm:px-4 sm:py-3 rounded-xl bg-white/[0.04] hover:bg-white/[0.08] border border-white/10 backdrop-blur-md transition-all">
+                <Camera className="hidden sm:block w-5 h-5 text-[#FF7A00] shrink-0" />
                 <div>
-                  <div className="text-base sm:text-xl font-bold text-white leading-none">
+                  <div className="text-lg sm:text-xl font-bold text-white leading-none">
                     500<span className="text-[#FF7A00]">+</span>
                   </div>
-                  <div className="text-[10px] sm:text-xs text-neutral-400 font-medium mt-1">
+                  <div className="text-xs text-neutral-400 font-medium mt-1">
                     Installations
                   </div>
                 </div>
               </div>
 
               {/* Stat 2 */}
-              <div className="flex items-center gap-2.5 sm:gap-3 px-3 py-2.5 sm:px-4 sm:py-3 rounded-xl bg-white/[0.04] hover:bg-white/[0.08] border border-white/10 backdrop-blur-md transition-all">
-                <Trophy className="w-4 h-4 sm:w-5 sm:h-5 text-[#FF7A00] shrink-0" />
+              <div className="flex items-center justify-center sm:justify-start text-center sm:text-left gap-2.5 sm:gap-3 px-2 py-3 sm:px-4 sm:py-3 rounded-xl bg-white/[0.04] hover:bg-white/[0.08] border border-white/10 backdrop-blur-md transition-all">
+                <Trophy className="hidden sm:block w-5 h-5 text-[#FF7A00] shrink-0" />
                 <div>
-                  <div className="text-base sm:text-xl font-bold text-white leading-none">
+                  <div className="text-lg sm:text-xl font-bold text-white leading-none">
                     6<span className="text-[#FF7A00]">+</span>
                   </div>
-                  <div className="text-[10px] sm:text-xs text-neutral-400 font-medium mt-1">
+                  <div className="text-xs text-neutral-400 font-medium mt-1">
                     Years Exp
                   </div>
                 </div>
               </div>
 
               {/* Stat 3 */}
-              <div className="flex items-center gap-2.5 sm:gap-3 px-3 py-2.5 sm:px-4 sm:py-3 rounded-xl bg-white/[0.04] hover:bg-white/[0.08] border border-white/10 backdrop-blur-md transition-all">
-                <ShieldCheck className="w-4 h-4 sm:w-5 sm:h-5 text-[#FF7A00] shrink-0" />
+              <div className="flex items-center justify-center sm:justify-start text-center sm:text-left gap-2.5 sm:gap-3 px-2 py-3 sm:px-4 sm:py-3 rounded-xl bg-white/[0.04] hover:bg-white/[0.08] border border-white/10 backdrop-blur-md transition-all">
+                <ShieldCheck className="hidden sm:block w-5 h-5 text-[#FF7A00] shrink-0" />
                 <div>
-                  <div className="text-base sm:text-xl font-bold text-white leading-none">
+                  <div className="text-lg sm:text-xl font-bold text-white leading-none">
                     50<span className="text-[#FF7A00]">+</span>
                   </div>
-                  <div className="text-[10px] sm:text-xs text-neutral-400 font-medium mt-1">
+                  <div className="text-xs text-neutral-400 font-medium mt-1">
                     Top Brands
                   </div>
                 </div>
