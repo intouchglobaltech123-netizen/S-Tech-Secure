@@ -142,11 +142,11 @@ export function TestimonialsSection() {
             <h2 id="testimonials-heading" className="mt-2 text-[28px] sm:text-4xl font-bold tracking-tight text-[#111827] leading-tight">
               What our customers say
             </h2>
-            <p className="mt-3 hidden sm:block text-base text-neutral-600 leading-relaxed">
+            <p className="mt-3 text-base text-neutral-600 leading-relaxed">
               Homes, shops and businesses across Erode and nearby towns.
             </p>
           </div>
-          <div className="hidden sm:flex gap-2 flex-shrink-0">
+          <div className="flex gap-2 flex-shrink-0">
             <button type="button" aria-label="Previous reviews" onClick={() => scrollByCard(-1)} className={arrowClass}>
               ←
             </button>
@@ -166,7 +166,7 @@ export function TestimonialsSection() {
               className="snap-start flex-shrink-0 w-[85%] sm:w-[calc((100%-20px)/2)] lg:w-[calc((100%-40px)/3)] flex flex-col rounded-3xl border border-neutral-200 bg-white p-6 sm:p-7"
             >
               <StarRating rating={t.rating} />
-              <blockquote className="mt-3 sm:mt-4 flex-1 text-sm sm:text-[15px] leading-relaxed text-neutral-700 line-clamp-5 sm:line-clamp-none">
+              <blockquote className="mt-4 flex-1 text-[15px] leading-relaxed text-neutral-700">
                 &ldquo;{t.review}&rdquo;
               </blockquote>
               <div className="mt-6 flex items-center gap-3 border-t border-neutral-100 pt-5">
