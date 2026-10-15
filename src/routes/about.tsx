@@ -74,7 +74,7 @@ function AboutPage() {
       <SiteNav revealed={true} />
       <main id="main-content" className="relative min-h-screen">
         <CyberMeshBackground />
-        <div className="relative z-10 pt-24 sm:pt-[104px] lg:pt-28 pb-20">
+        <div className="relative z-10 pt-24 sm:pt-[104px] lg:pt-28 pb-16 sm:pb-20">
           <AboutSection />
         </div>
       </main>

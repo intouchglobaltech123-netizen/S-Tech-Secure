@@ -63,10 +63,10 @@ export function AboutSection() {
               Our team designs tailored surveillance and smart automation systems for homes and businesses, from
               cameras to fully integrated automation, with your safety and convenience first.
             </p>
-            <div className="mt-7 flex flex-col sm:flex-row gap-3">
+            <div className="mt-6 sm:mt-7 grid grid-cols-2 sm:flex sm:flex-row gap-3">
               <Link
                 to="/services"
-                className="inline-flex items-center justify-center h-12 px-6 rounded-xl bg-[#FF7A00] hover:bg-[#E96F00] text-white text-[15px] font-semibold transition-colors"
+                className="inline-flex items-center justify-center h-11 sm:h-12 px-3 sm:px-6 rounded-xl bg-[#FF7A00] hover:bg-[#E96F00] text-white text-sm sm:text-[15px] font-semibold transition-colors"
               >
                 Explore our services
               </Link>
@@ -74,7 +74,7 @@ export function AboutSection() {
                 href={whatsapp("Hi S TEC SECURE, I would like to know more about your security solutions.")}
                 target="_blank"
                 rel="noopener noreferrer nofollow"
-                className="inline-flex items-center justify-center h-12 px-6 rounded-xl border border-neutral-300 bg-white text-[#111827] text-[15px] font-semibold hover:border-[#0D1C34] transition-colors"
+                className="inline-flex items-center justify-center h-11 sm:h-12 px-3 sm:px-6 rounded-xl border border-neutral-300 bg-white text-[#111827] text-sm sm:text-[15px] font-semibold hover:border-[#0D1C34] transition-colors"
               >
                 Talk to an engineer
               </a>
@@ -111,14 +111,14 @@ export function AboutSection() {
         </dl>
 
         {/* ── 2. What we do ───────────────────────────────── */}
-        <section aria-labelledby="what-heading" className="mt-20">
+        <section aria-labelledby="what-heading" className="mt-14 sm:mt-20">
           <p className={eyebrow}>What we do</p>
           <h2 id="what-heading" className={`mt-2 ${sectionHeading}`}>
             Security and automation, done properly
           </h2>
-          <ol className="mt-6 grid grid-cols-1 md:grid-cols-3 gap-4">
+          <ol className="mt-6 grid grid-cols-1 md:grid-cols-3 gap-3 sm:gap-4">
             {WHAT_WE_DO.map((item, i) => (
-              <li key={item.title} className="rounded-2xl bg-white border border-neutral-200 p-6">
+              <li key={item.title} className="rounded-2xl bg-white border border-neutral-200 p-5 sm:p-6">
                 <span className="inline-flex h-8 min-w-8 items-center justify-center rounded-full bg-[#FFF4E8] px-2 text-sm font-bold text-[#FF7A00] tabular-nums">
                   {String(i + 1).padStart(2, "0")}
                 </span>
@@ -132,12 +132,12 @@ export function AboutSection() {
         {/* ── 3. CEO message (navy panel) ─────────────────── */}
         <section
           aria-labelledby="ceo-heading"
-          className="mt-20 relative overflow-hidden rounded-3xl bg-[#0D1C34] text-white"
+          className="mt-14 sm:mt-20 relative overflow-hidden rounded-3xl bg-[#0D1C34] text-white"
         >
           <div aria-hidden className="pointer-events-none absolute -right-24 -top-24 h-80 w-80 rounded-full bg-[#FF7A00]/15 blur-3xl" />
           <div className="relative grid grid-cols-1 lg:grid-cols-12 items-stretch">
             <div className="lg:col-span-4 p-6 sm:p-8 lg:p-10 lg:pr-0">
-              <div className="mx-auto lg:mx-0 max-w-[300px] aspect-[4/5] overflow-hidden rounded-2xl bg-white/5 ring-1 ring-white/10">
+              <div className="mx-auto lg:mx-0 max-w-[200px] sm:max-w-[300px] aspect-[4/5] overflow-hidden rounded-2xl bg-white/5 ring-1 ring-white/10">
                 <img
                   src="/ceo.png"
                   alt="Mr. Santhosh, CEO of S TEC SECURE"
@@ -152,13 +152,13 @@ export function AboutSection() {
                 Message from the CEO
               </h2>
               <blockquote className="mt-4">
-                <p className="text-2xl sm:text-3xl font-bold leading-snug tracking-tight">
+                <p className="text-xl sm:text-3xl font-bold leading-snug tracking-tight">
                   <span aria-hidden className="text-[#FF7A00]">“</span>
                   At S TEC SECURE, we are dedicated to safeguarding your world with advanced, reliable security
                   solutions. Join us in building a safer future with protection you can count on.
                   <span aria-hidden className="text-[#FF7A00]">”</span>
                 </p>
-                <footer className="mt-8 flex flex-wrap items-center justify-between gap-5 border-t border-white/10 pt-6">
+                <footer className="mt-6 sm:mt-8 flex flex-wrap items-center justify-between gap-4 sm:gap-5 border-t border-white/10 pt-5 sm:pt-6">
                   <div>
                     <p className="text-lg font-bold">Mr. Santhosh</p>
                     <p className="text-sm text-white/60">CEO, S TEC SECURE</p>
@@ -178,13 +178,13 @@ export function AboutSection() {
         </section>
 
         {/* ── 4. Mission & vision ─────────────────────────── */}
-        <section aria-labelledby="mission-heading" className="mt-20">
+        <section aria-labelledby="mission-heading" className="mt-14 sm:mt-20">
           <p className={eyebrow}>Mission &amp; vision</p>
           <h2 id="mission-heading" className={`mt-2 ${sectionHeading}`}>
             What drives us
           </h2>
-          <div className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div className="rounded-3xl bg-white border border-neutral-200 p-6 sm:p-8">
+          <div className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4">
+            <div className="rounded-3xl bg-white border border-neutral-200 p-5 sm:p-8">
               <h3 className="text-lg font-bold">Our mission</h3>
               <p className="mt-3 text-[15px] text-neutral-600 leading-relaxed">
                 To deliver state-of-the-art surveillance and automation solutions that protect assets and improve how
@@ -192,7 +192,7 @@ export function AboutSection() {
                 keep adapting to new technology so our solutions stay efficient and future-ready.
               </p>
             </div>
-            <div className="rounded-3xl bg-[#FFF4E8] border border-[#FFE2C2] p-6 sm:p-8">
+            <div className="rounded-3xl bg-[#FFF4E8] border border-[#FFE2C2] p-5 sm:p-8">
               <h3 className="text-lg font-bold">Our vision</h3>
               <p className="mt-3 text-[15px] text-[#7C2D12]/80 leading-relaxed">
                 To be a leader in security and automation, known for excellence, innovation and customer-first
@@ -206,7 +206,7 @@ export function AboutSection() {
         {/* ── 5. Why choose us (light orange panel, checklist) ── */}
         <section
           aria-labelledby="why-heading"
-          className="mt-20 rounded-3xl bg-[#FFF4E8] border border-[#FFE2C2] p-6 sm:p-10 grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start"
+          className="mt-14 sm:mt-20 rounded-3xl bg-[#FFF4E8] border border-[#FFE2C2] p-5 sm:p-10 grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8 lg:gap-12 items-start"
         >
           <div className="lg:col-span-4">
             <p className={eyebrow}>Why S TEC SECURE</p>
@@ -217,7 +217,7 @@ export function AboutSection() {
               Straightforward advice, careful installation and support that continues after the job is done.
             </p>
           </div>
-          <ul className="lg:col-span-8 grid grid-cols-1 sm:grid-cols-2 gap-x-10 gap-y-6">
+          <ul className="lg:col-span-8 grid grid-cols-1 sm:grid-cols-2 gap-x-10 gap-y-5 sm:gap-y-6">
             {REASONS.map((r) => (
               <li key={r.title} className="flex gap-4">
                 <span
@@ -236,7 +236,7 @@ export function AboutSection() {
         </section>
 
         {/* ── 6. Areas we serve ───────────────────────────── */}
-        <section aria-labelledby="areas-heading" className="mt-20 grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
+        <section aria-labelledby="areas-heading" className="mt-14 sm:mt-20 grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
           <div className="lg:col-span-4">
             <p className={eyebrow}>Service areas</p>
             <h2 id="areas-heading" className={`mt-2 ${sectionHeading}`}>
@@ -250,7 +250,7 @@ export function AboutSection() {
               href={whatsapp("Hi S TEC SECURE, do you cover my area?")}
               target="_blank"
               rel="noopener noreferrer nofollow"
-              className="mt-5 inline-flex items-center justify-center h-11 px-6 rounded-xl bg-[#0D1C34] hover:bg-[#142A4D] text-white text-sm font-semibold transition-colors"
+              className="mt-5 flex sm:inline-flex items-center justify-center h-11 px-6 rounded-xl bg-[#0D1C34] hover:bg-[#142A4D] text-white text-sm font-semibold transition-colors"
             >
               Check my area on WhatsApp
             </a>
@@ -266,16 +266,17 @@ export function AboutSection() {
                 <p className="flex items-center gap-2 text-[15px] font-semibold text-[#111827]">
                   <span aria-hidden className="h-1.5 w-1.5 rounded-full bg-[#FF7A00]" />
                   {a.name}
-                  {i === 0 && <span className="ml-auto text-xs font-semibold text-[#C25E00]">Head office</span>}
+                  {i === 0 && <span className="ml-auto hidden sm:inline text-xs font-semibold text-[#C25E00]">Head office</span>}
                 </p>
-                <p className="mt-1 text-xs text-neutral-500 leading-snug">{a.note}</p>
+                <p className="mt-1 hidden sm:block text-xs text-neutral-500 leading-snug">{a.note}</p>
+                {i === 0 && <p className="mt-0.5 sm:hidden text-xs font-semibold text-[#C25E00]">Head office</p>}
               </li>
             ))}
           </ul>
         </section>
 
         {/* ── 7. FAQ (matches the FAQ structured data on this page) ── */}
-        <section aria-labelledby="faq-heading" className="mt-20 grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
+        <section aria-labelledby="faq-heading" className="mt-14 sm:mt-20 grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
           <div className="lg:col-span-4 lg:sticky lg:top-28">
             <p className={eyebrow}>Questions</p>
             <h2 id="faq-heading" className={`mt-2 ${sectionHeading}`}>
@@ -291,7 +292,7 @@ export function AboutSection() {
         {/* ── 8. Call to action ───────────────────────────── */}
         <section
           aria-label="Free site survey"
-          className="mt-20 rounded-3xl bg-[#0D1C34] text-white px-6 py-7 sm:px-10 sm:py-8 flex flex-col md:flex-row md:items-center justify-between gap-5"
+          className="mt-14 sm:mt-20 rounded-3xl bg-[#0D1C34] text-white px-6 py-7 sm:px-10 sm:py-8 flex flex-col md:flex-row md:items-center justify-between gap-5"
         >
           <div className="max-w-2xl">
             <p className="text-xl sm:text-2xl font-bold tracking-tight">Need advice for your property?</p>

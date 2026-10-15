@@ -177,7 +177,7 @@ function ServicesPage() {
       <main className="relative">
         <CyberMeshBackground />
 
-        <div className="relative z-10 max-w-7xl mx-auto px-6 sm:px-10 lg:px-12 pt-24 sm:pt-[104px] lg:pt-28 pb-20">
+        <div className="relative z-10 max-w-7xl mx-auto px-6 sm:px-10 lg:px-12 pt-24 sm:pt-[104px] lg:pt-28 pb-16 sm:pb-20">
           {/* ── 1. Heading ─────────────────────────────────────── */}
           <header>
             <h1 className="text-3xl sm:text-4xl lg:text-[34px] font-bold tracking-tight leading-tight">
@@ -200,7 +200,7 @@ function ServicesPage() {
           </dl>
 
           {/* ── 2. All services (compact: all nine fit in about one screen) ── */}
-          <section aria-label="All services" className="mt-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <section aria-label="All services" className="mt-6 sm:mt-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
             {SERVICES_DATA.map((sys) => {
               const name = serviceName(sys.id, sys.title);
               return (
@@ -208,9 +208,9 @@ function ServicesPage() {
                   key={sys.id}
                   to="/services/$serviceId"
                   params={{ serviceId: sys.id }}
-                  className="group flex items-center gap-4 rounded-2xl bg-white border border-neutral-200 p-3 pr-4 hover:-translate-y-0.5 hover:border-[#FF7A00]/60 hover:shadow-[0_18px_40px_-26px_rgba(13,28,52,0.45)] transition-all duration-300"
+                  className="group flex items-center gap-3 sm:gap-4 rounded-2xl bg-white border border-neutral-200 p-3 pr-4 hover:-translate-y-0.5 hover:border-[#FF7A00]/60 hover:shadow-[0_18px_40px_-26px_rgba(13,28,52,0.45)] transition-all duration-300"
                 >
-                  <div className="h-28 w-28 flex-shrink-0 overflow-hidden rounded-xl bg-neutral-100">
+                  <div className="h-20 w-20 sm:h-28 sm:w-28 flex-shrink-0 overflow-hidden rounded-xl bg-neutral-100">
                     <img
                       src={`/services/${sys.id}.jpg`}
                       alt={`${name} installed by S Tec Secure`}
@@ -224,7 +224,7 @@ function ServicesPage() {
                       {name}
                     </h2>
                     <p className="mt-1 text-sm text-neutral-500 leading-snug line-clamp-2">{sys.tagline}</p>
-                    <span className="mt-2 inline-flex items-center gap-1.5 text-sm font-semibold text-[#111827]">
+                    <span className="mt-2 hidden sm:inline-flex items-center gap-1.5 text-sm font-semibold text-[#111827]">
                       View details
                       <span aria-hidden className="text-[#FF7A00] transition-transform group-hover:translate-x-1">
                         →
@@ -237,20 +237,20 @@ function ServicesPage() {
           </section>
 
           {/* ── 3. Find the right setup ────────────────────────── */}
-          <section aria-labelledby="setup-heading" className="mt-20">
+          <section aria-labelledby="setup-heading" className="mt-14 sm:mt-20">
             <p className={eyebrow}>CCTV setup guide</p>
             <h2 id="setup-heading" className={`mt-2 ${sectionHeading}`}>
               Find the right setup for your property
             </h2>
 
-            <div className="mt-6 flex flex-wrap gap-2">
+            <div className="mt-5 sm:mt-6 -mx-6 px-6 sm:mx-0 sm:px-0 flex gap-2 overflow-x-auto sm:flex-wrap sm:overflow-visible [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
               {PROPERTY_PROFILES.map((p) => (
                 <button
                   key={p.id}
                   type="button"
                   aria-pressed={p.id === activeProfileId}
                   onClick={() => setActiveProfileId(p.id)}
-                  className={`px-4 py-2 rounded-full border text-sm font-medium transition-colors cursor-pointer ${
+                  className={`flex-shrink-0 whitespace-nowrap px-4 py-2 rounded-full border text-sm font-medium transition-colors cursor-pointer ${
                     p.id === activeProfileId
                       ? "bg-[#0D1C34] border-[#0D1C34] text-white"
                       : "bg-white border-neutral-200 text-neutral-600 hover:border-neutral-300 hover:text-[#111827]"
@@ -261,12 +261,12 @@ function ServicesPage() {
               ))}
             </div>
 
-            <div className="mt-5 grid grid-cols-1 lg:grid-cols-12 gap-5">
-              <div className="lg:col-span-8 rounded-3xl bg-white border border-neutral-200 p-6 sm:p-8">
+            <div className="mt-4 sm:mt-5 grid grid-cols-1 lg:grid-cols-12 gap-3 sm:gap-5">
+              <div className="lg:col-span-8 rounded-3xl bg-white border border-neutral-200 p-5 sm:p-8">
                 <p className="text-sm text-neutral-500">{activeProfile.subtitle}</p>
                 <h3 className="mt-1 text-xl font-bold tracking-tight">Recommended plan for a {activeProfile.label.toLowerCase()}</h3>
 
-                <dl className="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-x-8 divide-y divide-neutral-100 sm:divide-y-0">
+                <dl className="mt-4 sm:mt-6 grid grid-cols-1 sm:grid-cols-2 gap-x-8 divide-y divide-neutral-100 sm:divide-y-0">
                   {[
                     ["Cameras", activeProfile.cameras],
                     ["Recording", activeProfile.storage],
@@ -289,7 +289,7 @@ function ServicesPage() {
                 </ul>
               </div>
 
-              <div className="lg:col-span-4 rounded-3xl bg-[#FFF4E8] border border-[#FFE2C2] p-6 sm:p-8 flex flex-col justify-between gap-6">
+              <div className="lg:col-span-4 rounded-3xl bg-[#FFF4E8] border border-[#FFE2C2] p-5 sm:p-8 flex flex-col justify-between gap-5 sm:gap-6">
                 <div>
                   <p className="text-xl font-bold tracking-tight text-[#111827]">Not sure which plan fits?</p>
                   <p className="mt-2 text-sm text-[#7C2D12]/80 leading-relaxed">
@@ -311,7 +311,7 @@ function ServicesPage() {
           {/* ── 4. How we install (navy panel to break up the page) ── */}
           <section
             aria-labelledby="standards-heading"
-            className="mt-20 relative overflow-hidden rounded-3xl bg-[#0D1C34] text-white px-6 py-10 sm:px-10 sm:py-12"
+            className="mt-14 sm:mt-20 relative overflow-hidden rounded-3xl bg-[#0D1C34] text-white px-5 py-8 sm:px-10 sm:py-12"
           >
             <div aria-hidden className="pointer-events-none absolute -right-24 -top-24 h-72 w-72 rounded-full bg-[#FF7A00]/15 blur-3xl" />
             <div className="relative flex flex-col gap-2 lg:flex-row lg:items-end lg:justify-between">
@@ -321,11 +321,11 @@ function ServicesPage() {
                   How we install every system
                 </h2>
               </div>
-              <p className="max-w-md text-sm text-white/60 lg:text-right">
+              <p className="hidden sm:block max-w-md text-sm text-white/60 lg:text-right">
                 The same careful process on every job, from a two-camera home to a full factory.
               </p>
             </div>
-            <ol className="relative mt-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-px overflow-hidden rounded-2xl bg-white/10">
+            <ol className="relative mt-6 sm:mt-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-px overflow-hidden rounded-2xl bg-white/10">
               {STANDARDS.map((st, i) => (
                 <li key={st.title} className="bg-[#0D1C34] p-5 sm:p-6">
                   <span className="text-sm font-bold text-[#FF7A00] tabular-nums">{String(i + 1).padStart(2, "0")}</span>
@@ -337,7 +337,7 @@ function ServicesPage() {
           </section>
 
           {/* ── 5. Local SEO content ───────────────────────────── */}
-          <section aria-labelledby="local-heading" className="mt-20 grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
+          <section aria-labelledby="local-heading" className="mt-14 sm:mt-20 grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8 lg:gap-12 items-start">
             <div className="lg:col-span-5">
               <p className={eyebrow}>Across Tamil Nadu</p>
               <h2 id="local-heading" className={`mt-2 ${sectionHeading}`}>
@@ -380,7 +380,7 @@ function ServicesPage() {
 
             <div className="lg:col-span-7">
               <h3 className="text-base font-bold text-[#111827]">Areas we serve</h3>
-              <ul className="mt-4 grid grid-cols-2 sm:grid-cols-3 gap-3">
+              <ul className="mt-4 grid grid-cols-2 sm:grid-cols-3 gap-2.5 sm:gap-3">
                 {serviceAreas.map((a) => (
                   <li
                     key={a.name}
@@ -390,7 +390,7 @@ function ServicesPage() {
                       <span aria-hidden className="h-1.5 w-1.5 rounded-full bg-[#FF7A00]" />
                       {a.name}
                     </p>
-                    <p className="mt-1 text-xs text-neutral-500 leading-snug">{a.note}</p>
+                    <p className="mt-1 hidden sm:block text-xs text-neutral-500 leading-snug">{a.note}</p>
                   </li>
                 ))}
               </ul>
@@ -398,7 +398,7 @@ function ServicesPage() {
           </section>
 
           {/* ── 6. FAQ (matches the FAQ structured data) ────────── */}
-          <section aria-labelledby="faq-heading" className="mt-20 grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
+          <section aria-labelledby="faq-heading" className="mt-14 sm:mt-20 grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8 lg:gap-12 items-start">
             <div className="lg:col-span-4 lg:sticky lg:top-28">
               <p className={eyebrow}>Questions</p>
               <h2 id="faq-heading" className={`mt-2 ${sectionHeading}`}>
@@ -433,7 +433,7 @@ function ServicesPage() {
           {/* ── 7. Brochure ────────────────────────────────────── */}
           <section
             aria-label="Company brochure"
-            className="mt-20 rounded-3xl bg-[#0D1C34] text-white px-6 py-7 sm:px-10 sm:py-8 flex flex-col md:flex-row md:items-center justify-between gap-5"
+            className="mt-14 sm:mt-20 rounded-3xl bg-[#0D1C34] text-white px-6 py-7 sm:px-10 sm:py-8 flex flex-col md:flex-row md:items-center justify-between gap-5"
           >
             <div className="max-w-2xl">
               <p className="text-xl sm:text-2xl font-bold tracking-tight">Download our company brochure</p>

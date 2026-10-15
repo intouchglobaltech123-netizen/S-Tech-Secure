@@ -181,7 +181,7 @@ function ServiceDetailPage() {
       <main className="relative">
         <CyberMeshBackground />
 
-        <div className="relative z-10 max-w-7xl mx-auto px-6 sm:px-10 lg:px-12 pt-24 sm:pt-[104px] lg:pt-28 pb-20">
+        <div className="relative z-10 max-w-7xl mx-auto px-6 sm:px-10 lg:px-12 pt-24 sm:pt-[104px] lg:pt-28 pb-16 sm:pb-20">
           {/* Breadcrumb */}
           <nav aria-label="Breadcrumb" className="text-sm text-neutral-500">
             <ol className="flex flex-wrap items-center gap-2">
@@ -204,16 +204,16 @@ function ServiceDetailPage() {
           </nav>
 
           {/* ── 1. Intro ─────────────────────────────────────── */}
-          <section className="mt-6 grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
+          <section className="mt-5 sm:mt-6 grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8 lg:gap-12 items-center">
             <div className="lg:col-span-7">
               <p className={eyebrow}>{titleCase(service.badge)}</p>
               <h1 className="mt-2 text-3xl sm:text-4xl lg:text-[44px] font-bold tracking-tight leading-[1.12]">{name}</h1>
-              <p className="mt-5 text-lg text-neutral-700 leading-relaxed">{service.overview}</p>
+              <p className="mt-4 sm:mt-5 text-base sm:text-lg text-neutral-700 leading-relaxed">{service.overview}</p>
               {service.secondaryText && (
                 <p className="mt-3 text-base text-neutral-500 leading-relaxed">{service.secondaryText}</p>
               )}
 
-              <ul className="mt-6 flex flex-wrap gap-2 text-sm">
+              <ul className="mt-5 sm:mt-6 flex flex-wrap gap-2 text-sm">
                 {["Free site survey", "Installed by our own engineers", "Erode, Salem & Coimbatore"].map((fact) => (
                   <li
                     key={fact}
@@ -225,7 +225,7 @@ function ServiceDetailPage() {
                 ))}
               </ul>
 
-              <div className="mt-8 flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-5">
+              <div className="mt-6 sm:mt-8 flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-5">
                 <a
                   href={whatsappUrl}
                   target="_blank"
@@ -244,7 +244,7 @@ function ServiceDetailPage() {
             </div>
 
             <div className="lg:col-span-5">
-              <div className="aspect-square max-h-[460px] w-full rounded-3xl overflow-hidden bg-neutral-100 border border-neutral-200">
+              <div className="aspect-[4/3] sm:aspect-square max-h-[460px] w-full rounded-3xl overflow-hidden bg-neutral-100 border border-neutral-200">
                 <img
                   src={`/services/${service.id}.jpg`}
                   alt={`${name} installed by S Tec Secure`}
@@ -255,28 +255,30 @@ function ServiceDetailPage() {
           </section>
 
           {/* ── 2. Key features ─────────────────────────────── */}
-          <section aria-labelledby="features-heading" className="mt-20">
+          <section aria-labelledby="features-heading" className="mt-14 sm:mt-20">
             <p className={eyebrow}>Key features</p>
             <h2 id="features-heading" className={`mt-2 ${sectionHeading}`}>
               What you get with {shortName}
             </h2>
-            <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 sm:gap-4 overflow-hidden sm:overflow-visible rounded-2xl sm:rounded-none border border-neutral-200 sm:border-0 bg-white sm:bg-transparent divide-y divide-neutral-100 sm:divide-y-0">
               {service.keyFeatures.map((feat, i) => (
-                <div key={feat.title} className="rounded-2xl bg-white border border-neutral-200 p-5 sm:p-6">
-                  <span className="inline-flex h-8 min-w-8 items-center justify-center rounded-full bg-[#FFF4E8] px-2 text-sm font-bold text-[#FF7A00] tabular-nums">
+                <div key={feat.title} className="flex gap-3 sm:block p-5 sm:p-6 sm:rounded-2xl sm:bg-white sm:border sm:border-neutral-200">
+                  <span className="inline-flex h-7 sm:h-8 min-w-7 sm:min-w-8 flex-shrink-0 items-center justify-center rounded-full bg-[#FFF4E8] px-2 text-xs sm:text-sm font-bold text-[#FF7A00] tabular-nums">
                     {String(i + 1).padStart(2, "0")}
                   </span>
-                  <h3 className="mt-3 text-base font-bold text-[#111827] leading-snug">{feat.title}</h3>
-                  <p className="mt-1.5 text-sm text-neutral-600 leading-relaxed">{feat.description}</p>
+                  <div>
+                    <h3 className="mt-0.5 sm:mt-3 text-base font-bold text-[#111827] leading-snug">{feat.title}</h3>
+                    <p className="mt-1 sm:mt-1.5 text-sm text-neutral-600 leading-relaxed">{feat.description}</p>
+                  </div>
                 </div>
               ))}
             </div>
           </section>
 
           {/* ── 3. Where it's used + what's included ─────────── */}
-          <section className="mt-20 grid grid-cols-1 lg:grid-cols-12 gap-6">
+          <section className="mt-14 sm:mt-20 grid grid-cols-1 lg:grid-cols-12 gap-4 sm:gap-6">
             {seo && (
-              <div className="lg:col-span-5 rounded-3xl bg-[#0D1C34] text-white p-6 sm:p-8">
+              <div className="lg:col-span-5 rounded-3xl bg-[#0D1C34] text-white p-5 sm:p-8">
                 <h2 className="text-xl sm:text-2xl font-bold tracking-tight">Where {shortName} is used</h2>
                 <ul className="mt-5 divide-y divide-white/10">
                   {seo.useCases.map((u) => (
@@ -289,7 +291,7 @@ function ServiceDetailPage() {
               </div>
             )}
 
-            <div className={`${seo ? "lg:col-span-7" : "lg:col-span-12"} rounded-3xl bg-white border border-neutral-200 p-6 sm:p-8`}>
+            <div className={`${seo ? "lg:col-span-7" : "lg:col-span-12"} rounded-3xl bg-white border border-neutral-200 p-5 sm:p-8`}>
               <h2 className="text-xl sm:text-2xl font-bold tracking-tight">What's included with installation</h2>
               <ol className="mt-5 divide-y divide-neutral-100">
                 {included.map((item, i) => {
@@ -313,7 +315,7 @@ function ServiceDetailPage() {
           </section>
 
           {/* ── 4. FAQ (matches the FAQ structured data) ───────── */}
-          <section aria-labelledby="faq-heading" className="mt-20 grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
+          <section aria-labelledby="faq-heading" className="mt-14 sm:mt-20 grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8 lg:gap-12 items-start">
             <div className="lg:col-span-4 lg:sticky lg:top-28">
               <p className={eyebrow}>Questions</p>
               <h2 id="faq-heading" className={`mt-2 ${sectionHeading}`}>
@@ -329,7 +331,7 @@ function ServiceDetailPage() {
           {/* ── 5. Call to action ─────────────────────────────── */}
           <section
             aria-label="Free site survey"
-            className="mt-20 rounded-3xl bg-[#0D1C34] text-white px-6 py-7 sm:px-10 sm:py-8 flex flex-col md:flex-row md:items-center justify-between gap-5"
+            className="mt-14 sm:mt-20 rounded-3xl bg-[#0D1C34] text-white px-6 py-7 sm:px-10 sm:py-8 flex flex-col md:flex-row md:items-center justify-between gap-5"
           >
             <div className="max-w-2xl">
               <p className="text-xl sm:text-2xl font-bold tracking-tight">Planning {shortName === "CCTV" ? "a CCTV installation" : shortName}?</p>
@@ -348,7 +350,7 @@ function ServiceDetailPage() {
           </section>
 
           {/* ── 6. Other services (internal links) ──────────────── */}
-          <section aria-labelledby="others-heading" className="mt-20">
+          <section aria-labelledby="others-heading" className="mt-14 sm:mt-20">
             <div className="flex items-end justify-between gap-4">
               <h2 id="others-heading" className={sectionHeading}>
                 Other services
@@ -360,7 +362,7 @@ function ServiceDetailPage() {
                 View all services
               </Link>
             </div>
-            <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div className="mt-5 sm:mt-6 -mx-6 px-6 scroll-px-6 flex gap-3 overflow-x-auto snap-x snap-mandatory [scrollbar-width:none] [&::-webkit-scrollbar]:hidden sm:mx-0 sm:px-0 sm:scroll-px-0 sm:grid sm:grid-cols-2 lg:grid-cols-4 sm:gap-4 sm:overflow-visible">
               {others.map((o) => {
                 const oName = serviceSeoName(o.id, o.title);
                 return (
@@ -368,7 +370,7 @@ function ServiceDetailPage() {
                     key={o.id}
                     to="/services/$serviceId"
                     params={{ serviceId: o.id }}
-                    className="group flex items-center gap-4 rounded-2xl bg-white border border-neutral-200 p-3 hover:border-[#FF7A00]/60 transition-colors"
+                    className="group flex w-[78%] flex-shrink-0 snap-start sm:w-auto items-center gap-4 rounded-2xl bg-white border border-neutral-200 p-3 hover:border-[#FF7A00]/60 transition-colors"
                   >
                     <img
                       src={`/services/${o.id}.jpg`}

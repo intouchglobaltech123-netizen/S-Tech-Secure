@@ -25,7 +25,7 @@ const steps = [
 
 export function HowItWorks() {
   return (
-    <section className="relative w-full py-20 sm:py-24" aria-labelledby="how-heading" style={{ fontFamily: "'Inter', sans-serif" }}>
+    <section className="relative w-full py-14 sm:py-24" aria-labelledby="how-heading" style={{ fontFamily: "'Inter', sans-serif" }}>
       <div className="max-w-7xl mx-auto px-6 sm:px-10 lg:px-12">
         <div className="max-w-2xl">
           <p className="text-sm font-semibold text-[#FF7A00]">How it works</p>
@@ -36,21 +36,24 @@ export function HowItWorks() {
         </div>
 
         {/* Steps with a connecting line */}
-        <ol className="relative mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-6">
+        <ol className="relative mt-8 sm:mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8 lg:gap-6">
           <span aria-hidden className="absolute left-0 right-0 top-5 hidden h-px bg-neutral-200 lg:block" />
+          <span aria-hidden className="absolute left-5 top-5 bottom-16 w-px bg-neutral-200 sm:hidden" />
           {steps.map((step, i) => (
-            <li key={step.title} className="relative">
-              <span className="relative z-10 flex h-10 w-10 items-center justify-center rounded-full bg-[#FF7A00] text-sm font-bold text-white ring-8 ring-[#F8FAFC]">
+            <li key={step.title} className="relative flex gap-4 sm:block">
+              <span className="relative z-10 flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-[#FF7A00] text-sm font-bold text-white ring-4 sm:ring-8 ring-[#F8FAFC]">
                 {i + 1}
               </span>
-              <h3 className="mt-5 text-lg font-bold text-[#111827]">{step.title}</h3>
-              <p className="mt-2 text-sm leading-relaxed text-neutral-600 lg:pr-4">{step.description}</p>
+              <div>
+                <h3 className="mt-2 sm:mt-5 text-lg font-bold text-[#111827]">{step.title}</h3>
+                <p className="mt-1 sm:mt-2 text-sm leading-relaxed text-neutral-600 lg:pr-4">{step.description}</p>
+              </div>
             </li>
           ))}
         </ol>
 
         {/* Call to action */}
-        <div className="mt-14 flex flex-col md:flex-row md:items-center justify-between gap-6 rounded-3xl bg-[#0D1C34] px-6 py-8 sm:px-10 text-white">
+        <div className="mt-10 sm:mt-14 flex flex-col md:flex-row md:items-center justify-between gap-6 rounded-3xl bg-[#0D1C34] px-6 py-8 sm:px-10 text-white">
           <div>
             <h3 className="text-2xl font-bold tracking-tight">Book your free site survey</h3>
             <p className="mt-1.5 text-sm text-white/65">

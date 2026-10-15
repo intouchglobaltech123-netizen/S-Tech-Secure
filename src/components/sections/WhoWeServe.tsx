@@ -42,9 +42,9 @@ const SECTORS = [
 
 export function WhoWeServe() {
   return (
-    <section className="relative w-full py-12 sm:py-16" aria-labelledby="serve-heading" style={{ fontFamily: "'Inter', sans-serif" }}>
+    <section className="relative w-full py-8 sm:py-16" aria-labelledby="serve-heading" style={{ fontFamily: "'Inter', sans-serif" }}>
       <div className="max-w-7xl mx-auto px-6 sm:px-10 lg:px-12">
-        <div className="rounded-3xl bg-[#0D1C34] px-6 py-10 sm:px-10 sm:py-12 text-white">
+        <div className="rounded-3xl bg-[#0D1C34] px-5 py-8 sm:px-10 sm:py-12 text-white">
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
             <div className="max-w-2xl">
               <p className="text-sm font-semibold text-[#FF7A00]">Who we serve</p>
@@ -52,22 +52,22 @@ export function WhoWeServe() {
                 Built for homes and businesses
               </h2>
             </div>
-            <p className="max-w-sm text-sm text-white/60 md:text-right">
+            <p className="hidden sm:block max-w-sm text-sm text-white/60 md:text-right">
               Pick your property type to see the service most people like you start with.
             </p>
           </div>
 
-          <ul className="mt-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-px overflow-hidden rounded-2xl bg-white/10">
+          <ul className="mt-6 sm:mt-10 grid grid-cols-2 lg:grid-cols-3 gap-px overflow-hidden rounded-2xl bg-white/10">
             {SECTORS.map((sector) => (
               <li key={sector.title} className="bg-[#0D1C34]">
                 <Link
                   to="/services/$serviceId"
                   params={{ serviceId: sector.serviceId }}
-                  className="group flex h-full flex-col p-6 hover:bg-white/[0.04] transition-colors"
+                  className="group flex h-full flex-col p-4 sm:p-6 hover:bg-white/[0.04] transition-colors"
                 >
-                  <h3 className="text-lg font-bold">{sector.title}</h3>
-                  <p className="mt-2 flex-1 text-sm leading-relaxed text-white/60">{sector.copy}</p>
-                  <span className="mt-5 inline-flex items-center gap-1.5 text-sm font-semibold text-[#FF7A00]">
+                  <h3 className="text-[15px] sm:text-lg font-bold leading-snug">{sector.title}</h3>
+                  <p className="hidden sm:block mt-2 text-sm leading-relaxed text-white/60">{sector.copy}</p>
+                  <span className="mt-auto pt-3 sm:pt-5 inline-flex items-center gap-1.5 text-[13px] sm:text-sm font-semibold text-[#FF7A00]">
                     {sector.service}
                     <span aria-hidden className="transition-transform group-hover:translate-x-0.5">→</span>
                   </span>

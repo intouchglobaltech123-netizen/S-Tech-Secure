@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Menu, X, ArrowRight } from "lucide-react";
+import { Menu, X, ArrowRight, Phone } from "lucide-react";
 import { useRouterState, Link } from "@tanstack/react-router";
 import { hasHeroPlayedInSession } from "@/components/hero/Hero";
 
@@ -87,6 +87,22 @@ export function SiteNav({ revealed = true }: { revealed?: boolean }) {
     setMobileMenuOpen(false);
   }, [pathname]);
 
+  // Stop the page scrolling behind the open phone menu
+  useEffect(() => {
+    if (!mobileMenuOpen) return;
+    const previous = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    // Close it if the screen becomes wide enough for the desktop links (e.g. tablet rotated)
+    const onResize = () => {
+      if (window.innerWidth >= 768) setMobileMenuOpen(false);
+    };
+    window.addEventListener("resize", onResize);
+    return () => {
+      document.body.style.overflow = previous;
+      window.removeEventListener("resize", onResize);
+    };
+  }, [mobileMenuOpen]);
+
   useEffect(() => {
     if (!mobileMenuOpen) return;
     const onKey = (e: KeyboardEvent) => {
@@ -101,20 +117,22 @@ export function SiteNav({ revealed = true }: { revealed?: boolean }) {
 
   return (
     <header
-      className={`fixed top-0 inset-x-0 z-50 w-full select-none border-b transition-all duration-300 ease-out ${
+      className={`fixed top-0 inset-x-0 ${mobileMenuOpen ? "z-[60]" : "z-50"} w-full select-none border-b transition-all duration-300 ease-out ${
         isRevealed
           ? "translate-y-0 opacity-100 pointer-events-auto"
           : "-translate-y-full opacity-0 pointer-events-none"
       } ${
-        solid
-          ? "bg-white/90 backdrop-blur-lg border-slate-200/80"
-          : "bg-transparent border-transparent"
+        mobileMenuOpen
+          ? "h-[100dvh] flex flex-col bg-[#0D1C34] border-transparent"
+          : solid
+            ? "bg-white/90 backdrop-blur-lg border-slate-200/80"
+            : "bg-transparent border-transparent"
       }`}
       style={{ fontFamily: "'Space Grotesk', 'Inter', sans-serif" }}
     >
       {/* Same horizontal padding as the hero, so the logo lines up with the headline */}
       <div
-        className={`max-w-7xl mx-auto px-6 sm:px-10 lg:px-12 flex items-center justify-between gap-6 transition-all duration-300 ${
+        className={`w-full max-w-7xl mx-auto px-6 sm:px-10 lg:px-12 flex items-center justify-between gap-6 transition-all duration-300 ${
           solid ? "py-3" : "py-4 sm:py-5"
         }`}
       >
@@ -124,7 +142,7 @@ export function SiteNav({ revealed = true }: { revealed?: boolean }) {
           aria-label="S TEC SECURE Home"
           className="flex-shrink-0 rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#FF7A00]/60"
         >
-          <MergedLogo isLightNav={solid} className="h-9 sm:h-10 lg:h-11 w-auto" />
+          <MergedLogo isLightNav={solid && !mobileMenuOpen} className="h-9 sm:h-10 lg:h-11 w-auto" />
         </Link>
 
         {/* Desktop: links + one CTA */}
@@ -163,57 +181,100 @@ export function SiteNav({ revealed = true }: { revealed?: boolean }) {
           </Link>
         </div>
 
-        {/* Mobile toggle */}
-        <button
-          type="button"
-          onClick={() => setMobileMenuOpen((v) => !v)}
-          className={`md:hidden inline-flex h-10 w-10 items-center justify-center rounded-full transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#FF7A00]/60 ${
-            solid || mobileMenuOpen
-              ? "bg-[#0D1C34] text-white"
-              : "bg-white/[0.08] border border-white/20 text-white backdrop-blur-md"
-          }`}
-          aria-label={mobileMenuOpen ? "Close navigation menu" : "Open navigation menu"}
-          aria-expanded={mobileMenuOpen}
-          aria-controls="mobile-nav"
-        >
-          {mobileMenuOpen ? <X size={18} /> : <Menu size={18} />}
-        </button>
+        {/* Phone: quick call + menu pill */}
+        <div className="md:hidden flex items-center gap-2">
+          {!mobileMenuOpen && (
+            <a
+              href="tel:+919600252605"
+              aria-label="Call S TEC SECURE"
+              className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-[#FF7A00] text-white shadow-[0_6px_16px_-6px_rgba(255,122,0,0.8)] active:scale-95 transition-transform"
+            >
+              <Phone size={16} strokeWidth={2.4} />
+            </a>
+          )}
+          <button
+            type="button"
+            onClick={() => setMobileMenuOpen((v) => !v)}
+            className={`inline-flex h-10 items-center gap-2 rounded-full pl-4 pr-3 text-sm font-semibold transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#FF7A00]/60 ${
+              mobileMenuOpen
+                ? "bg-white/10 text-white"
+                : solid
+                  ? "bg-[#0D1C34] text-white"
+                  : "bg-white/[0.08] border border-white/20 text-white backdrop-blur-md"
+            }`}
+            aria-label={mobileMenuOpen ? "Close navigation menu" : "Open navigation menu"}
+            aria-expanded={mobileMenuOpen}
+            aria-controls="mobile-nav"
+          >
+            {mobileMenuOpen ? "Close" : "Menu"}
+            {mobileMenuOpen ? <X size={17} /> : <Menu size={17} />}
+          </button>
+        </div>
       </div>
 
-      {/* Mobile menu */}
+      {/* Phone menu: full screen, large links, quick contact */}
       {mobileMenuOpen && (
-        <div id="mobile-nav" className="md:hidden px-4 pb-4">
-          <div className="rounded-2xl bg-[#0D1C34] p-2 text-white shadow-xl animate-in fade-in slide-in-from-top-2 duration-200">
-            <nav aria-label="Mobile Navigation" className="flex flex-col">
-              {navLinks.map((link) => {
-                const current = isActive(link.href);
-                return (
-                  <Link
-                    key={link.label}
-                    to={link.href}
-                    onClick={() => setMobileMenuOpen(false)}
-                    aria-current={current ? "page" : undefined}
-                    className={`flex items-center gap-2.5 rounded-xl px-4 py-3 text-[15px] font-medium transition-colors ${
-                      current ? "bg-white/10 text-white" : "text-white/70 hover:text-white"
-                    }`}
-                  >
-                    <span
-                      aria-hidden
-                      className={`h-1.5 w-1.5 rounded-full ${current ? "bg-[#FF7A00]" : "bg-transparent"}`}
-                    />
-                    {link.label}
-                  </Link>
-                );
-              })}
+        <div id="mobile-nav" className="md:hidden flex-1 overflow-y-auto text-white">
+          <div className="flex min-h-full flex-col px-6 sm:px-10 pt-4 pb-8 animate-in fade-in slide-in-from-top-2 duration-300">
+            <nav aria-label="Mobile Navigation">
+              <ul className="border-t border-white/10">
+                {[...navLinks, { label: "Contact", href: "/contact" } as const].map((link, i) => {
+                  const current = isActive(link.href);
+                  return (
+                    <li key={link.label} className="border-b border-white/10">
+                      <Link
+                        to={link.href}
+                        onClick={() => setMobileMenuOpen(false)}
+                        aria-current={current ? "page" : undefined}
+                        className="group flex items-center gap-4 py-4"
+                      >
+                        <span className="w-6 text-xs font-semibold tabular-nums text-white/35">
+                          {String(i + 1).padStart(2, "0")}
+                        </span>
+                        <span
+                          className={`flex-1 text-[26px] font-semibold tracking-tight transition-colors ${
+                            current ? "text-white" : "text-white/65 group-hover:text-white"
+                          }`}
+                        >
+                          {link.label}
+                        </span>
+                        {current ? (
+                          <span aria-hidden className="h-2.5 w-2.5 rounded-full bg-[#FF7A00]" />
+                        ) : (
+                          <ArrowRight
+                            size={18}
+                            aria-hidden
+                            className="text-white/30 transition-all group-hover:translate-x-0.5 group-hover:text-[#FF7A00]"
+                          />
+                        )}
+                      </Link>
+                    </li>
+                  );
+                })}
+              </ul>
             </nav>
-            <Link
-              to="/contact"
-              onClick={() => setMobileMenuOpen(false)}
-              className="mt-2 flex items-center justify-center gap-1.5 rounded-xl bg-[#FF7A00] px-4 py-3 text-sm font-semibold text-white transition-colors hover:bg-[#E96F00]"
-            >
-              Contact
-              <ArrowRight size={15} />
-            </Link>
+
+            <div className="mt-auto pt-10">
+              <p className="text-sm text-white/55">Talk to an engineer</p>
+              <div className="mt-3 grid grid-cols-2 gap-3">
+                <a
+                  href="tel:+919600252605"
+                  className="flex h-12 items-center justify-center gap-2 rounded-xl bg-[#FF7A00] text-[15px] font-semibold text-white active:scale-[0.98] transition-transform"
+                >
+                  <Phone size={16} strokeWidth={2.4} />
+                  Call us
+                </a>
+                <a
+                  href={`https://wa.me/919600252605?text=${encodeURIComponent("Hi S TEC SECURE, I would like to know more about your services.")}`}
+                  target="_blank"
+                  rel="noopener noreferrer nofollow"
+                  className="flex h-12 items-center justify-center rounded-xl bg-white text-[15px] font-semibold text-[#0D1C34] active:scale-[0.98] transition-transform"
+                >
+                  WhatsApp
+                </a>
+              </div>
+              <p className="mt-5 text-sm text-white/55">Mon – Sat, 8:00 AM – 8:00 PM · Erode, Tamil Nadu</p>
+            </div>
           </div>
         </div>
       )}

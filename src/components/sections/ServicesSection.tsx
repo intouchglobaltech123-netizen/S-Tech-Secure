@@ -159,7 +159,7 @@ const otherServices = SERVICES_DATA.filter((s) => !featuredIds.has(s.id));
 
 export function ServicesSection() {
   return (
-    <section id="services" className="relative w-full py-20 sm:py-24" style={{ fontFamily: "'Inter', sans-serif" }}>
+    <section id="services" className="relative w-full py-14 sm:py-24" style={{ fontFamily: "'Inter', sans-serif" }}>
       <div className="max-w-7xl mx-auto px-6 sm:px-10 lg:px-12">
         {/* Header */}
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-5">
@@ -183,7 +183,7 @@ export function ServicesSection() {
         </div>
 
         {/* Featured services (customer icon designs) */}
-        <div className="mt-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+        <div className="mt-8 sm:mt-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-5">
           {HOME_SERVICES.map((service) => {
             const IconComp = service.Icon;
             return (
@@ -191,25 +191,27 @@ export function ServicesSection() {
                 key={service.id}
                 to="/services/$serviceId"
                 params={{ serviceId: service.id }}
-                className="group relative flex flex-col rounded-3xl bg-[#0D1C34] p-6 sm:p-7 text-white border border-white/5 hover:-translate-y-1 hover:shadow-[0_18px_40px_rgba(13,28,52,0.25)] transition-all duration-300"
+                className="group relative flex flex-row items-start gap-4 sm:flex-col sm:gap-0 rounded-2xl sm:rounded-3xl bg-[#0D1C34] p-5 sm:p-7 text-white border border-white/5 hover:-translate-y-1 hover:shadow-[0_18px_40px_rgba(13,28,52,0.25)] transition-all duration-300"
               >
                 <span className="absolute inset-x-7 top-0 h-0.5 rounded-full bg-[#FF7A00] scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left" />
-                <IconComp className="h-12 w-12 sm:h-14 sm:w-14 text-white group-hover:text-[#FF7A00] transition-colors duration-300" />
-                <h3 className="mt-5 sm:mt-6 text-xl font-bold tracking-tight">{service.title}</h3>
-                <p className="mt-2 flex-1 text-sm leading-relaxed text-white/65">{service.description}</p>
-                <span className="mt-5 sm:mt-6 inline-flex items-center gap-1.5 text-sm font-semibold text-[#FF7A00]">
-                  Learn more
-                  <span aria-hidden className="transition-transform group-hover:translate-x-0.5">→</span>
-                </span>
+                <IconComp className="h-11 w-11 flex-shrink-0 sm:h-14 sm:w-14 text-white group-hover:text-[#FF7A00] transition-colors duration-300" />
+                <div className="flex min-w-0 flex-1 flex-col sm:mt-6 sm:w-full">
+                  <h3 className="text-lg sm:text-xl font-bold tracking-tight">{service.title}</h3>
+                  <p className="mt-1 sm:mt-2 flex-1 text-sm leading-relaxed text-white/65">{service.description}</p>
+                  <span className="hidden sm:inline-flex mt-6 items-center gap-1.5 text-sm font-semibold text-[#FF7A00]">
+                    Learn more
+                    <span aria-hidden className="transition-transform group-hover:translate-x-0.5">→</span>
+                  </span>
+                </div>
               </Link>
             );
           })}
         </div>
 
         {/* Remaining services as quick links */}
-        <div className="mt-5 flex flex-col lg:flex-row lg:items-center gap-4 rounded-3xl border border-neutral-200 bg-white px-6 py-5 sm:px-7">
+        <div className="mt-3 sm:mt-5 flex flex-col lg:flex-row lg:items-center gap-3 sm:gap-4 rounded-2xl sm:rounded-3xl border border-neutral-200 bg-white px-5 py-4 sm:px-7 sm:py-5">
           <p className="flex-shrink-0 text-sm font-semibold text-[#111827]">We also install</p>
-          <ul className="flex flex-wrap gap-2">
+          <ul className="-mx-5 px-5 sm:mx-0 sm:px-0 flex gap-2 overflow-x-auto sm:flex-wrap sm:overflow-visible [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
             {otherServices.map((s) => (
               <li key={s.id}>
                 <Link

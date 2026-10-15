@@ -132,7 +132,7 @@ export function TestimonialsSection() {
     <section
       id="testimonials"
       aria-labelledby="testimonials-heading"
-      className="relative w-full py-20 sm:py-24"
+      className="relative w-full py-14 sm:py-24"
       style={{ fontFamily: "'Inter', sans-serif" }}
     >
       <div className="max-w-7xl mx-auto px-6 sm:px-10 lg:px-12">
@@ -146,7 +146,7 @@ export function TestimonialsSection() {
               Homes, shops and businesses across Erode and nearby towns.
             </p>
           </div>
-          <div className="flex gap-2 flex-shrink-0">
+          <div className="hidden sm:flex gap-2 flex-shrink-0">
             <button type="button" aria-label="Previous reviews" onClick={() => scrollByCard(-1)} className={arrowClass}>
               ←
             </button>
@@ -158,12 +158,12 @@ export function TestimonialsSection() {
 
         <ul
           ref={trackRef}
-          className="mt-10 -mx-6 px-6 sm:mx-0 sm:px-0 flex gap-5 overflow-x-auto snap-x snap-mandatory scroll-smooth pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+          className="mt-8 sm:mt-10 -mx-6 px-6 scroll-px-6 sm:mx-0 sm:px-0 sm:scroll-px-0 flex gap-5 overflow-x-auto snap-x snap-mandatory scroll-smooth pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
         >
           {ALL_TESTIMONIALS.map((t) => (
             <li
               key={t.id}
-              className="snap-start flex-shrink-0 w-[85%] sm:w-[calc((100%-20px)/2)] lg:w-[calc((100%-40px)/3)] flex flex-col rounded-3xl border border-neutral-200 bg-white p-7"
+              className="snap-start flex-shrink-0 w-[85%] sm:w-[calc((100%-20px)/2)] lg:w-[calc((100%-40px)/3)] flex flex-col rounded-3xl border border-neutral-200 bg-white p-6 sm:p-7"
             >
               <StarRating rating={t.rating} />
               <blockquote className="mt-4 flex-1 text-[15px] leading-relaxed text-neutral-700">

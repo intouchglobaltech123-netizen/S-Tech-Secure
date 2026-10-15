@@ -118,22 +118,22 @@ function ArticleCard({ article, onOpen }: { article: Article; onOpen: (a: Articl
     <button
       type="button"
       onClick={() => onOpen(article)}
-      className="group text-left rounded-3xl bg-white border border-neutral-200 overflow-hidden flex flex-col hover:border-[#FF7A00]/60 hover:shadow-[0_20px_50px_-28px_rgba(13,28,52,0.35)] transition-all cursor-pointer"
+      className="group text-left rounded-2xl sm:rounded-3xl bg-white border border-neutral-200 overflow-hidden flex flex-row sm:flex-col hover:border-[#FF7A00]/60 hover:shadow-[0_20px_50px_-28px_rgba(13,28,52,0.35)] transition-all cursor-pointer"
     >
-      <div className="h-52 xl:h-56 overflow-hidden bg-neutral-100">
+      <div className="w-28 flex-shrink-0 self-stretch sm:w-auto sm:h-52 xl:h-56 overflow-hidden bg-neutral-100">
         <img
           src={article.image}
           alt={article.title}
           className="w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-500"
         />
       </div>
-      <div className="p-6 flex flex-col flex-1">
+      <div className="p-4 sm:p-6 flex flex-col flex-1 min-w-0">
         <Meta article={article} />
-        <h3 className="mt-2.5 text-lg font-bold tracking-tight leading-snug group-hover:text-[#FF7A00] transition-colors">
+        <h3 className="mt-1.5 sm:mt-2.5 text-[15px] sm:text-lg font-bold tracking-tight leading-snug group-hover:text-[#FF7A00] transition-colors">
           {article.title}
         </h3>
-        <p className="mt-2 text-sm text-neutral-600 leading-relaxed line-clamp-2">{article.summary}</p>
-        <span className="mt-auto pt-5 text-sm font-semibold text-[#111827] underline decoration-neutral-300 underline-offset-4 group-hover:decoration-[#FF7A00]">
+        <p className="mt-2 hidden sm:block text-sm text-neutral-600 leading-relaxed line-clamp-2">{article.summary}</p>
+        <span className="hidden sm:inline mt-auto pt-5 text-sm font-semibold text-[#111827] underline decoration-neutral-300 underline-offset-4 group-hover:decoration-[#FF7A00]">
           Read article
         </span>
       </div>
@@ -217,21 +217,21 @@ function ArticleReader({
             Written by the <span className="font-semibold text-[#111827]">S TEC SECURE engineering team</span>
           </p>
 
-          <div className="mt-7 aspect-[16/9] rounded-3xl overflow-hidden bg-neutral-100">
+          <div className="mt-5 sm:mt-7 aspect-[16/9] rounded-2xl sm:rounded-3xl overflow-hidden bg-neutral-100">
             <img src={article.image} alt={article.title} className="w-full h-full object-cover" />
           </div>
 
-          <p className="mt-8 text-lg sm:text-xl text-neutral-700 leading-relaxed first-letter:text-5xl first-letter:font-bold first-letter:text-[#FF7A00] first-letter:float-left first-letter:mr-2 first-letter:leading-[0.9]">
+          <p className="mt-6 sm:mt-8 text-base sm:text-xl text-neutral-700 leading-relaxed first-letter:text-5xl first-letter:font-bold first-letter:text-[#FF7A00] first-letter:float-left first-letter:mr-2 first-letter:leading-[0.9]">
             {article.content.intro}
           </p>
 
-          <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div className="mt-6 sm:mt-8 grid grid-cols-1 sm:grid-cols-2 sm:gap-4 overflow-hidden sm:overflow-visible rounded-2xl sm:rounded-none border border-neutral-200 sm:border-0 bg-white sm:bg-transparent divide-y divide-neutral-100 sm:divide-y-0">
             {article.content.points.map((pt, i) => (
               <div
                 key={i}
                 id={`point-${i + 1}`}
-                className={`scroll-mt-32 rounded-2xl bg-white border p-5 sm:p-6 transition-colors ${
-                  activePoint === i ? "border-[#FF7A00]/60" : "border-neutral-200"
+                className={`scroll-mt-32 p-5 sm:p-6 sm:rounded-2xl sm:bg-white sm:border transition-colors ${
+                  activePoint === i ? "sm:border-[#FF7A00]/60" : "sm:border-neutral-200"
                 }`}
               >
                 <span className="inline-flex h-8 min-w-8 items-center justify-center rounded-full bg-[#FFF4E8] px-2 text-sm font-bold text-[#FF7A00] tabular-nums">
@@ -246,7 +246,7 @@ function ArticleReader({
           </div>
 
           {/* Verdict (full width on phones; repeated in the sidebar on desktop) */}
-          <div className="mt-8 lg:hidden rounded-2xl bg-[#FFF4E8] border-l-4 border-[#FF7A00] px-6 py-5">
+          <div className="mt-6 sm:mt-8 lg:hidden rounded-2xl bg-[#FFF4E8] border-l-4 border-[#FF7A00] px-5 sm:px-6 py-5">
             <p className="text-sm font-semibold text-[#C25E00]">Our verdict</p>
             <p className="mt-1.5 text-base text-[#7C2D12] leading-relaxed">{article.content.verdict}</p>
           </div>
@@ -255,7 +255,7 @@ function ArticleReader({
           <button
             type="button"
             onClick={() => onOpen(nextArticle)}
-            className="group mt-10 w-full text-left flex items-center gap-5 rounded-3xl bg-white border border-neutral-200 p-4 sm:p-5 hover:border-[#FF7A00]/60 transition-colors cursor-pointer"
+            className="group mt-8 sm:mt-10 w-full text-left flex items-center gap-4 sm:gap-5 rounded-2xl sm:rounded-3xl bg-white border border-neutral-200 p-4 sm:p-5 hover:border-[#FF7A00]/60 transition-colors cursor-pointer"
           >
             <img
               src={nextArticle.image}
@@ -326,9 +326,9 @@ function ArticleReader({
       </div>
 
       {/* Keep reading */}
-      <div className="mt-16 pt-10 border-t border-neutral-200">
+      <div className="mt-12 sm:mt-16 pt-8 sm:pt-10 border-t border-neutral-200">
         <div className="flex items-end justify-between gap-4">
-          <p className="text-2xl font-bold tracking-tight">Keep reading</p>
+          <p className="text-xl sm:text-2xl font-bold tracking-tight">Keep reading</p>
           <button
             type="button"
             onClick={onClose}
@@ -337,14 +337,14 @@ function ArticleReader({
             View all articles
           </button>
         </div>
-        <div className="mt-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="mt-5 sm:mt-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-6">
           {keepReading.map((a) => (
             <ArticleCard key={a.slug} article={a} onOpen={onOpen} />
           ))}
         </div>
       </div>
 
-      <div className="mt-12 lg:hidden">
+      <div className="mt-10 sm:mt-12 lg:hidden">
         <AdviceBanner />
       </div>
     </article>
@@ -388,7 +388,7 @@ function BlogPage() {
         <CyberMeshBackground />
 
         {/* Same width and side padding as the nav, so everything lines up with the logo */}
-        <div className="relative z-10 max-w-7xl mx-auto px-6 sm:px-10 lg:px-12 pt-24 sm:pt-[104px] lg:pt-28 pb-20">
+        <div className="relative z-10 max-w-7xl mx-auto px-6 sm:px-10 lg:px-12 pt-24 sm:pt-[104px] lg:pt-28 pb-16 sm:pb-20">
           {selectedArticle ? (
             <ArticleReader article={selectedArticle} onClose={closeArticle} onOpen={openArticle} />
           ) : (
@@ -405,7 +405,7 @@ function BlogPage() {
               </div>
 
               {/* Filters */}
-              <div className="mt-6 flex gap-2 overflow-x-auto pb-1 [scrollbar-width:none]">
+              <div className="mt-5 sm:mt-6 -mx-6 px-6 sm:mx-0 sm:px-0 flex gap-2 overflow-x-auto pb-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
                 {FILTER_TABS.map((tab) => (
                   <button
                     key={tab}
@@ -428,7 +428,7 @@ function BlogPage() {
                 <button
                   type="button"
                   onClick={() => openArticle(featured)}
-                  className="group mt-8 w-full text-left grid grid-cols-1 lg:grid-cols-12 rounded-3xl bg-white border border-neutral-200 overflow-hidden hover:border-[#FF7A00]/60 hover:shadow-[0_20px_50px_-28px_rgba(13,28,52,0.35)] transition-all cursor-pointer"
+                  className="group mt-5 sm:mt-8 w-full text-left grid grid-cols-1 lg:grid-cols-12 rounded-3xl bg-white border border-neutral-200 overflow-hidden hover:border-[#FF7A00]/60 hover:shadow-[0_20px_50px_-28px_rgba(13,28,52,0.35)] transition-all cursor-pointer"
                 >
                   <div className="lg:col-span-7 aspect-[16/9] lg:aspect-auto lg:min-h-[340px] overflow-hidden bg-neutral-100">
                     <img
@@ -437,13 +437,13 @@ function BlogPage() {
                       className="w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-500"
                     />
                   </div>
-                  <div className="lg:col-span-5 p-6 sm:p-8 lg:p-10 flex flex-col justify-center">
+                  <div className="lg:col-span-5 p-5 sm:p-8 lg:p-10 flex flex-col justify-center">
                     <Meta article={featured} />
-                    <h2 className="mt-3 text-2xl sm:text-[28px] font-bold tracking-tight leading-snug group-hover:text-[#FF7A00] transition-colors">
+                    <h2 className="mt-2 sm:mt-3 text-xl sm:text-[28px] font-bold tracking-tight leading-snug group-hover:text-[#FF7A00] transition-colors">
                       {featured.title}
                     </h2>
                     <p className="mt-3 text-sm sm:text-base text-neutral-600 leading-relaxed">{featured.summary}</p>
-                    <span className="mt-6 text-sm font-semibold text-[#111827] underline decoration-neutral-300 underline-offset-4 group-hover:decoration-[#FF7A00]">
+                    <span className="mt-4 sm:mt-6 text-sm font-semibold text-[#111827] underline decoration-neutral-300 underline-offset-4 group-hover:decoration-[#FF7A00]">
                       Read article
                     </span>
                   </div>
@@ -452,14 +452,14 @@ function BlogPage() {
 
               {/* Other articles */}
               {rest.length > 0 && (
-                <div className="mt-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div className="mt-3 sm:mt-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-6">
                   {rest.map((article) => (
                     <ArticleCard key={article.slug} article={article} onOpen={openArticle} />
                   ))}
                 </div>
               )}
 
-              <div className="mt-12">
+              <div className="mt-10 sm:mt-12">
                 <AdviceBanner />
               </div>
             </div>

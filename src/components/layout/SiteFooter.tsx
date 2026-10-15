@@ -19,6 +19,13 @@ const SERVICE_LINKS = [
   { id: "access-control", label: "Access Control" },
 ];
 
+const MOBILE_LINKS = [
+  { to: "/about", label: "About" },
+  { to: "/services", label: "Services" },
+  { to: "/blog", label: "Blog" },
+  { to: "/contact", label: "Contact" },
+] as const;
+
 const COMPANY_LINKS = [
   { to: "/about", label: "About us" },
   { to: "/services", label: "All services" },
@@ -112,6 +119,22 @@ export function SiteFooter() {
     "Hi S TEC SECURE, I would like to book a free site survey."
   )}`;
 
+  const socialIcons = SOCIAL_LINKS.map((social) => (
+      <a
+        key={social.label}
+        href={social.href}
+        target="_blank"
+        rel="noopener noreferrer nofollow"
+        aria-label={social.label}
+        title={social.label}
+        className="flex h-8 w-8 items-center justify-center rounded-full border border-white/20 bg-white/[0.03] text-white/75 hover:-translate-y-0.5 hover:border-[#FF7A00] hover:bg-[#FF7A00] hover:text-white hover:shadow-[0_8px_18px_-8px_rgba(255,122,0,0.9)] transition-all duration-200"
+      >
+        <svg viewBox="0 0 24 24" className="h-4 w-4 fill-current" aria-hidden>
+          <path d={social.path} />
+        </svg>
+      </a>
+    ));
+
   return (
     <>
       {/* Survey card sitting on the footer's top edge (half above, half inside) */}
@@ -120,24 +143,26 @@ export function SiteFooter() {
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 md:gap-8 rounded-2xl bg-[#FF7A00] px-6 py-5 [@media(max-height:759px)]:py-3.5 sm:px-8 text-white shadow-[0_18px_40px_-18px_rgba(255,122,0,0.75)]">
             <div>
               <p className="text-lg sm:text-xl font-bold tracking-tight">Book your free site survey</p>
-              <p className="mt-0.5 text-sm text-white/85 [@media(max-height:759px)]:hidden">
+              <p className="mt-0.5 hidden sm:block text-sm text-white/85 [@media(max-height:759px)]:hidden">
                 An engineer visits, checks your property and gives you a clear quote.
               </p>
             </div>
-            <div className="flex flex-wrap gap-2.5 flex-shrink-0">
+            <div className="flex gap-2.5 flex-shrink-0">
               <a
                 href={surveyUrl}
                 target="_blank"
                 rel="noopener noreferrer nofollow"
-                className="inline-flex items-center justify-center rounded-full bg-white px-5 py-2.5 text-sm font-semibold text-[#0D1C34] hover:bg-[#0D1C34] hover:text-white transition-colors"
+                className="flex-1 sm:flex-none inline-flex items-center justify-center whitespace-nowrap rounded-full bg-white px-4 sm:px-5 py-2.5 text-sm font-semibold text-[#0D1C34] hover:bg-[#0D1C34] hover:text-white transition-colors"
               >
-                Book on WhatsApp
+                <span className="sm:hidden">WhatsApp us</span>
+                <span className="hidden sm:inline">Book on WhatsApp</span>
               </a>
               <a
                 href={`tel:+${COMPANY_CONTACT.phoneRaw}`}
-                className="inline-flex items-center justify-center rounded-full border border-white/60 px-5 py-2.5 text-sm font-semibold text-white hover:bg-white/15 transition-colors"
+                className="flex-1 sm:flex-none inline-flex items-center justify-center whitespace-nowrap rounded-full border border-white/60 px-4 sm:px-5 py-2.5 text-sm font-semibold text-white hover:bg-white/15 transition-colors"
               >
-                Call {COMPANY_CONTACT.phone}
+                <span className="sm:hidden">Call us</span>
+                <span className="hidden sm:inline">Call {COMPANY_CONTACT.phone}</span>
               </a>
             </div>
           </div>
@@ -152,10 +177,33 @@ export function SiteFooter() {
         <div className="h-px w-full bg-gradient-to-r from-transparent via-[#FF7A00]/60 to-transparent" />
 
         <div className={`max-w-7xl mx-auto px-6 sm:px-10 lg:px-12 ${showSurveyCard ? "pt-[72px] [@media(max-height:759px)]:pt-[48px]" : "pt-8 [@media(max-height:759px)]:pt-6"} pb-5`}>
+          {/* Phones: a short, centred footer */}
+          <div className="sm:hidden text-center">
+            <Link to="/" aria-label="S TEC SECURE Home" className="inline-block">
+              <MergedLogo isLightNav={false} className="h-10 w-auto" />
+            </Link>
+            <nav aria-label="Footer" className="mt-6 flex flex-wrap justify-center gap-x-6 gap-y-2 text-sm">
+              {MOBILE_LINKS.map((l) => (
+                <Link key={l.to} to={l.to} className="text-white/70 hover:text-[#FF7A00] transition-colors">
+                  {l.label}
+                </Link>
+              ))}
+            </nav>
+            <div className="mt-6 space-y-1">
+              <a href={`tel:${COMPANY_CONTACT.phoneRaw}`} className="block text-base font-semibold text-white">
+                {COMPANY_CONTACT.phone}
+              </a>
+              <a href={`mailto:${EMAIL}`} className="block text-sm text-white/55">
+                {EMAIL}
+              </a>
+            </div>
+            <div className="mt-5 flex justify-center gap-2">{socialIcons}</div>
+          </div>
+
           {/* Columns spread across the full width with equal gaps between them */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 lg:flex lg:justify-between lg:gap-10">
+          <div className="hidden sm:grid grid-cols-2 gap-x-6 gap-y-7 sm:gap-8 lg:flex lg:justify-between lg:gap-10">
             {/* Brand + live status */}
-            <div className="sm:col-span-2 lg:max-w-[22rem]">
+            <div className="col-span-2 lg:max-w-[22rem]">
               <Link to="/" aria-label="S TEC SECURE Home" className="inline-block">
                 <MergedLogo isLightNav={false} className="h-11 w-auto" />
               </Link>
@@ -213,7 +261,7 @@ export function SiteFooter() {
             </nav>
 
             {/* Contact */}
-            <div>
+            <div className="col-span-2 sm:col-span-1">
               <p className={headingClass}>Talk to us</p>
               <ul className="mt-3 [@media(max-height:759px)]:mt-2.5 space-y-1.5 [@media(max-height:759px)]:space-y-1 text-sm leading-5">
                 <li>
@@ -243,28 +291,12 @@ export function SiteFooter() {
                 </li>
               </ul>
 
-              <div className="mt-3.5 flex items-center gap-2">
-                {SOCIAL_LINKS.map((social) => (
-                  <a
-                    key={social.label}
-                    href={social.href}
-                    target="_blank"
-                    rel="noopener noreferrer nofollow"
-                    aria-label={social.label}
-                    title={social.label}
-                    className="flex h-8 w-8 items-center justify-center rounded-full border border-white/20 bg-white/[0.03] text-white/75 hover:-translate-y-0.5 hover:border-[#FF7A00] hover:bg-[#FF7A00] hover:text-white hover:shadow-[0_8px_18px_-8px_rgba(255,122,0,0.9)] transition-all duration-200"
-                  >
-                    <svg viewBox="0 0 24 24" className="h-4 w-4 fill-current" aria-hidden>
-                      <path d={social.path} />
-                    </svg>
-                  </a>
-                ))}
-              </div>
+              <div className="mt-3.5 flex items-center gap-2">{socialIcons}</div>
             </div>
           </div>
 
           {/* Areas we serve (centered) */}
-          <div className="mt-6 [@media(max-height:759px)]:mt-3 pt-4 [@media(max-height:759px)]:pt-2.5 border-t border-white/10 text-center">
+          <div className="hidden sm:block mt-6 [@media(max-height:759px)]:mt-3 pt-4 [@media(max-height:759px)]:pt-2.5 border-t border-white/10 text-center">
             <p className={centeredHeadingClass}>Areas we serve</p>
             <div className="mt-2.5 flex flex-wrap justify-center gap-y-1 text-sm text-white/60">
               {serviceAreas.map((a, i) => (

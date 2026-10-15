@@ -27,7 +27,7 @@ const inputClass =
 const labelClass = "block text-sm font-medium text-neutral-700 mb-1.5 lg:[@media(min-height:860px)]:mb-2";
 
 function chipClass(selected: boolean) {
-  return `px-3.5 py-1.5 lg:[@media(min-height:860px)]:px-4 lg:[@media(min-height:860px)]:py-2 rounded-full border text-sm font-medium transition-colors cursor-pointer ${
+  return `flex-shrink-0 whitespace-nowrap px-3.5 py-1.5 lg:[@media(min-height:860px)]:px-4 lg:[@media(min-height:860px)]:py-2 rounded-full border text-sm font-medium transition-colors cursor-pointer ${
     selected
       ? "bg-[#FFF4E8] border-[#FF7A00] text-[#C25E00]"
       : "bg-white border-neutral-200 text-neutral-600 hover:border-neutral-300 hover:text-[#111827]"
@@ -82,9 +82,10 @@ Please share pricing and schedule a free on-site survey.`;
     }, 200);
   };
 
-  const contactRows: { label: string; value: React.ReactNode }[] = [
+  const contactRows: { label: string; value: React.ReactNode; desktopOnly?: boolean }[] = [
     {
       label: "Phone",
+      desktopOnly: true,
       value: (
         <a
           href={`tel:${COMPANY_CONTACT.phoneRaw}`}
@@ -96,6 +97,7 @@ Please share pricing and schedule a free on-site survey.`;
     },
     {
       label: "WhatsApp",
+      desktopOnly: true,
       value: (
         <a
           href={`https://wa.me/${COMPANY_CONTACT.phoneRaw}?text=Hi%20STEC%20Secure%2C%20I%20would%20like%20to%20consult%20regarding%20security%20installation.`}
@@ -143,19 +145,37 @@ Please share pricing and schedule a free on-site survey.`;
               Contact <span className="text-[#FF7A00]">Us</span>
             </h1>
             <p className="text-sm sm:text-base text-neutral-500 lg:text-right lg:pb-1">
-              Free site survey, wiring plan and itemised quotation across Tamil Nadu.
+              Free site survey and a clear quote, anywhere around Erode.
             </p>
           </div>
         )}
 
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 xl:gap-6 items-stretch">
+        {/* Phones: the two fastest ways to reach us, first */}
+        <div className="lg:hidden mb-4 grid grid-cols-2 gap-3">
+          <a
+            href={`tel:${COMPANY_CONTACT.phoneRaw}`}
+            className="flex h-12 items-center justify-center rounded-xl bg-[#0D1C34] text-[15px] font-semibold text-white active:scale-[0.98] transition-transform"
+          >
+            Call us
+          </a>
+          <a
+            href={`https://wa.me/${COMPANY_CONTACT.phoneRaw}?text=Hi%20STEC%20Secure%2C%20I%20would%20like%20to%20consult%20regarding%20security%20installation.`}
+            target="_blank"
+            rel="noopener noreferrer nofollow"
+            className="flex h-12 items-center justify-center rounded-xl border border-neutral-300 bg-white text-[15px] font-semibold text-[#0D1C34] active:scale-[0.98] transition-transform"
+          >
+            WhatsApp
+          </a>
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 sm:gap-5 xl:gap-6 items-stretch">
           {/* Left: contact details + map */}
-          <div className="lg:col-span-5 rounded-3xl bg-[#0D1C34] text-white p-5 sm:p-6 lg:p-5 lg:[@media(min-height:860px)]:p-7 flex flex-col shadow-[0_20px_50px_-24px_rgba(13,28,52,0.55)]">
-            <dl className="divide-y divide-white/10">
+          <div className="order-2 lg:order-none lg:col-span-5 rounded-3xl bg-[#0D1C34] text-white p-5 sm:p-6 lg:p-5 lg:[@media(min-height:860px)]:p-7 flex flex-col shadow-[0_20px_50px_-24px_rgba(13,28,52,0.55)]">
+            <dl className="-mt-2.5 lg:mt-0 divide-y divide-white/10 max-lg:[&>div:nth-child(3)]:border-t-0">
               {contactRows.map((row) => (
                 <div
                   key={row.label}
-                  className="grid grid-cols-[84px_1fr] gap-4 py-2.5 first:pt-0 text-sm"
+                  className={`${row.desktopOnly ? "hidden lg:grid" : "grid"} grid-cols-[72px_1fr] lg:grid-cols-[84px_1fr] gap-4 py-2.5 lg:first:pt-0 text-sm`}
                 >
                   <dt className="text-white/50">{row.label}</dt>
                   <dd className="leading-relaxed">{row.value}</dd>
@@ -163,7 +183,7 @@ Please share pricing and schedule a free on-site survey.`;
               ))}
             </dl>
 
-            <div className="mt-4 flex-1 min-h-[160px] rounded-2xl overflow-hidden ring-1 ring-white/10">
+            <div className="mt-4 flex-1 min-h-[180px] lg:min-h-[160px] rounded-2xl overflow-hidden ring-1 ring-white/10">
               <iframe
                 title="S TEC SECURE Office Location"
                 src={`https://maps.google.com/maps?q=${MAP_QUERY}&t=&z=15&ie=UTF8&iwloc=&output=embed`}
@@ -182,7 +202,7 @@ Please share pricing and schedule a free on-site survey.`;
           <form
             onSubmit={handleSendWhatsApp}
             aria-label="Request a free site survey"
-            className="lg:col-span-7 rounded-3xl bg-white border border-neutral-200 p-5 sm:p-6 lg:p-5 lg:[@media(min-height:860px)]:p-7 flex flex-col gap-4 lg:gap-3.5 lg:[@media(min-height:860px)]:gap-4 shadow-[0_20px_50px_-28px_rgba(13,28,52,0.25)]"
+            className="order-1 lg:order-none lg:col-span-7 rounded-3xl bg-white border border-neutral-200 p-5 sm:p-6 lg:p-5 lg:[@media(min-height:860px)]:p-7 flex flex-col gap-4 lg:gap-3.5 lg:[@media(min-height:860px)]:gap-4 shadow-[0_20px_50px_-28px_rgba(13,28,52,0.25)]"
           >
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
@@ -220,7 +240,7 @@ Please share pricing and schedule a free on-site survey.`;
 
             <fieldset>
               <legend className={labelClass}>Property type</legend>
-              <div className="flex flex-wrap gap-2">
+              <div className="-mx-5 px-5 sm:mx-0 sm:px-0 flex gap-2 overflow-x-auto sm:flex-wrap sm:overflow-visible [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
                 {PROPERTY_TYPES.map((pt) => (
                   <button
                     key={pt.id}
@@ -237,7 +257,7 @@ Please share pricing and schedule a free on-site survey.`;
 
             <fieldset>
               <legend className={labelClass}>Services needed</legend>
-              <div className="flex flex-wrap gap-2">
+              <div className="-mx-5 px-5 sm:mx-0 sm:px-0 flex gap-2 overflow-x-auto sm:flex-wrap sm:overflow-visible [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
                 {SERVICE_OPTIONS.map((svc) => (
                   <button
                     key={svc}
@@ -262,7 +282,7 @@ Please share pricing and schedule a free on-site survey.`;
                 value={notes}
                 onChange={(e) => setNotes(e.target.value)}
                 placeholder="e.g. 4 cameras for a house in Erode with remote mobile viewing"
-                className={`${inputClass} resize-none h-16 lg:[@media(min-height:860px)]:h-20`}
+                className={`${inputClass} resize-none h-24 sm:h-16 lg:[@media(min-height:860px)]:h-20`}
               />
             </div>
 
@@ -274,9 +294,6 @@ Please share pricing and schedule a free on-site survey.`;
               >
                 {isSubmitting ? "Opening WhatsApp…" : "Send request on WhatsApp"}
               </button>
-              <p className="mt-3 text-center text-xs text-neutral-500">
-                100% free site survey · Genuine hardware warranty · Erode, Salem &amp; Coimbatore
-              </p>
             </div>
           </form>
         </div>

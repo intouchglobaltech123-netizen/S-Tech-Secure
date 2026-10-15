@@ -21,14 +21,14 @@ export function FaqList({
         const isOpen = open === i;
         const answerId = `${idPrefix}-answer-${i}`;
         return (
-          <div key={item.q} className="px-5 sm:px-7">
+          <div key={item.q} className="px-4 sm:px-7">
             <h3>
               <button
                 type="button"
                 aria-expanded={isOpen}
                 aria-controls={answerId}
                 onClick={() => setOpen(isOpen ? null : i)}
-                className="group w-full flex items-start gap-4 py-5 text-left cursor-pointer"
+                className="group w-full flex items-start gap-3 sm:gap-4 py-4 sm:py-5 text-left cursor-pointer"
               >
                 <span
                   className={`pt-0.5 text-sm font-bold tabular-nums transition-colors ${
@@ -64,7 +64,7 @@ export function FaqList({
               }`}
             >
               <div className="overflow-hidden">
-                <p className="pb-5 pl-9 pr-11 text-sm sm:text-[15px] text-neutral-600 leading-relaxed">{item.a}</p>
+                <p className="pb-4 sm:pb-5 pl-8 sm:pl-9 pr-1 sm:pr-11 text-sm sm:text-[15px] text-neutral-600 leading-relaxed">{item.a}</p>
               </div>
             </div>
           </div>
