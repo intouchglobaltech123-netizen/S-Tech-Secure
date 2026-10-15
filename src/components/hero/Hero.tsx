@@ -233,7 +233,7 @@ export function Hero({ active = true, onReveal }: HeroProps) {
             onLoadedMetadata={(e) => {
               if (skipRef.current && !landingActiveRef.current) freezeAtEnd(e.currentTarget);
             }}
-            className="absolute inset-0 w-full h-full object-cover scale-105"
+            className="absolute inset-x-0 bottom-0 top-14 sm:top-0 w-full h-[calc(100%-3.5rem)] sm:h-full object-cover sm:scale-105"
           >
           </video>
 
