@@ -82,10 +82,10 @@ export function AboutSection() {
               Our team designs tailored surveillance and smart automation systems for homes and businesses, from
               cameras to fully integrated automation, with your safety and convenience first.
             </p>
-            <div className="mt-6 sm:mt-7 grid grid-cols-2 sm:flex sm:flex-row gap-3">
+            <div className="mt-6 sm:mt-7 flex flex-col sm:flex-row gap-2.5 sm:gap-3">
               <Link
                 to="/services"
-                className="inline-flex items-center justify-center h-11 sm:h-12 px-3 sm:px-6 rounded-xl bg-[#FF7A00] hover:bg-[#E96F00] text-white text-sm sm:text-[15px] font-semibold transition-colors"
+                className="inline-flex items-center justify-center whitespace-nowrap h-11 sm:h-12 px-6 rounded-xl bg-[#FF7A00] hover:bg-[#E96F00] text-white text-[15px] font-semibold transition-colors"
               >
                 Explore our services
               </Link>
@@ -93,7 +93,7 @@ export function AboutSection() {
                 href={whatsapp("Hi S TEC SECURE, I would like to know more about your security solutions.")}
                 target="_blank"
                 rel="noopener noreferrer nofollow"
-                className="inline-flex items-center justify-center h-11 sm:h-12 px-3 sm:px-6 rounded-xl border border-neutral-300 bg-white text-[#111827] text-sm sm:text-[15px] font-semibold hover:border-[#0D1C34] transition-colors"
+                className="inline-flex items-center justify-center whitespace-nowrap h-11 sm:h-12 px-6 rounded-xl border border-neutral-300 bg-white text-[#111827] text-sm sm:text-[15px] font-semibold hover:border-[#0D1C34] transition-colors"
               >
                 Talk to an engineer
               </a>
@@ -253,7 +253,7 @@ export function AboutSection() {
               className={`${driveTab === "vision" ? "block" : "hidden"} md:block rounded-2xl md:rounded-3xl bg-[#FFF4E8] border border-[#FFE2C2] p-5 sm:p-8`}
             >
               <h3 className="hidden md:block text-base sm:text-lg font-bold">Our vision</h3>
-              <p className="md:mt-3 text-[15px] text-[#7C2D12]/85 leading-relaxed">
+              <p className="md:mt-3 text-[15px] text-[#7C2D12]/85 md:text-[#7C2D12]/80 leading-relaxed">
                 To be a leader in security and automation, known for excellence, innovation and customer-first
                 solutions. We want to create smarter, safer spaces for businesses and families, and to keep raising the
                 standard for security in the region.
