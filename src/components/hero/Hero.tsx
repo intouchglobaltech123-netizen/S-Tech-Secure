@@ -279,30 +279,71 @@ export function Hero({ active = true, onReveal, onIntroOpen }: HeroProps) {
           <div className="sm:hidden absolute inset-x-0 top-0 h-28 bg-gradient-to-b from-[#070A12]/60 to-transparent" />
         </div>
 
-        {/* Feature label while the video plays (hidden once the hero text appears) */}
+        {/* Feature labels while the video plays (hidden once the hero text appears) */}
         {captionIndex >= 0 && !revealed && (
-          <div className="pointer-events-none absolute inset-x-0 bottom-10 sm:bottom-14 z-20">
+          <div className="pointer-events-none absolute inset-x-0 bottom-10 sm:bottom-12 z-20">
+            <style>{`@keyframes stec-chapter-fill { from { transform: scaleX(0); } to { transform: scaleX(1); } }`}</style>
             <div className="max-w-7xl mx-auto px-6 sm:px-10 lg:px-12">
-              <div
-                key={captionIndex}
-                className="inline-flex items-center gap-3 rounded-full border border-white/15 bg-black/40 px-4 py-2 sm:px-5 sm:py-2.5 backdrop-blur-md animate-in fade-in slide-in-from-bottom-2 duration-500"
-              >
-                <span className="text-xs font-bold tabular-nums text-[#FF7A00]">
-                  {String(captionIndex + 1).padStart(2, "0")}
-                </span>
-                <span aria-hidden className="h-3.5 w-px bg-white/25" />
-                <span className="text-sm sm:text-base font-semibold text-white">{captions[captionIndex].label}</span>
+              {/* Phones: one pill + dashes */}
+              <div className="sm:hidden">
+                <div
+                  key={captionIndex}
+                  className="inline-flex items-center gap-3 rounded-full border border-white/15 bg-black/40 px-4 py-2 backdrop-blur-md animate-in fade-in slide-in-from-bottom-2 duration-500"
+                >
+                  <span className="text-xs font-bold tabular-nums text-[#FF7A00]">
+                    {String(captionIndex + 1).padStart(2, "0")}
+                  </span>
+                  <span aria-hidden className="h-3.5 w-px bg-white/25" />
+                  <span className="text-sm font-semibold text-white">{captions[captionIndex].label}</span>
+                </div>
+                <div aria-hidden className="mt-3 flex gap-1.5">
+                  {captions.map((c, i) => (
+                    <span
+                      key={c.label}
+                      className={`h-1 rounded-full transition-all duration-500 ${
+                        i === captionIndex ? "w-6 bg-[#FF7A00]" : i < captionIndex ? "w-3 bg-white/60" : "w-3 bg-white/20"
+                      }`}
+                    />
+                  ))}
+                </div>
               </div>
-              <div aria-hidden className="mt-3 flex gap-1.5">
-                {captions.map((c, i) => (
-                  <span
-                    key={c.label}
-                    className={`h-1 rounded-full transition-all duration-500 ${
-                      i === captionIndex ? "w-6 bg-[#FF7A00]" : i < captionIndex ? "w-3 bg-white/60" : "w-3 bg-white/20"
-                    }`}
-                  />
-                ))}
-              </div>
+
+              {/* Desktop: chapter bar with every feature */}
+              <ol className="hidden sm:grid grid-cols-6 gap-4 lg:gap-6">
+                {captions.map((c, i) => {
+                  const active = i === captionIndex;
+                  const done = i < captionIndex;
+                  const next = captions[i + 1]?.at ?? 10;
+                  return (
+                    <li key={c.label} className="min-w-0">
+                      <div className="relative h-[3px] overflow-hidden rounded-full bg-white/15">
+                        {done && <span className="absolute inset-0 bg-white/70" />}
+                        {active && (
+                          <span
+                            key={`fill-${captionIndex}`}
+                            className="absolute inset-0 origin-left bg-[#FF7A00]"
+                            style={{ animation: `stec-chapter-fill ${Math.max(0.6, next - c.at)}s linear forwards` }}
+                          />
+                        )}
+                      </div>
+                      <div
+                        className={`mt-3 flex items-baseline gap-2 transition-colors duration-500 ${
+                          active ? "text-white" : done ? "text-white/60" : "text-white/35"
+                        }`}
+                      >
+                        <span
+                          className={`text-xs font-bold tabular-nums ${active ? "text-[#FF7A00]" : ""}`}
+                        >
+                          {String(i + 1).padStart(2, "0")}
+                        </span>
+                        <span className={`truncate text-sm lg:text-[15px] ${active ? "font-semibold" : "font-medium"}`}>
+                          {c.label}
+                        </span>
+                      </div>
+                    </li>
+                  );
+                })}
+              </ol>
             </div>
           </div>
         )}
