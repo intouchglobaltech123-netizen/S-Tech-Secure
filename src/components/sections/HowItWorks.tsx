@@ -32,48 +32,49 @@ export function HowItWorks() {
           <h2 id="how-heading" className="mt-2 text-[28px] sm:text-4xl font-bold tracking-tight text-[#111827] leading-tight">
             From first visit to full protection
           </h2>
-          <p className="mt-3 text-base text-neutral-600 leading-relaxed">Four simple steps, handled by one team.</p>
+          <p className="mt-3 hidden sm:block text-base text-neutral-600 leading-relaxed">Four simple steps, handled by one team.</p>
         </div>
 
         {/* Steps with a connecting line */}
-        <ol className="relative mt-8 sm:mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8 lg:gap-6">
+        <ol className="relative mt-6 sm:mt-12 grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-8 lg:gap-6">
           <span aria-hidden className="absolute left-0 right-0 top-5 hidden h-px bg-neutral-200 lg:block" />
-          <span aria-hidden className="absolute left-5 top-5 bottom-16 w-px bg-neutral-200 sm:hidden" />
           {steps.map((step, i) => (
-            <li key={step.title} className="relative flex gap-4 sm:block">
-              <span className="relative z-10 flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-[#FF7A00] text-sm font-bold text-white ring-4 sm:ring-8 ring-[#F8FAFC]">
+            <li key={step.title} className="relative rounded-2xl sm:rounded-none border border-neutral-200 sm:border-0 bg-white sm:bg-transparent p-4 sm:p-0">
+              <span className="relative z-10 flex h-8 w-8 sm:h-10 sm:w-10 flex-shrink-0 items-center justify-center rounded-full bg-[#FF7A00] text-xs sm:text-sm font-bold text-white sm:ring-8 ring-[#F8FAFC]">
                 {i + 1}
               </span>
               <div>
-                <h3 className="mt-2 sm:mt-5 text-lg font-bold text-[#111827]">{step.title}</h3>
-                <p className="mt-1 sm:mt-2 text-sm leading-relaxed text-neutral-600 lg:pr-4">{step.description}</p>
+                <h3 className="mt-3 sm:mt-5 text-sm sm:text-lg font-bold leading-snug text-[#111827]">{step.title}</h3>
+                <p className="mt-2 hidden sm:block text-sm leading-relaxed text-neutral-600 lg:pr-4">{step.description}</p>
               </div>
             </li>
           ))}
         </ol>
 
         {/* Call to action */}
-        <div className="mt-10 sm:mt-14 flex flex-col md:flex-row md:items-center justify-between gap-6 rounded-3xl bg-[#0D1C34] px-6 py-8 sm:px-10 text-white">
+        <div className="mt-6 sm:mt-14 flex flex-col md:flex-row md:items-center justify-between gap-4 sm:gap-6 rounded-2xl sm:rounded-3xl bg-[#0D1C34] px-5 py-5 sm:px-10 sm:py-8 text-white">
           <div>
-            <h3 className="text-2xl font-bold tracking-tight">Book your free site survey</h3>
-            <p className="mt-1.5 text-sm text-white/65">
+            <h3 className="text-lg sm:text-2xl font-bold tracking-tight">Book your free site survey</h3>
+            <p className="mt-1.5 hidden sm:block text-sm text-white/65">
               Erode, Salem, Coimbatore and nearby towns. Tell us about your property and we will plan a visit.
             </p>
           </div>
-          <div className="flex flex-col sm:flex-row gap-3 flex-shrink-0">
+          <div className="grid grid-cols-2 sm:flex sm:flex-row gap-2 sm:gap-3 flex-shrink-0">
             <a
               href={WHATSAPP}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center justify-center rounded-full bg-[#FF7A00] px-6 py-3 text-sm font-semibold text-white hover:bg-[#FF8F1F] transition-colors"
+              className="inline-flex items-center justify-center whitespace-nowrap rounded-full bg-[#FF7A00] px-4 sm:px-6 py-3 text-sm font-semibold text-white hover:bg-[#FF8F1F] transition-colors"
             >
-              Book on WhatsApp
+              <span className="sm:hidden">WhatsApp</span>
+              <span className="hidden sm:inline">Book on WhatsApp</span>
             </a>
             <a
               href={PHONE_HREF}
-              className="inline-flex items-center justify-center rounded-full border border-white/25 px-6 py-3 text-sm font-semibold text-white hover:bg-white/10 transition-colors"
+              className="inline-flex items-center justify-center whitespace-nowrap rounded-full border border-white/25 px-4 sm:px-6 py-3 text-sm font-semibold text-white hover:bg-white/10 transition-colors"
             >
-              Call {PHONE}
+              <span className="sm:hidden">Call us</span>
+              <span className="hidden sm:inline">Call {PHONE}</span>
             </a>
           </div>
         </div>

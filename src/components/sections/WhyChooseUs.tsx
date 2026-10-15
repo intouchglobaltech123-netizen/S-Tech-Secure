@@ -30,19 +30,19 @@ export function WhyChooseUs() {
   return (
     <section className="relative w-full py-14 sm:py-24" aria-labelledby="why-heading" style={{ fontFamily: "'Inter', sans-serif" }}>
       <div className="max-w-7xl mx-auto px-6 sm:px-10 lg:px-12">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 sm:gap-10 lg:gap-12">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 sm:gap-10 lg:gap-12">
           {/* Left: heading + highlight */}
           <div className="lg:col-span-4">
             <p className="text-sm font-semibold text-[#FF7A00]">Why choose us</p>
             <h2 id="why-heading" className="mt-2 text-[28px] sm:text-4xl font-bold tracking-tight text-[#111827] leading-tight">
               A local team you can call back
             </h2>
-            <p className="mt-3 text-base text-neutral-600 leading-relaxed">
+            <p className="mt-3 hidden sm:block text-base text-neutral-600 leading-relaxed">
               Since 2021 we have planned, installed and serviced security systems for homes, shops, offices and
               factories around Erode.
             </p>
 
-            <div className="mt-6 sm:mt-8 grid grid-cols-2 gap-px overflow-hidden rounded-2xl border border-neutral-200 bg-neutral-200">
+            <div className="mt-5 sm:mt-8 grid grid-cols-2 gap-px overflow-hidden rounded-2xl border border-neutral-200 bg-neutral-200">
               <div className="bg-white p-4 sm:p-5">
                 <p className="text-2xl font-bold text-[#0D1C34]">2021</p>
                 <p className="mt-1 text-xs font-medium text-neutral-500">Started in Erode</p>
@@ -55,17 +55,17 @@ export function WhyChooseUs() {
           </div>
 
           {/* Right: numbered reasons */}
-          <ol className="lg:col-span-8 grid grid-cols-1 sm:grid-cols-2 sm:gap-4 overflow-hidden sm:overflow-visible rounded-2xl sm:rounded-none border border-neutral-200 sm:border-0 bg-white sm:bg-transparent divide-y divide-neutral-100 sm:divide-y-0">
+          <ol className="lg:col-span-8 grid grid-cols-2 gap-px sm:gap-4 overflow-hidden sm:overflow-visible rounded-2xl sm:rounded-none border border-neutral-200 sm:border-0 bg-neutral-200 sm:bg-transparent">
             {reasons.map((reason, i) => (
               <li
                 key={reason.title}
-                className="group p-5 sm:p-6 sm:rounded-2xl sm:border sm:border-neutral-200 sm:bg-white sm:hover:border-[#FF7A00]/40 sm:hover:shadow-[0_10px_30px_rgba(13,28,52,0.06)] transition-all duration-300"
+                className="group bg-white p-4 sm:p-6 sm:rounded-2xl sm:border sm:border-neutral-200 sm:bg-white sm:hover:border-[#FF7A00]/40 sm:hover:shadow-[0_10px_30px_rgba(13,28,52,0.06)] transition-all duration-300"
               >
-                <div className="flex items-baseline gap-3">
+                <div className="flex flex-col sm:flex-row sm:items-baseline gap-1 sm:gap-3">
                   <span className="text-sm font-bold tabular-nums text-[#FF7A00]">{String(i + 1).padStart(2, "0")}</span>
-                  <h3 className="text-base font-bold text-[#111827]">{reason.title}</h3>
+                  <h3 className="text-sm sm:text-base font-bold leading-snug text-[#111827]">{reason.title}</h3>
                 </div>
-                <p className="mt-1.5 sm:mt-2 sm:pl-8 text-sm leading-relaxed text-neutral-600">{reason.description}</p>
+                <p className="mt-2 hidden sm:block sm:pl-8 text-sm leading-relaxed text-neutral-600">{reason.description}</p>
               </li>
             ))}
           </ol>

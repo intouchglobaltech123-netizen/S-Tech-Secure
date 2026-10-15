@@ -162,13 +162,13 @@ export function ServicesSection() {
     <section id="services" className="relative w-full py-14 sm:py-24" style={{ fontFamily: "'Inter', sans-serif" }}>
       <div className="max-w-7xl mx-auto px-6 sm:px-10 lg:px-12">
         {/* Header */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-5">
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 sm:gap-5">
           <div className="max-w-2xl">
             <p className="text-sm font-semibold text-[#FF7A00]">Our services</p>
             <h2 className="mt-2 text-[28px] sm:text-4xl font-bold tracking-tight text-[#111827] leading-tight">
               Security and smart automation, installed right
             </h2>
-            <p className="mt-3 text-base text-neutral-600 leading-relaxed">
+            <p className="mt-3 hidden sm:block text-base text-neutral-600 leading-relaxed">
               Planned after a free site survey and installed by our own engineers for homes and businesses across
               Erode and nearby towns.
             </p>
@@ -183,7 +183,7 @@ export function ServicesSection() {
         </div>
 
         {/* Featured services (customer icon designs) */}
-        <div className="mt-8 sm:mt-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-5">
+        <div className="mt-6 sm:mt-10 grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-5">
           {HOME_SERVICES.map((service) => {
             const IconComp = service.Icon;
             return (
@@ -191,13 +191,13 @@ export function ServicesSection() {
                 key={service.id}
                 to="/services/$serviceId"
                 params={{ serviceId: service.id }}
-                className="group relative flex flex-row items-start gap-4 sm:flex-col sm:gap-0 rounded-2xl sm:rounded-3xl bg-[#0D1C34] p-5 sm:p-7 text-white border border-white/5 hover:-translate-y-1 hover:shadow-[0_18px_40px_rgba(13,28,52,0.25)] transition-all duration-300"
+                className="group relative flex flex-col rounded-2xl sm:rounded-3xl bg-[#0D1C34] p-4 sm:p-7 text-white border border-white/5 hover:-translate-y-1 hover:shadow-[0_18px_40px_rgba(13,28,52,0.25)] transition-all duration-300"
               >
                 <span className="absolute inset-x-7 top-0 h-0.5 rounded-full bg-[#FF7A00] scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left" />
-                <IconComp className="h-11 w-11 flex-shrink-0 sm:h-14 sm:w-14 text-white group-hover:text-[#FF7A00] transition-colors duration-300" />
-                <div className="flex min-w-0 flex-1 flex-col sm:mt-6 sm:w-full">
-                  <h3 className="text-lg sm:text-xl font-bold tracking-tight">{service.title}</h3>
-                  <p className="mt-1 sm:mt-2 flex-1 text-sm leading-relaxed text-white/65">{service.description}</p>
+                <IconComp className="h-10 w-10 flex-shrink-0 sm:h-14 sm:w-14 text-white group-hover:text-[#FF7A00] transition-colors duration-300" />
+                <div className="mt-3 sm:mt-6 flex w-full min-w-0 flex-1 flex-col">
+                  <h3 className="text-[15px] sm:text-xl font-bold tracking-tight leading-snug">{service.title}</h3>
+                  <p className="mt-2 hidden sm:block flex-1 text-sm leading-relaxed text-white/65">{service.description}</p>
                   <span className="hidden sm:inline-flex mt-6 items-center gap-1.5 text-sm font-semibold text-[#FF7A00]">
                     Learn more
                     <span aria-hidden className="transition-transform group-hover:translate-x-0.5">→</span>
@@ -211,13 +211,13 @@ export function ServicesSection() {
         {/* Remaining services as quick links */}
         <div className="mt-3 sm:mt-5 flex flex-col lg:flex-row lg:items-center gap-3 sm:gap-4 rounded-2xl sm:rounded-3xl border border-neutral-200 bg-white px-5 py-4 sm:px-7 sm:py-5">
           <p className="flex-shrink-0 text-sm font-semibold text-[#111827]">We also install</p>
-          <ul className="-mx-5 px-5 sm:mx-0 sm:px-0 flex gap-2 overflow-x-auto sm:flex-wrap sm:overflow-visible [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+          <ul className="flex flex-wrap gap-2">
             {otherServices.map((s) => (
               <li key={s.id}>
                 <Link
                   to="/services/$serviceId"
                   params={{ serviceId: s.id }}
-                  className="inline-flex whitespace-nowrap rounded-full bg-neutral-100 px-3.5 py-1.5 text-sm font-medium text-neutral-700 hover:bg-[#FFF4E8] hover:text-[#FF7A00] transition-colors"
+                  className="inline-flex whitespace-nowrap rounded-full bg-neutral-100 px-3 sm:px-3.5 py-1.5 text-[13px] sm:text-sm font-medium text-neutral-700 hover:bg-[#FFF4E8] hover:text-[#FF7A00] transition-colors"
                 >
                   {s.title}
                 </Link>
