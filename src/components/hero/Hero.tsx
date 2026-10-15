@@ -6,6 +6,8 @@ import { COMPANY_CONTACT } from "@/data/servicesData";
 interface HeroProps {
   active?: boolean;
   onReveal?: () => void;
+  /** Called when the opening animation has finished and the hero video starts */
+  onIntroOpen?: () => void;
 }
 
 // Module-level flag: persists during client-side navigation within the active window session
@@ -63,6 +65,25 @@ export function setHeroVideoPlayed() {
 const DESKTOP_VIDEO = "/services/hero.mp4";
 const MOBILE_VIDEO = "/services/hero-mobile.mp4";
 
+// What each part of the hero video shows (start time in seconds → label)
+type Caption = { at: number; label: string };
+const DESKTOP_CAPTIONS: Caption[] = [
+  { at: 0, label: "Gate automation" },
+  { at: 1.5, label: "Smart door lock" },
+  { at: 2.5, label: "Door automation" },
+  { at: 5, label: "Smart lights & fan" },
+  { at: 6, label: "Motorised curtains" },
+  { at: 7, label: "CCTV surveillance" },
+];
+const MOBILE_CAPTIONS: Caption[] = [
+  { at: 0, label: "Gate automation" },
+  { at: 1.5, label: "Smart door lock" },
+  { at: 3, label: "Door automation" },
+  { at: 5, label: "Smart lights & fan" },
+  { at: 6.5, label: "Motorised curtains" },
+  { at: 7.5, label: "CCTV surveillance" },
+];
+
 /** Portrait screens (phones, tablets held upright) get the vertical video. */
 function pickHeroVideo(): string {
   try {
@@ -75,7 +96,7 @@ function pickHeroVideo(): string {
 // useLayoutEffect in the browser (runs before paint, so no flash), useEffect on the server
 const useIsomorphicLayoutEffect = typeof window !== "undefined" ? useLayoutEffect : useEffect;
 
-export function Hero({ active = true, onReveal }: HeroProps) {
+export function Hero({ active = true, onReveal, onIntroOpen }: HeroProps) {
   // Only play the intro on a browser refresh (or the very first visit); otherwise show the
   // finished hero. This is decided after mount, because it reads sessionStorage: deciding it
   // during render made the server HTML (hidden) and the browser (visible) disagree, and React
@@ -90,6 +111,9 @@ export function Hero({ active = true, onReveal }: HeroProps) {
   const videoRef = useRef<HTMLVideoElement | null>(null);
   // True while the camera intro is on screen: the video waits at its first frame
   const landingActiveRef = useRef(false);
+  // Feature label shown while the video plays
+  const [captions, setCaptions] = useState<Caption[]>(DESKTOP_CAPTIONS);
+  const [captionIndex, setCaptionIndex] = useState(-1);
 
   const freezeAtEnd = (v: HTMLVideoElement) => {
     if (v.duration && v.duration > 0) {
@@ -112,7 +136,9 @@ export function Hero({ active = true, onReveal }: HeroProps) {
     // The video source is chosen here (not in the server HTML) so each device only downloads its own video
     const vid = videoRef.current;
     if (vid) {
-      vid.src = pickHeroVideo();
+      const src = pickHeroVideo();
+      vid.src = src;
+      setCaptions(src === MOBILE_VIDEO ? MOBILE_CAPTIONS : DESKTOP_CAPTIONS);
       vid.load();
     }
 
@@ -160,6 +186,7 @@ export function Hero({ active = true, onReveal }: HeroProps) {
   const finishLanding = () => {
     landingActiveRef.current = false;
     setShowLanding(false);
+    if (onIntroOpen) onIntroOpen();
     if (revealedRef.current) return;
     const v = videoRef.current;
     if (!v) {
@@ -183,6 +210,13 @@ export function Hero({ active = true, onReveal }: HeroProps) {
     if (skipRef.current) return;
     const v = videoRef.current;
     if (!v) return;
+
+    // Which feature is on screen right now
+    let idx = -1;
+    captions.forEach((c, i) => {
+      if (v.currentTime >= c.at) idx = i;
+    });
+    if (idx !== captionIndex) setCaptionIndex(idx);
 
     const dur = v.duration;
     if (dur && dur > 0) {
@@ -212,7 +246,7 @@ export function Hero({ active = true, onReveal }: HeroProps) {
   return (
     <section
       aria-label="Hero Overview"
-      className="relative z-30 w-full overflow-hidden"
+      className={`relative ${showLanding ? "" : "z-30"} w-full overflow-hidden`}
       style={{
         backgroundColor: "#070A12",
         fontFamily: "'Inter', sans-serif",
@@ -233,7 +267,7 @@ export function Hero({ active = true, onReveal }: HeroProps) {
             onLoadedMetadata={(e) => {
               if (skipRef.current && !landingActiveRef.current) freezeAtEnd(e.currentTarget);
             }}
-            className="absolute inset-x-0 bottom-0 top-14 sm:top-0 w-full h-[calc(100%-3.5rem)] sm:h-full object-cover sm:scale-105"
+            className="absolute inset-0 w-full h-full object-cover sm:scale-105"
           >
           </video>
 
@@ -244,6 +278,34 @@ export function Hero({ active = true, onReveal }: HeroProps) {
           <div className="sm:hidden absolute inset-0 bg-[linear-gradient(to_top,#070A12_0%,rgba(7,10,18,0.92)_32%,rgba(7,10,18,0.55)_48%,rgba(7,10,18,0)_66%)]" />
           <div className="sm:hidden absolute inset-x-0 top-0 h-28 bg-gradient-to-b from-[#070A12]/60 to-transparent" />
         </div>
+
+        {/* Feature label while the video plays (hidden once the hero text appears) */}
+        {captionIndex >= 0 && !revealed && (
+          <div className="pointer-events-none absolute inset-x-0 bottom-10 sm:bottom-14 z-20">
+            <div className="max-w-7xl mx-auto px-6 sm:px-10 lg:px-12">
+              <div
+                key={captionIndex}
+                className="inline-flex items-center gap-3 rounded-full border border-white/15 bg-black/40 px-4 py-2 sm:px-5 sm:py-2.5 backdrop-blur-md animate-in fade-in slide-in-from-bottom-2 duration-500"
+              >
+                <span className="text-xs font-bold tabular-nums text-[#FF7A00]">
+                  {String(captionIndex + 1).padStart(2, "0")}
+                </span>
+                <span aria-hidden className="h-3.5 w-px bg-white/25" />
+                <span className="text-sm sm:text-base font-semibold text-white">{captions[captionIndex].label}</span>
+              </div>
+              <div aria-hidden className="mt-3 flex gap-1.5">
+                {captions.map((c, i) => (
+                  <span
+                    key={c.label}
+                    className={`h-1 rounded-full transition-all duration-500 ${
+                      i === captionIndex ? "w-6 bg-[#FF7A00]" : i < captionIndex ? "w-3 bg-white/60" : "w-3 bg-white/20"
+                    }`}
+                  />
+                ))}
+              </div>
+            </div>
+          </div>
+        )}
 
         {/* Content Stack: Positioned cleanly below the fixed navbar */}
         <div className="relative z-20 max-w-7xl mx-auto px-6 sm:px-10 lg:px-12 pt-28 sm:pt-40 lg:pt-44 pb-10 sm:pb-16 lg:pb-24 w-full flex flex-col justify-center text-left select-none">

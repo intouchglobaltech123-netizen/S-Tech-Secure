@@ -146,7 +146,7 @@ export function TestimonialsSection() {
               Homes, shops and businesses across Erode and nearby towns.
             </p>
           </div>
-          <div className="flex gap-2 flex-shrink-0">
+          <div className="hidden sm:flex gap-2 flex-shrink-0">
             <button type="button" aria-label="Previous reviews" onClick={() => scrollByCard(-1)} className={arrowClass}>
               ←
             </button>
@@ -155,6 +155,25 @@ export function TestimonialsSection() {
             </button>
           </div>
         </div>
+
+        <div className="relative">
+          {/* Phones: arrows on the left and right edges of the cards */}
+          <button
+            type="button"
+            aria-label="Previous reviews"
+            onClick={() => scrollByCard(-1)}
+            className="sm:hidden absolute -left-3 top-1/2 z-10 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full border border-neutral-200 bg-white text-lg text-[#0D1C34] shadow-[0_6px_18px_rgba(13,28,52,0.15)] active:scale-95 transition-transform cursor-pointer"
+          >
+            ←
+          </button>
+          <button
+            type="button"
+            aria-label="Next reviews"
+            onClick={() => scrollByCard(1)}
+            className="sm:hidden absolute -right-3 top-1/2 z-10 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full border border-neutral-200 bg-white text-lg text-[#0D1C34] shadow-[0_6px_18px_rgba(13,28,52,0.15)] active:scale-95 transition-transform cursor-pointer"
+          >
+            →
+          </button>
 
         <ul
           ref={trackRef}
@@ -183,6 +202,7 @@ export function TestimonialsSection() {
             </li>
           ))}
         </ul>
+        </div>
       </div>
     </section>
   );

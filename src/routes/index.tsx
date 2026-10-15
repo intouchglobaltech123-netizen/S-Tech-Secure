@@ -50,6 +50,8 @@ export const Route = createFileRoute("/")({
 
 function Home() {
   const [navRevealed, setNavRevealed] = useState(hasHeroPlayedInSession());
+  // Phones: show the logo once the opening animation has finished
+  const [introOpen, setIntroOpen] = useState(false);
 
   useEffect(() => {
     if (hasHeroPlayedInSession()) {
@@ -68,9 +70,9 @@ function Home() {
 
   return (
     <div className="w-full bg-[#F8FAFC] text-[#111827]">
-      <SiteNav revealed={navRevealed} />
+      <SiteNav revealed={navRevealed} logoOnly={introOpen} />
       <main id="main-content">
-        <Hero active={true} onReveal={() => setNavRevealed(true)} />
+        <Hero active={true} onReveal={() => setNavRevealed(true)} onIntroOpen={() => setIntroOpen(true)} />
         {/* Dynamic Animated Cyber Particle Mesh Background */}
         <div className="relative w-full overflow-hidden">
           <CyberMeshBackground />

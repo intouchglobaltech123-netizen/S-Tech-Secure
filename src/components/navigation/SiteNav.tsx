@@ -55,7 +55,7 @@ const navLinks = [
   { label: "Blog", href: "/blog" },
 ] as const;
 
-export function SiteNav({ revealed = true }: { revealed?: boolean }) {
+export function SiteNav({ revealed = true, logoOnly = false }: { revealed?: boolean; logoOnly?: boolean }) {
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   // Session-storage based reveal state only exists in the browser. Wait until after
@@ -127,7 +127,10 @@ export function SiteNav({ revealed = true }: { revealed?: boolean }) {
       className={`fixed top-0 inset-x-0 ${mobileMenuOpen ? "z-[60]" : "z-50"} w-full select-none border-b transition-all duration-300 ease-out ${
         isRevealed
           ? "translate-y-0 opacity-100 pointer-events-auto"
-          : "-translate-y-full opacity-0 pointer-events-none"
+          : logoOnly
+            ? // Just the logo while the hero video plays; links appear with the hero text
+              "translate-y-0 opacity-100 pointer-events-none"
+            : "-translate-y-full opacity-0 pointer-events-none"
       } ${
         mobileMenuOpen
           ? "h-[100dvh] flex flex-col bg-[#0D1C34] border-transparent"
@@ -155,7 +158,11 @@ export function SiteNav({ revealed = true }: { revealed?: boolean }) {
         </Link>
 
         {/* Desktop: links + one CTA */}
-        <div className="hidden md:flex items-center gap-3">
+        <div
+          className={`hidden md:flex items-center gap-3 transition-opacity duration-500 ${
+            isRevealed ? "opacity-100" : "opacity-0 invisible"
+          }`}
+        >
           <nav
             aria-label="Main Navigation"
             className={`flex items-center gap-1 rounded-full border p-1 transition-colors duration-300 ${
@@ -190,8 +197,12 @@ export function SiteNav({ revealed = true }: { revealed?: boolean }) {
           </Link>
         </div>
 
-        {/* Phone: quick call + menu pill */}
-        <div className="md:hidden flex items-center gap-2">
+        {/* Phone: quick call + menu pill (appear with the hero text) */}
+        <div
+          className={`md:hidden flex items-center gap-2 transition-opacity duration-500 ${
+            isRevealed ? "opacity-100" : "opacity-0 invisible"
+          }`}
+        >
           {!mobileMenuOpen && (!isHome || pastHero) && (
             <a
               href="tel:+919600252605"
