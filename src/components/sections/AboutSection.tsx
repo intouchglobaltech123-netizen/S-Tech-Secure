@@ -289,26 +289,6 @@ export function AboutSection() {
           <FaqList items={faqs.map((f) => ({ q: f.q, a: f.a }))} idPrefix="about-faq" className="lg:col-span-8" />
         </section>
 
-        {/* ── 8. Call to action ───────────────────────────── */}
-        <section
-          aria-label="Free site survey"
-          className="mt-14 sm:mt-20 rounded-3xl bg-[#0D1C34] text-white px-6 py-7 sm:px-10 sm:py-8 flex flex-col md:flex-row md:items-center justify-between gap-5"
-        >
-          <div className="max-w-2xl">
-            <p className="text-xl sm:text-2xl font-bold tracking-tight">Need advice for your property?</p>
-            <p className="mt-1.5 text-sm text-white/60 leading-relaxed">
-              Our engineers do free site walk-throughs, blind-spot mapping and quotes across Tamil Nadu.
-            </p>
-          </div>
-          <a
-            href={whatsapp("Hi S TEC SECURE, I would like a free site survey.")}
-            target="_blank"
-            rel="noopener noreferrer nofollow"
-            className="inline-flex items-center justify-center h-11 px-6 rounded-xl bg-[#FF7A00] hover:bg-[#E96F00] text-white text-sm font-semibold transition-colors flex-shrink-0"
-          >
-            Talk to an engineer
-          </a>
-        </section>
       </div>
     </section>
   );

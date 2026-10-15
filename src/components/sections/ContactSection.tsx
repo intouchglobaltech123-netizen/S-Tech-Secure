@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { COMPANY_CONTACT } from "@/data/servicesData";
 
 const PROPERTY_TYPES = [
@@ -19,6 +19,20 @@ const SERVICE_OPTIONS = [
   "Boom Barrier",
 ];
 
+// Phones get one simple dropdown instead of the chip rows
+const MOBILE_SERVICE_OPTIONS = [
+  "CCTV cameras",
+  "Home automation",
+  "Video door phone",
+  "Burglar alarm",
+  "Gate automation",
+  "Boom barrier",
+  "Access control",
+  "Nurse call system",
+  "Intercom",
+  "Not sure yet",
+];
+
 const MAP_QUERY = "14/2+THUNDUKADU+STREET+VERRAPPAN+CHATRAM+ERODE-638004";
 
 const inputClass =
@@ -27,7 +41,7 @@ const inputClass =
 const labelClass = "block text-sm font-medium text-neutral-700 mb-1.5 lg:[@media(min-height:860px)]:mb-2";
 
 function chipClass(selected: boolean) {
-  return `flex-shrink-0 whitespace-nowrap px-3.5 py-1.5 lg:[@media(min-height:860px)]:px-4 lg:[@media(min-height:860px)]:py-2 rounded-full border text-sm font-medium transition-colors cursor-pointer ${
+  return `px-3.5 py-1.5 lg:[@media(min-height:860px)]:px-4 lg:[@media(min-height:860px)]:py-2 rounded-full border text-sm font-medium transition-colors cursor-pointer ${
     selected
       ? "bg-[#FFF4E8] border-[#FF7A00] text-[#C25E00]"
       : "bg-white border-neutral-200 text-neutral-600 hover:border-neutral-300 hover:text-[#111827]"
@@ -44,7 +58,18 @@ export function ContactSection({ showHeader = true }: { showHeader?: boolean } =
   const [propertyType, setPropertyType] = useState("residential");
   const [selectedServices, setSelectedServices] = useState<string[]>(["CCTV Surveillance"]);
   const [notes, setNotes] = useState("");
+  const [mobileService, setMobileService] = useState(MOBILE_SERVICE_OPTIONS[0]);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  // Desktop (lg and up) keeps the full form; phones and tablets get the short one.
+  // Worked out after mount so the server HTML and first render match.
+  const [isDesktop, setIsDesktop] = useState(false);
+  useEffect(() => {
+    const mq = window.matchMedia("(min-width: 1024px)");
+    const update = () => setIsDesktop(mq.matches);
+    update();
+    mq.addEventListener("change", update);
+    return () => mq.removeEventListener("change", update);
+  }, []);
 
   const toggleService = (svc: string) => {
     if (selectedServices.includes(svc)) {
@@ -67,8 +92,7 @@ export function ContactSection({ showHeader = true }: { showHeader?: boolean } =
 *New Survey & Quote Request:*
 • *Name:* ${name.trim() || "Not specified"}
 • *Phone:* ${phone.trim() || "Not specified"}
-• *Property:* ${propLabel}
-• *Services:* ${selectedServices.join(", ")}
+${isDesktop ? `• *Property:* ${propLabel}\n• *Services:* ${selectedServices.join(", ")}` : `• *Service:* ${mobileService}`}
 ${notes.trim() ? `• *Location / Notes:* ${notes.trim()}` : ""}
 
 Please share pricing and schedule a free on-site survey.`;
@@ -145,7 +169,8 @@ Please share pricing and schedule a free on-site survey.`;
               Contact <span className="text-[#FF7A00]">Us</span>
             </h1>
             <p className="text-sm sm:text-base text-neutral-500 lg:text-right lg:pb-1">
-              Free site survey and a clear quote, anywhere around Erode.
+              <span className="lg:hidden">Free site survey and a clear quote, anywhere around Erode.</span>
+              <span className="hidden lg:inline">Free site survey, wiring plan and itemised quotation across Tamil Nadu.</span>
             </p>
           </div>
         )}
@@ -183,13 +208,14 @@ Please share pricing and schedule a free on-site survey.`;
               ))}
             </dl>
 
-            <div className="mt-4 flex-1 min-h-[180px] lg:min-h-[160px] rounded-2xl overflow-hidden ring-1 ring-white/10">
+            <div className="mt-4 h-28 lg:h-auto lg:flex-1 lg:min-h-[160px] rounded-2xl overflow-hidden ring-1 ring-white/10">
               <iframe
                 title="S TEC SECURE Office Location"
                 src={`https://maps.google.com/maps?q=${MAP_QUERY}&t=&z=15&ie=UTF8&iwloc=&output=embed`}
                 width="100%"
                 height="100%"
-                style={{ border: 0, display: "block", minHeight: 160 }}
+                className="lg:min-h-[160px]"
+                style={{ border: 0, display: "block" }}
                 allowFullScreen={false}
                 loading="lazy"
                 referrerPolicy="no-referrer-when-downgrade"
@@ -238,9 +264,36 @@ Please share pricing and schedule a free on-site survey.`;
               </div>
             </div>
 
-            <fieldset>
+            {/* Phones: one dropdown */}
+            <div className="lg:hidden">
+              <label htmlFor="contact-service" className={labelClass}>
+                What do you need?
+              </label>
+              <div className="relative">
+                <select
+                  id="contact-service"
+                  value={mobileService}
+                  onChange={(e) => setMobileService(e.target.value)}
+                  className={`${inputClass} appearance-none pr-10 cursor-pointer`}
+                >
+                  {MOBILE_SERVICE_OPTIONS.map((opt) => (
+                    <option key={opt} value={opt}>
+                      {opt}
+                    </option>
+                  ))}
+                </select>
+                <span
+                  aria-hidden
+                  className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-xs text-neutral-400"
+                >
+                  ▼
+                </span>
+              </div>
+            </div>
+
+            <fieldset className="hidden lg:block min-w-0">
               <legend className={labelClass}>Property type</legend>
-              <div className="-mx-5 px-5 sm:mx-0 sm:px-0 flex gap-2 overflow-x-auto sm:flex-wrap sm:overflow-visible [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+              <div className="flex flex-wrap gap-2">
                 {PROPERTY_TYPES.map((pt) => (
                   <button
                     key={pt.id}
@@ -255,9 +308,9 @@ Please share pricing and schedule a free on-site survey.`;
               </div>
             </fieldset>
 
-            <fieldset>
+            <fieldset className="hidden lg:block min-w-0">
               <legend className={labelClass}>Services needed</legend>
-              <div className="-mx-5 px-5 sm:mx-0 sm:px-0 flex gap-2 overflow-x-auto sm:flex-wrap sm:overflow-visible [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+              <div className="flex flex-wrap gap-2">
                 {SERVICE_OPTIONS.map((svc) => (
                   <button
                     key={svc}
@@ -274,14 +327,16 @@ Please share pricing and schedule a free on-site survey.`;
 
             <div>
               <label htmlFor="contact-notes" className={labelClass}>
-                Location &amp; requirements <span className="text-neutral-400 font-normal">(optional)</span>
+                <span className="lg:hidden">Location &amp; details</span>
+                <span className="hidden lg:inline">Location &amp; requirements</span>{" "}
+                <span className="text-neutral-400 font-normal">(optional)</span>
               </label>
               <textarea
                 id="contact-notes"
                 rows={2}
                 value={notes}
                 onChange={(e) => setNotes(e.target.value)}
-                placeholder="e.g. 4 cameras for a house in Erode with remote mobile viewing"
+                placeholder={isDesktop ? "e.g. 4 cameras for a house in Erode with remote mobile viewing" : "e.g. House in Erode, need 4 cameras"}
                 className={`${inputClass} resize-none h-24 sm:h-16 lg:[@media(min-height:860px)]:h-20`}
               />
             </div>
@@ -294,6 +349,9 @@ Please share pricing and schedule a free on-site survey.`;
               >
                 {isSubmitting ? "Opening WhatsApp…" : "Send request on WhatsApp"}
               </button>
+              <p className="mt-3 hidden lg:block text-center text-xs text-neutral-500">
+                100% free site survey · Genuine hardware warranty · Erode, Salem &amp; Coimbatore
+              </p>
             </div>
           </form>
         </div>

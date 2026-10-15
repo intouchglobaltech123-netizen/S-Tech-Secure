@@ -140,7 +140,9 @@ export function SiteNav({ revealed = true }: { revealed?: boolean }) {
         <Link
           to="/"
           aria-label="S TEC SECURE Home"
-          className="flex-shrink-0 rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#FF7A00]/60"
+          className={`flex-shrink-0 rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#FF7A00]/60 ${
+            mobileMenuOpen ? "invisible md:visible" : ""
+          }`}
         >
           <MergedLogo isLightNav={solid && !mobileMenuOpen} className="h-9 sm:h-10 lg:h-11 w-auto" />
         </Link>

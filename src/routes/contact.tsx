@@ -55,7 +55,7 @@ export const Route = createFileRoute("/contact")({
 
 function ContactPage() {
   return (
-    <div className="min-h-screen bg-[#F8FAFC] text-[#111827] flex flex-col justify-between overflow-x-hidden relative">
+    <div className="min-h-screen bg-[#F8FAFC] text-[#111827] flex flex-col justify-between overflow-x-clip relative">
       <SiteNav revealed={true} />
       
       {/* Fits in one screen on laptops: nav height + heading + two cards */}

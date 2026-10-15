@@ -92,26 +92,6 @@ function Meta({ article, className = "" }: { article: Article; className?: strin
   );
 }
 
-function AdviceBanner() {
-  return (
-    <div className="rounded-3xl bg-[#0D1C34] text-white px-6 py-7 sm:px-10 sm:py-8 flex flex-col md:flex-row md:items-center justify-between gap-5">
-      <div className="max-w-2xl">
-        <p className="text-xl sm:text-2xl font-bold tracking-tight">Need advice for your property?</p>
-        <p className="mt-1.5 text-sm text-white/60 leading-relaxed">
-          Our engineers do free site walk-throughs, blind-spot mapping and quotes across Tamil Nadu.
-        </p>
-      </div>
-      <a
-        href={WHATSAPP_ADVICE_URL}
-        target="_blank"
-        rel="noopener noreferrer nofollow"
-        className="inline-flex items-center justify-center h-11 px-6 rounded-xl bg-[#FF7A00] hover:bg-[#E96F00] text-white text-sm font-semibold transition-colors flex-shrink-0"
-      >
-        Talk to an engineer
-      </a>
-    </div>
-  );
-}
 
 function ArticleCard({ article, onOpen }: { article: Article; onOpen: (a: Article) => void }) {
   return (
@@ -344,9 +324,6 @@ function ArticleReader({
         </div>
       </div>
 
-      <div className="mt-10 sm:mt-12 lg:hidden">
-        <AdviceBanner />
-      </div>
     </article>
   );
 }
@@ -459,9 +436,6 @@ function BlogPage() {
                 </div>
               )}
 
-              <div className="mt-10 sm:mt-12">
-                <AdviceBanner />
-              </div>
             </div>
           )}
         </div>
