@@ -80,14 +80,18 @@ function cleanPointTitle(title: string) {
   return title.replace(/^\d+\.\s*/, "");
 }
 
-function Meta({ article, className = "" }: { article: Article; className?: string }) {
+function Meta({ article, className = "", short = false }: { article: Article; className?: string; short?: boolean }) {
+  // `short`: phones show only the category (keeps small cards tidy)
+  const extra = short ? "hidden sm:inline" : "";
   return (
     <p className={`text-xs text-neutral-500 ${className}`}>
       <span className="font-semibold text-[#FF7A00]">{titleCase(article.category)}</span>
-      <span className="mx-2 text-neutral-300">/</span>
-      {article.date}
-      <span className="mx-2 text-neutral-300">/</span>
-      {article.readTime}
+      <span className={extra}>
+        <span className="mx-2 text-neutral-300">/</span>
+        {article.date}
+        <span className="mx-2 text-neutral-300">/</span>
+        {article.readTime}
+      </span>
     </p>
   );
 }
@@ -98,18 +102,18 @@ function ArticleCard({ article, onOpen }: { article: Article; onOpen: (a: Articl
     <button
       type="button"
       onClick={() => onOpen(article)}
-      className="group text-left rounded-2xl sm:rounded-3xl bg-white border border-neutral-200 overflow-hidden flex flex-row sm:flex-col hover:border-[#FF7A00]/60 hover:shadow-[0_20px_50px_-28px_rgba(13,28,52,0.35)] transition-all cursor-pointer"
+      className="group text-left rounded-2xl sm:rounded-3xl bg-white border border-neutral-200 overflow-hidden flex flex-col hover:border-[#FF7A00]/60 hover:shadow-[0_20px_50px_-28px_rgba(13,28,52,0.35)] transition-all cursor-pointer"
     >
-      <div className="w-28 flex-shrink-0 self-stretch sm:w-auto sm:h-52 xl:h-56 overflow-hidden bg-neutral-100">
+      <div className="aspect-[4/3] sm:aspect-auto sm:h-52 xl:h-56 overflow-hidden bg-neutral-100">
         <img
           src={article.image}
           alt={article.title}
           className="w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-500"
         />
       </div>
-      <div className="p-4 sm:p-6 flex flex-col flex-1 min-w-0">
-        <Meta article={article} />
-        <h3 className="mt-1.5 sm:mt-2.5 text-[15px] sm:text-lg font-bold tracking-tight leading-snug group-hover:text-[#FF7A00] transition-colors">
+      <div className="p-3 sm:p-6 flex flex-col flex-1 min-w-0">
+        <Meta article={article} short className="truncate sm:whitespace-normal" />
+        <h3 className="mt-1 sm:mt-2.5 text-sm sm:text-lg font-bold tracking-tight leading-snug line-clamp-3 sm:line-clamp-none group-hover:text-[#FF7A00] transition-colors">
           {article.title}
         </h3>
         <p className="mt-2 hidden sm:block text-sm text-neutral-600 leading-relaxed line-clamp-2">{article.summary}</p>
@@ -306,7 +310,7 @@ function ArticleReader({
       </div>
 
       {/* Keep reading */}
-      <div className="mt-12 sm:mt-16 pt-8 sm:pt-10 border-t border-neutral-200">
+      <div className="hidden sm:block mt-12 sm:mt-16 pt-8 sm:pt-10 border-t border-neutral-200">
         <div className="flex items-end justify-between gap-4">
           <p className="text-xl sm:text-2xl font-bold tracking-tight">Keep reading</p>
           <button
@@ -317,7 +321,7 @@ function ArticleReader({
             View all articles
           </button>
         </div>
-        <div className="mt-5 sm:mt-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-6">
+        <div className="mt-5 sm:mt-6 grid grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-6">
           {keepReading.map((a) => (
             <ArticleCard key={a.slug} article={a} onOpen={onOpen} />
           ))}
@@ -382,14 +386,14 @@ function BlogPage() {
               </div>
 
               {/* Filters */}
-              <div className="mt-5 sm:mt-6 -mx-6 px-6 sm:mx-0 sm:px-0 flex gap-2 overflow-x-auto pb-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+              <div className="mt-5 sm:mt-6 grid grid-cols-3 gap-2 sm:flex sm:overflow-x-auto sm:pb-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
                 {FILTER_TABS.map((tab) => (
                   <button
                     key={tab}
                     type="button"
                     aria-pressed={activeTab === tab}
                     onClick={() => setActiveTab(tab)}
-                    className={`px-4 py-2 rounded-full border text-sm font-medium whitespace-nowrap transition-colors cursor-pointer ${
+                    className={`px-2 sm:px-4 py-2 rounded-full border text-[13px] sm:text-sm font-medium whitespace-nowrap text-center transition-colors cursor-pointer ${
                       activeTab === tab
                         ? "bg-[#0D1C34] border-[#0D1C34] text-white"
                         : "bg-white border-neutral-200 text-neutral-600 hover:border-neutral-300 hover:text-[#111827]"
@@ -429,7 +433,7 @@ function BlogPage() {
 
               {/* Other articles */}
               {rest.length > 0 && (
-                <div className="mt-3 sm:mt-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-6">
+                <div className="mt-3 sm:mt-6 grid grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-6">
                   {rest.map((article) => (
                     <ArticleCard key={article.slug} article={article} onOpen={openArticle} />
                   ))}

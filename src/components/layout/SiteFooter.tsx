@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link, useRouterState } from "@tanstack/react-router";
 import { COMPANY_CONTACT } from "@/data/servicesData";
 import { serviceAreas } from "@/data/company";
@@ -20,6 +20,7 @@ const SERVICE_LINKS = [
 ];
 
 const MOBILE_LINKS = [
+  { to: "/", label: "Home" },
   { to: "/about", label: "About" },
   { to: "/services", label: "Services" },
   { to: "/blog", label: "Blog" },
@@ -93,6 +94,18 @@ const centeredHeadingClass = `${headingClass} after:left-1/2 after:-translate-x-
 
 export function SiteFooter() {
   const [showScrollTop, setShowScrollTop] = useState(false);
+  // Hide the floating WhatsApp button once the footer (which has its own contact links) is on screen
+  const footerRef = useRef<HTMLElement | null>(null);
+  const [footerInView, setFooterInView] = useState(false);
+  useEffect(() => {
+    const el = footerRef.current;
+    if (!el || typeof IntersectionObserver === "undefined") return;
+    const observer = new IntersectionObserver(([entry]) => setFooterInView(entry.isIntersecting), {
+      threshold: 0,
+    });
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
   // The contact page already has the enquiry form, so the survey card is not repeated there
   const pathname = useRouterState({ select: (s) => s.location.pathname });
   const showSurveyCard = pathname !== "/contact";
@@ -139,7 +152,7 @@ export function SiteFooter() {
     <>
       {/* Survey card sitting on the footer's top edge (half above, half inside) */}
       {showSurveyCard && (
-        <div className="relative z-10 max-w-7xl mx-auto px-6 sm:px-10 lg:px-12 -mb-10 [@media(max-height:759px)]:-mb-6">
+        <div className="hidden sm:block relative z-10 max-w-7xl mx-auto px-6 sm:px-10 lg:px-12 -mb-10 [@media(max-height:759px)]:-mb-6">
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 md:gap-8 rounded-2xl bg-[#FF7A00] px-6 py-5 [@media(max-height:759px)]:py-3.5 sm:px-8 text-white shadow-[0_18px_40px_-18px_rgba(255,122,0,0.75)]">
             <div>
               <p className="text-lg sm:text-xl font-bold tracking-tight">Book your free site survey</p>
@@ -170,34 +183,66 @@ export function SiteFooter() {
       )}
 
       <footer
+        ref={footerRef}
         className="relative w-full overflow-hidden bg-[#0B1628] text-white"
         style={{ fontFamily: "'Inter', sans-serif" }}
       >
         {/* Thin brand line along the top edge */}
         <div className="h-px w-full bg-gradient-to-r from-transparent via-[#FF7A00]/60 to-transparent" />
 
-        <div className={`max-w-7xl mx-auto px-6 sm:px-10 lg:px-12 ${showSurveyCard ? "pt-[72px] [@media(max-height:759px)]:pt-[48px]" : "pt-8 [@media(max-height:759px)]:pt-6"} pb-5`}>
-          {/* Phones: a short, centred footer */}
-          <div className="sm:hidden text-center">
-            <Link to="/" aria-label="S TEC SECURE Home" className="inline-block">
-              <MergedLogo isLightNav={false} className="h-10 w-auto" />
-            </Link>
-            <nav aria-label="Footer" className="mt-6 flex flex-wrap justify-center gap-x-6 gap-y-2 text-sm">
-              {MOBILE_LINKS.map((l) => (
-                <Link key={l.to} to={l.to} className="text-white/70 hover:text-[#FF7A00] transition-colors">
-                  {l.label}
-                </Link>
-              ))}
+        <div className={`max-w-7xl mx-auto px-6 sm:px-10 lg:px-12 ${showSurveyCard ? "pt-8 sm:pt-[72px] sm:[@media(max-height:759px)]:pt-[48px]" : "pt-8 [@media(max-height:759px)]:pt-6"} pb-5`}>
+          {/* Phones: compact footer (logo + socials, link strip, contact rows) */}
+          <div className="sm:hidden">
+            <div className="flex items-center justify-between gap-3">
+              <Link to="/" aria-label="S TEC SECURE Home" className="inline-block">
+                <MergedLogo isLightNav={false} className="h-9 w-auto" />
+              </Link>
+              <div className="flex items-center gap-1.5">{socialIcons}</div>
+            </div>
+
+            <nav
+              aria-label="Footer"
+              className="mt-6 grid grid-cols-5 overflow-hidden rounded-xl border border-white/10 bg-white/[0.02] text-center text-[13px]"
+            >
+              {MOBILE_LINKS.map((l) => {
+                const current = l.to === "/" ? pathname === "/" : pathname === l.to || pathname.startsWith(`${l.to}/`);
+                return (
+                  <Link
+                    key={l.to}
+                    to={l.to}
+                    aria-current={current ? "page" : undefined}
+                    className={`relative border-l border-white/10 py-3 first:border-l-0 transition-colors ${
+                      current ? "bg-white/[0.06] font-semibold text-white" : "text-white/70 hover:text-[#FF7A00]"
+                    }`}
+                  >
+                    {l.label}
+                    {current && (
+                      <span aria-hidden className="absolute left-1/2 bottom-1.5 h-1 w-1 -translate-x-1/2 rounded-full bg-[#FF7A00]" />
+                    )}
+                  </Link>
+                );
+              })}
             </nav>
-            <div className="mt-6 space-y-1">
-              <a href={`tel:${COMPANY_CONTACT.phoneRaw}`} className="block text-base font-semibold text-white">
-                {COMPANY_CONTACT.phone}
+
+            <div className="mt-3 overflow-hidden rounded-xl border border-white/10 bg-white/[0.03] divide-y divide-white/10">
+              <a
+                href={`tel:${COMPANY_CONTACT.phoneRaw}`}
+                className="flex items-center justify-between px-4 py-3"
+              >
+                <span>
+                  <span className="block text-xs text-white/45">Call us</span>
+                  <span className="block text-[15px] font-semibold text-white">{COMPANY_CONTACT.phone}</span>
+                </span>
+                <span aria-hidden className="text-lg text-[#FF7A00]">→</span>
               </a>
-              <a href={`mailto:${EMAIL}`} className="block text-sm text-white/55">
-                {EMAIL}
+              <a href={`mailto:${EMAIL}`} className="flex items-center justify-between px-4 py-3">
+                <span>
+                  <span className="block text-xs text-white/45">Email us</span>
+                  <span className="block text-[15px] font-semibold text-white">{EMAIL}</span>
+                </span>
+                <span aria-hidden className="text-lg text-[#FF7A00]">→</span>
               </a>
             </div>
-            <div className="mt-5 flex justify-center gap-2">{socialIcons}</div>
           </div>
 
           {/* Columns spread across the full width with equal gaps between them */}
@@ -318,7 +363,7 @@ export function SiteFooter() {
       </footer>
 
       {/* Floating WhatsApp Action Button */}
-      {showScrollTop && (
+      {showScrollTop && !footerInView && (
         <div className="fixed bottom-6 right-6 z-50 select-none pointer-events-auto">
           <a
             href={whatsappUrl}

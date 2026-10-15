@@ -195,7 +195,7 @@ Please share pricing and schedule a free on-site survey.`;
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 sm:gap-5 xl:gap-6 items-stretch">
           {/* Left: contact details + map */}
-          <div className="order-2 lg:order-none lg:col-span-5 rounded-3xl bg-[#0D1C34] text-white p-5 sm:p-6 lg:p-5 lg:[@media(min-height:860px)]:p-7 flex flex-col shadow-[0_20px_50px_-24px_rgba(13,28,52,0.55)]">
+          <div className="hidden lg:flex lg:col-span-5 rounded-3xl bg-[#0D1C34] text-white p-5 sm:p-6 lg:p-5 lg:[@media(min-height:860px)]:p-7 flex-col shadow-[0_20px_50px_-24px_rgba(13,28,52,0.55)]">
             <dl className="-mt-2.5 lg:mt-0 divide-y divide-white/10 max-lg:[&>div:nth-child(3)]:border-t-0">
               {contactRows.map((row) => (
                 <div
@@ -222,6 +222,53 @@ Please share pricing and schedule a free on-site survey.`;
               />
             </div>
 
+          </div>
+
+          {/* Phones: light location card, map on top */}
+          <div className="lg:hidden order-2 overflow-hidden rounded-2xl bg-white border border-neutral-200 shadow-[0_20px_50px_-28px_rgba(13,28,52,0.25)]">
+            <div className="h-28 bg-neutral-100">
+              <iframe
+                title="S TEC SECURE office location"
+                src={`https://maps.google.com/maps?q=${MAP_QUERY}&t=&z=15&ie=UTF8&iwloc=&output=embed`}
+                width="100%"
+                height="100%"
+                style={{ border: 0, display: "block" }}
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+              />
+            </div>
+            <dl className="px-4 divide-y divide-neutral-100 text-[13px]">
+              <div className="grid grid-cols-[56px_1fr] gap-3 py-2.5">
+                <dt className="text-neutral-500">Address</dt>
+                <dd>
+                  <p className="font-medium leading-snug text-[#111827]">
+                    14/2 Thundukadu Street, Veerappan Chatram, Erode – 638004
+                  </p>
+                  <a
+                    href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
+                      "14/2 Thundukadu Street, Veerappan Chatram, Erode 638004"
+                    )}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="mt-1 inline-block font-semibold text-[#FF7A00]"
+                  >
+                    Get directions →
+                  </a>
+                </dd>
+              </div>
+              <div className="grid grid-cols-[56px_1fr] gap-3 py-2.5">
+                <dt className="text-neutral-500">Hours</dt>
+                <dd className="font-medium text-[#111827]">Mon – Sat, 8 AM – 8 PM</dd>
+              </div>
+              <div className="grid grid-cols-[56px_1fr] gap-3 py-2.5">
+                <dt className="text-neutral-500">Email</dt>
+                <dd>
+                  <a href="mailto:stecsecure@gmail.com" className="font-medium whitespace-nowrap text-[#111827]">
+                    stecsecure@gmail.com
+                  </a>
+                </dd>
+              </div>
+            </dl>
           </div>
 
           {/* Right: survey request form */}

@@ -165,6 +165,8 @@ function titleCase(value: string) {
 // ── Page ─────────────────────────────────────────────────────────────
 function ServicesPage() {
   const [activeProfileId, setActiveProfileId] = useState<string>("villa");
+  // Phones: the local text starts as a short preview
+  const [localExpanded, setLocalExpanded] = useState(false);
   const activeProfile = PROPERTY_PROFILES.find((p) => p.id === activeProfileId) ?? PROPERTY_PROFILES[1];
   const surveyUrl = `https://wa.me/${COMPANY_CONTACT.phoneRaw}?text=${encodeURIComponent(
     `Hi, I would like a free site survey for my ${activeProfile.label.toLowerCase()}.`
@@ -200,7 +202,7 @@ function ServicesPage() {
           </dl>
 
           {/* ── 2. All services (compact: all nine fit in about one screen) ── */}
-          <section aria-label="All services" className="mt-6 sm:mt-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
+          <section aria-label="All services" className="mt-6 sm:mt-8 grid grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
             {SERVICES_DATA.map((sys) => {
               const name = serviceName(sys.id, sys.title);
               return (
@@ -208,9 +210,9 @@ function ServicesPage() {
                   key={sys.id}
                   to="/services/$serviceId"
                   params={{ serviceId: sys.id }}
-                  className="group flex items-center gap-3 sm:gap-4 rounded-2xl bg-white border border-neutral-200 p-3 pr-4 hover:-translate-y-0.5 hover:border-[#FF7A00]/60 hover:shadow-[0_18px_40px_-26px_rgba(13,28,52,0.45)] transition-all duration-300"
+                  className="group flex flex-col md:flex-row md:items-center gap-2.5 md:gap-4 rounded-2xl bg-white border border-neutral-200 p-2.5 md:p-3 md:pr-4 hover:-translate-y-0.5 hover:border-[#FF7A00]/60 hover:shadow-[0_18px_40px_-26px_rgba(13,28,52,0.45)] transition-all duration-300"
                 >
-                  <div className="h-20 w-20 sm:h-28 sm:w-28 flex-shrink-0 overflow-hidden rounded-xl bg-neutral-100">
+                  <div className="w-full aspect-[4/3] md:aspect-auto md:h-28 md:w-28 flex-shrink-0 overflow-hidden rounded-xl bg-neutral-100">
                     <img
                       src={`/services/${sys.id}.jpg`}
                       alt={`${name} installed by S Tec Secure`}
@@ -218,13 +220,13 @@ function ServicesPage() {
                       className="h-full w-full object-cover group-hover:scale-[1.06] transition-transform duration-500"
                     />
                   </div>
-                  <div className="min-w-0 flex-1">
-                    <p className="text-xs font-semibold text-[#FF7A00]">{titleCase(sys.badge)}</p>
-                    <h2 className="mt-1 text-base font-bold tracking-tight leading-snug text-[#111827] group-hover:text-[#FF7A00] transition-colors">
+                  <div className="min-w-0 flex-1 px-1 pb-1 md:p-0">
+                    <p className="truncate text-xs font-semibold text-[#FF7A00]">{titleCase(sys.badge)}</p>
+                    <h2 className="mt-0.5 md:mt-1 text-sm md:text-base font-bold tracking-tight leading-snug text-[#111827] group-hover:text-[#FF7A00] transition-colors">
                       {name}
                     </h2>
-                    <p className="mt-1 text-sm text-neutral-500 leading-snug line-clamp-2">{sys.tagline}</p>
-                    <span className="mt-2 hidden sm:inline-flex items-center gap-1.5 text-sm font-semibold text-[#111827]">
+                    <p className="mt-1 hidden md:block text-sm text-neutral-500 leading-snug line-clamp-2">{sys.tagline}</p>
+                    <span className="mt-2 hidden md:inline-flex items-center gap-1.5 text-sm font-semibold text-[#111827]">
                       View details
                       <span aria-hidden className="text-[#FF7A00] transition-transform group-hover:translate-x-1">
                         →
@@ -243,14 +245,14 @@ function ServicesPage() {
               Find the right setup for your property
             </h2>
 
-            <div className="mt-5 sm:mt-6 -mx-6 px-6 sm:mx-0 sm:px-0 flex gap-2 overflow-x-auto sm:flex-wrap sm:overflow-visible [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+            <div className="mt-5 sm:mt-6 grid grid-cols-2 gap-2 sm:flex sm:flex-wrap">
               {PROPERTY_PROFILES.map((p) => (
                 <button
                   key={p.id}
                   type="button"
                   aria-pressed={p.id === activeProfileId}
                   onClick={() => setActiveProfileId(p.id)}
-                  className={`flex-shrink-0 whitespace-nowrap px-4 py-2 rounded-full border text-sm font-medium transition-colors cursor-pointer ${
+                  className={`whitespace-nowrap text-center px-2 sm:px-4 py-2.5 sm:py-2 rounded-full border text-[13px] sm:text-sm font-medium transition-colors cursor-pointer ${
                     p.id === activeProfileId
                       ? "bg-[#0D1C34] border-[#0D1C34] text-white"
                       : "bg-white border-neutral-200 text-neutral-600 hover:border-neutral-300 hover:text-[#111827]"
@@ -264,35 +266,36 @@ function ServicesPage() {
             <div className="mt-4 sm:mt-5 grid grid-cols-1 lg:grid-cols-12 gap-3 sm:gap-5">
               <div className="lg:col-span-8 rounded-3xl bg-white border border-neutral-200 p-5 sm:p-8">
                 <p className="text-sm text-neutral-500">{activeProfile.subtitle}</p>
-                <h3 className="mt-1 text-xl font-bold tracking-tight">Recommended plan for a {activeProfile.label.toLowerCase()}</h3>
+                <h3 className="mt-1 text-lg sm:text-xl font-bold tracking-tight">Recommended plan for a {activeProfile.label.toLowerCase()}</h3>
 
-                <dl className="mt-4 sm:mt-6 grid grid-cols-1 sm:grid-cols-2 gap-x-8 divide-y divide-neutral-100 sm:divide-y-0">
+                <dl className="mt-4 sm:mt-6 grid grid-cols-2 gap-px sm:gap-x-8 sm:gap-y-0 overflow-hidden rounded-xl sm:rounded-none bg-neutral-200 sm:bg-transparent border border-neutral-200 sm:border-0">
                   {[
                     ["Cameras", activeProfile.cameras],
                     ["Recording", activeProfile.storage],
                     ["Wiring", activeProfile.wiring],
                     ["Mobile viewing", activeProfile.remoteApp],
                   ].map(([label, value]) => (
-                    <div key={label} className="py-3 sm:border-b sm:border-neutral-100">
+                    <div key={label} className="bg-[#F8FAFC] sm:bg-transparent px-3 py-2.5 sm:px-0 sm:py-3 sm:border-b sm:border-neutral-100">
                       <dt className="text-xs text-neutral-500">{label}</dt>
-                      <dd className="mt-0.5 text-[15px] font-semibold text-[#111827]">{value}</dd>
+                      <dd className="mt-0.5 text-[13px] sm:text-[15px] font-semibold leading-snug text-[#111827]">{value}</dd>
                     </div>
                   ))}
                 </dl>
 
-                <ul className="mt-5 flex flex-wrap gap-2">
+                <ul className="mt-4 sm:mt-5 flex flex-wrap gap-1.5 sm:gap-2">
                   {activeProfile.bestFeatures.map((f) => (
-                    <li key={f} className="rounded-full bg-[#FFF4E8] px-3.5 py-1.5 text-sm text-[#C25E00]">
+                    <li key={f} className="rounded-full bg-[#FFF4E8] px-3 py-1 sm:px-3.5 sm:py-1.5 text-[13px] sm:text-sm text-[#C25E00]">
                       {f}
                     </li>
                   ))}
                 </ul>
               </div>
 
-              <div className="lg:col-span-4 rounded-3xl bg-[#FFF4E8] border border-[#FFE2C2] p-5 sm:p-8 flex flex-col justify-between gap-5 sm:gap-6">
+              <div className="lg:col-span-4 rounded-2xl sm:rounded-3xl bg-[#FFF4E8] border border-[#FFE2C2] px-4 py-3.5 sm:p-8 flex flex-row items-center sm:flex-col sm:items-stretch justify-between gap-3 sm:gap-6">
                 <div>
-                  <p className="text-xl font-bold tracking-tight text-[#111827]">Not sure which plan fits?</p>
-                  <p className="mt-2 text-sm text-[#7C2D12]/80 leading-relaxed">
+                  <p className="text-[15px] sm:text-xl font-bold tracking-tight text-[#111827] leading-snug">Not sure which plan fits?</p>
+                  <p className="sm:hidden mt-0.5 text-xs text-[#C25E00]">The site survey is free</p>
+                  <p className="mt-2 hidden sm:block text-sm text-[#7C2D12]/80 leading-relaxed">
                     An engineer visits, checks camera positions and gives you a clear quote. The survey is free.
                   </p>
                 </div>
@@ -300,9 +303,10 @@ function ServicesPage() {
                   href={surveyUrl}
                   target="_blank"
                   rel="noopener noreferrer nofollow"
-                  className="inline-flex items-center justify-center h-11 px-6 rounded-xl bg-[#FF7A00] hover:bg-[#E96F00] text-white text-sm font-semibold transition-colors"
+                  className="flex-shrink-0 inline-flex items-center justify-center h-10 sm:h-11 px-4 sm:px-6 rounded-xl bg-[#FF7A00] hover:bg-[#E96F00] text-white text-sm font-semibold transition-colors"
                 >
-                  Book a free site survey
+                  <span className="sm:hidden">Book survey</span>
+                  <span className="hidden sm:inline">Book a free site survey</span>
                 </a>
               </div>
             </div>
@@ -317,7 +321,7 @@ function ServicesPage() {
             <div className="relative flex flex-col gap-2 lg:flex-row lg:items-end lg:justify-between">
               <div>
                 <p className="text-sm font-semibold text-[#FFA04D]">Installation standards</p>
-                <h2 id="standards-heading" className="mt-2 text-2xl sm:text-[28px] font-bold tracking-tight">
+                <h2 id="standards-heading" className="mt-2 text-xl sm:text-[28px] font-bold tracking-tight">
                   How we install every system
                 </h2>
               </div>
@@ -325,12 +329,12 @@ function ServicesPage() {
                 The same careful process on every job, from a two-camera home to a full factory.
               </p>
             </div>
-            <ol className="relative mt-6 sm:mt-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-px overflow-hidden rounded-2xl bg-white/10">
+            <ol className="relative mt-5 sm:mt-8 grid grid-cols-2 lg:grid-cols-4 gap-px overflow-hidden rounded-2xl bg-white/10">
               {STANDARDS.map((st, i) => (
-                <li key={st.title} className="bg-[#0D1C34] p-5 sm:p-6">
+                <li key={st.title} className="bg-[#0D1C34] p-4 sm:p-6">
                   <span className="text-sm font-bold text-[#FF7A00] tabular-nums">{String(i + 1).padStart(2, "0")}</span>
-                  <h3 className="mt-2 text-base font-bold">{st.title}</h3>
-                  <p className="mt-1.5 text-sm text-white/60 leading-relaxed">{st.copy}</p>
+                  <h3 className="mt-1.5 sm:mt-2 text-sm sm:text-base font-bold leading-snug">{st.title}</h3>
+                  <p className="mt-1.5 hidden sm:block text-sm text-white/60 leading-relaxed">{st.copy}</p>
                 </li>
               ))}
             </ol>
@@ -343,7 +347,11 @@ function ServicesPage() {
               <h2 id="local-heading" className={`mt-2 ${sectionHeading}`}>
                 CCTV installation and security systems near you
               </h2>
-              <div className="mt-5 space-y-4 text-[15px] text-neutral-600 leading-relaxed">
+              <div
+                className={`relative mt-4 sm:mt-5 space-y-3 sm:space-y-4 text-sm sm:text-[15px] text-neutral-600 leading-relaxed ${
+                  localExpanded ? "" : "max-h-[6.75rem] overflow-hidden sm:max-h-none sm:overflow-visible"
+                }`}
+              >
                 <p>
                   S Tec Secure designs and installs{" "}
                   <Link to="/services/$serviceId" params={{ serviceId: "cctv" }} className="font-semibold text-[#111827] underline decoration-neutral-300 underline-offset-4 hover:decoration-[#FF7A00]">
@@ -375,20 +383,42 @@ function ServicesPage() {
                   </Link>
                   , all installed and serviced by our own engineers from our Erode office.
                 </p>
+                {!localExpanded && (
+                  <div
+                    aria-hidden
+                    className="sm:hidden pointer-events-none absolute inset-x-0 bottom-0 h-10 bg-gradient-to-t from-[#F8FAFC] to-transparent"
+                  />
+                )}
               </div>
+              <button
+                type="button"
+                onClick={() => setLocalExpanded((v) => !v)}
+                aria-expanded={localExpanded}
+                className="sm:hidden mt-2 text-sm font-semibold text-[#FF7A00] cursor-pointer"
+              >
+                {localExpanded ? "Show less" : "Read more"}
+              </button>
             </div>
 
-            <div className="lg:col-span-7">
-              <h3 className="text-base font-bold text-[#111827]">Areas we serve</h3>
-              <ul className="mt-4 grid grid-cols-2 sm:grid-cols-3 gap-2.5 sm:gap-3">
-                {serviceAreas.map((a) => (
+            <div className="lg:col-span-7 rounded-2xl sm:rounded-none bg-white sm:bg-transparent border border-neutral-200 sm:border-0 p-4 sm:p-0">
+              <div className="flex items-baseline justify-between">
+                <h3 className="text-base font-bold text-[#111827]">Areas we serve</h3>
+                <span className="sm:hidden text-xs text-neutral-500">{serviceAreas.length} towns</span>
+              </div>
+              <ul className="mt-3 sm:mt-4 flex flex-wrap gap-2 sm:grid sm:grid-cols-3 sm:gap-3">
+                {serviceAreas.map((a, i) => (
                   <li
                     key={a.name}
-                    className="rounded-2xl bg-white border border-neutral-200 px-4 py-3 hover:border-[#FF7A00]/50 transition-colors"
+                    className={`rounded-full sm:rounded-2xl border px-3 py-1.5 sm:px-4 sm:py-3 hover:border-[#FF7A00]/50 transition-colors ${
+                      i === 0
+                        ? "bg-[#FFF4E8] border-[#FFE2C2] sm:bg-white sm:border-neutral-200"
+                        : "bg-[#F8FAFC] sm:bg-white border-neutral-200"
+                    }`}
                   >
-                    <p className="flex items-center gap-2 text-[15px] font-semibold text-[#111827]">
+                    <p className="flex items-center gap-1.5 sm:gap-2 text-[13px] sm:text-[15px] font-medium sm:font-semibold text-[#111827]">
                       <span aria-hidden className="h-1.5 w-1.5 rounded-full bg-[#FF7A00]" />
                       {a.name}
+                      {i === 0 && <span className="sm:hidden text-xs font-semibold text-[#C25E00]">· Head office</span>}
                     </p>
                     <p className="mt-1 hidden sm:block text-xs text-neutral-500 leading-snug">{a.note}</p>
                   </li>
@@ -404,11 +434,11 @@ function ServicesPage() {
               <h2 id="faq-heading" className={`mt-2 ${sectionHeading}`}>
                 Frequently asked questions
               </h2>
-              <p className="mt-3 text-[15px] text-neutral-600 leading-relaxed">
+              <p className="mt-3 hidden sm:block text-[15px] text-neutral-600 leading-relaxed">
                 Answers to what our customers ask most before installing a security system.
               </p>
 
-              <div className="mt-6 rounded-2xl bg-[#0D1C34] text-white p-5">
+              <div className="mt-6 hidden lg:block rounded-2xl bg-[#0D1C34] text-white p-5">
                 <p className="text-base font-semibold">Still have a question?</p>
                 <p className="mt-1 text-sm text-white/60">Message or call our engineers directly.</p>
                 <div className="mt-4 flex flex-wrap items-center gap-3">
@@ -428,16 +458,33 @@ function ServicesPage() {
             </div>
 
             <FaqList items={faqs.map((f) => ({ q: f.q, a: f.a }))} className="lg:col-span-8" />
+
+            {/* Phones/tablets: one short line instead of the navy box */}
+            <p className="lg:hidden -mt-2 sm:mt-0 text-sm text-neutral-600">
+              Still have a question?{" "}
+              <a
+                href={`https://wa.me/${COMPANY_CONTACT.phoneRaw}?text=${encodeURIComponent("Hi S TEC SECURE, I have a question about your services.")}`}
+                target="_blank"
+                rel="noopener noreferrer nofollow"
+                className="font-semibold text-[#FF7A00]"
+              >
+                Ask on WhatsApp →
+              </a>
+            </p>
           </section>
 
           {/* ── 7. Brochure ────────────────────────────────────── */}
           <section
             aria-label="Company brochure"
-            className="mt-14 sm:mt-20 rounded-3xl bg-[#0D1C34] text-white px-6 py-7 sm:px-10 sm:py-8 flex flex-col md:flex-row md:items-center justify-between gap-5"
+            className="mt-14 sm:mt-20 rounded-2xl sm:rounded-3xl bg-[#0D1C34] text-white px-5 py-4 sm:px-10 sm:py-8 flex flex-row items-center justify-between gap-4 sm:gap-5"
           >
-            <div className="max-w-2xl">
-              <p className="text-xl sm:text-2xl font-bold tracking-tight">Download our company brochure</p>
-              <p className="mt-1.5 text-sm text-white/60 leading-relaxed">
+            <div className="max-w-2xl min-w-0">
+              <p className="text-base sm:text-2xl font-bold tracking-tight">
+                <span className="sm:hidden">Company brochure</span>
+                <span className="hidden sm:inline">Download our company brochure</span>
+              </p>
+              <p className="sm:hidden mt-0.5 text-xs text-white/55">PDF · all our services</p>
+              <p className="mt-1.5 hidden sm:block text-sm text-white/60 leading-relaxed">
                 All our surveillance and automation services, in one PDF you can share.
               </p>
             </div>
@@ -445,9 +492,10 @@ function ServicesPage() {
               href={COMPANY_CONTACT.brochurePdf}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center justify-center h-11 px-6 rounded-xl bg-[#FF7A00] hover:bg-[#E96F00] text-white text-sm font-semibold transition-colors flex-shrink-0"
+              className="inline-flex items-center justify-center h-10 sm:h-11 px-4 sm:px-6 rounded-xl bg-[#FF7A00] hover:bg-[#E96F00] text-white text-sm font-semibold transition-colors flex-shrink-0"
             >
-              Download PDF
+              <span className="sm:hidden">Download</span>
+              <span className="hidden sm:inline">Download PDF</span>
             </a>
           </section>
         </div>
